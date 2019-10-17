@@ -37,7 +37,8 @@
       {
         "avoidEscape": true
       }
-    ]
+    ],
+    "comma-dangle": ["error", "always-multiline"]
   },
   "env": {
     "browser": true,

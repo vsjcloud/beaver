@@ -1,50 +1,59 @@
-@import "colors";
-@import "colorAliases";
+@import "variables";
 
 :root {
   // Colors
-  --primary-1: $primary-1;
-  --primary-2: $primary-2;
-  --primary-3: $primary-3;
-  --primary-4: $primary-4;
-  --primary-5: $primary-5;
+  --primary-1: #{$primary-1};
+  --primary-2: #{$primary-2};
+  --primary-3: #{$primary-3};
+  --primary-4: #{$primary-4};
+  --primary-5: #{$primary-5};
 
-  --success-1: $success-1;
-  --success-2: $success-2;
-  --success-3: $success-3;
-  --success-4: $success-4;
-  --success-5: $success-5;
+  --success-1: #{$success-1};
+  --success-2: #{$success-2};
+  --success-3: #{$success-3};
+  --success-4: #{$success-4};
+  --success-5: #{$success-5};
 
-  --warning-1: $warning-1;
-  --warning-2: $warning-2;
-  --warning-3: $warning-3;
-  --warning-4: $warning-4;
-  --warning-5: $warning-5;
+  --warning-1: #{$warning-1};
+  --warning-2: #{$warning-2};
+  --warning-3: #{$warning-3};
+  --warning-4: #{$warning-4};
+  --warning-5: #{$warning-5};
 
-  --danger-1: $danger-1;
-  --danger-2: $danger-2;
-  --danger-3: $danger-3;
-  --danger-4: $danger-4;
-  --danger-5: $danger-5;
+  --danger-1: #{$danger-1};
+  --danger-2: #{$danger-2};
+  --danger-3: #{$danger-3};
+  --danger-4: #{$danger-4};
+  --danger-5: #{$danger-5};
 
-  --dark-gray-1: $dark-gray-1;
-  --dark-gray-2: $dark-gray-2;
-  --dark-gray-3: $dark-gray-3;
-  --dark-gray-4: $dark-gray-4;
-  --dark-gray-5: $dark-gray-5;
+  --dark-gray-1: #{$dark-gray-1};
+  --dark-gray-2: #{$dark-gray-2};
+  --dark-gray-3: #{$dark-gray-3};
+  --dark-gray-4: #{$dark-gray-4};
+  --dark-gray-5: #{$dark-gray-5};
 
-  --gray-1: $gray-1;
-  --gray-2: $gray-2;
-  --gray-3: $gray-3;
-  --gray-4: $gray-4;
-  --gray-5: $gray-5;
+  --gray-1: #{$gray-1};
+  --gray-2: #{$gray-2};
+  --gray-3: #{$gray-3};
+  --gray-4: #{$gray-4};
+  --gray-5: #{$gray-5};
 
-  --light-gray-1: $light-gray-1;
-  --light-gray-2: $light-gray-2;
-  --light-gray-3: $light-gray-3;
-  --light-gray-4: $light-gray-4;
-  --light-gray-5: $light-gray-5;
+  --light-gray-1: #{$light-gray-1};
+  --light-gray-2: #{$light-gray-2};
+  --light-gray-3: #{$light-gray-3};
+  --light-gray-4: #{$light-gray-4};
+  --light-gray-5: #{$light-gray-5};
 
-  // Box shadow
-  --shadow-elevation-0: 1px 1px 1px black;
+  // Elevations
+  --shadow-elevation-0: #{$hr-shadow-elevation-0};
+  --shadow-elevation-1: #{$hr-shadow-elevation-1};
+  --shadow-elevation-2: #{$hr-shadow-elevation-2};
+  --shadow-elevation-3: #{$hr-shadow-elevation-3};
+  --shadow-elevation-4: #{$hr-shadow-elevation-4};
+
+  --shadow-dark-elevation-0: #{$hr-shadow-dark-elevation-0};
+  --shadow-dark-elevation-1: #{$hr-shadow-dark-elevation-1};
+  --shadow-dark-elevation-2: #{$hr-shadow-dark-elevation-2};
+  --shadow-dark-elevation-3: #{$hr-shadow-dark-elevation-3};
+  --shadow-dark-elevation-4: #{$hr-shadow-dark-elevation-4};
 }

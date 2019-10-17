@@ -36,13 +36,13 @@ export class Icon extends React.PureComponent<IconProps, {}> {
   private intentClasses(intent: Intent): string {
     switch (intent) {
     case Intent.Primary:
-      return "text-primary-5";
+      return "text-primary-3";
     case Intent.Success:
-      return "";
+      return "text-success-3";
     case Intent.Warning:
-      return "";
+      return "text-warning-3";
     case Intent.Danger:
-      return "";
+      return "text-danger-3";
     default:
       return "";
     }

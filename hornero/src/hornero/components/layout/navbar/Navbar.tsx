@@ -7,7 +7,7 @@ import {IconName} from "../../../../base/icons";
 export default class Navbar extends React.PureComponent<{}, {}> {
   render(): React.ReactNode {
     return (
-      <nav className="bg-blue-900 py-3 shadow-elevation-0">
+      <nav className="bg-blue-900 py-3 shadow-elevation-1">
         <div
           className="mx-auto my-0 flex items-center"
           style={{width: "1280px"}}

@@ -1,0 +1,43 @@
+@import "colors";
+@import "colorAliases";
+@import "mixins";
+
+// Shadow opacities
+$hr-border-shadow-opacity: 0.1 !default;
+$hr-drop-shadow-opacity: 0.2 !default;
+$hr-dark-border-shadow-opacity: $hr-border-shadow-opacity * 2 !default;
+$hr-dark-drop-shadow-opacity: $hr-drop-shadow-opacity * 2 !default;
+
+// Elevations
+// all shadow lists must be the same length to avoid flicker in transitions.
+$hr-shadow-elevation-0: 0 0 0 1px $hr-divider-black,
+                        0 0 0 rgba($black, 0),
+                        0 0 0 rgba($black, 0) !default;
+$hr-shadow-elevation-1: border-shadow($hr-border-shadow-opacity),
+                        0 0 0 rgba($black, 0),
+                        0 1px 1px rgba($black, $hr-drop-shadow-opacity) !default;
+$hr-shadow-elevation-2: border-shadow($hr-border-shadow-opacity),
+                        0 1px 1px rgba($black, $hr-drop-shadow-opacity),
+                        0 2px 6px rgba($black, $hr-drop-shadow-opacity) !default;
+$hr-shadow-elevation-3: border-shadow($hr-border-shadow-opacity),
+                        0 2px 4px rgba($black, $hr-drop-shadow-opacity),
+                        0 8px 24px rgba($black, $hr-drop-shadow-opacity) !default;
+$hr-shadow-elevation-4: border-shadow($hr-border-shadow-opacity),
+                        0 4px 8px rgba($black, $hr-drop-shadow-opacity),
+                        0 18px 46px 6px rgba($black, $hr-drop-shadow-opacity) !default;
+
+$hr-shadow-dark-elevation-0: 0 0 0 1px $hr-dark-divider-black,
+                             0 0 0 rgba($black, 0),
+                             0 0 0 rgba($black, 0) !default;
+$hr-shadow-dark-elevation-1: border-shadow($hr-dark-border-shadow-opacity),
+                             0 0 0 rgba($black, 0),
+                             0 1px 1px rgba($black, $hr-dark-drop-shadow-opacity) !default;
+$hr-shadow-dark-elevation-2: border-shadow($hr-dark-border-shadow-opacity),
+                             0 1px 1px rgba($black, $hr-dark-drop-shadow-opacity),
+                             0 2px 6px rgba($black, $hr-dark-drop-shadow-opacity) !default;
+$hr-shadow-dark-elevation-3: border-shadow($hr-dark-border-shadow-opacity),
+                             0 2px 4px rgba($black, $hr-dark-drop-shadow-opacity),
+                             0 8px 24px rgba($black, $hr-dark-drop-shadow-opacity) !default;
+$hr-shadow-dark-elevation-4: border-shadow($hr-dark-border-shadow-opacity),
+                             0 4px 8px rgba($black, $hr-dark-drop-shadow-opacity),
+                             0 18px 46px 6px rgba($black, $hr-dark-drop-shadow-opacity) !default;

@@ -38,7 +38,7 @@ export default class ProjectBuilder extends React.PureComponent<{}, ProjectBuild
     );
   }
 
-  private onUpdatePhotos: (photos: Photo[]) => void = (photos: Photo[]) => {
+  private onUpdatePhotos = (photos: Photo[]): void => {
     this.setState({
       photos: photos,
     });

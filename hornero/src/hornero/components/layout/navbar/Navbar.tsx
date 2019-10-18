@@ -13,7 +13,7 @@ export default class Navbar extends React.PureComponent<{}, {}> {
           style={{width: "1280px"}}
         >
           <div className="text-2xl font-semibold">
-            <Icon icon={IconName.OFFICE} intent={Intent.Primary}/> VSJ
+            <Icon icon={IconName.Office} intent={Intent.Primary}/> VSJ
           </div>
         </div>
       </nav>

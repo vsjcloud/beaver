@@ -1,7 +1,7 @@
 module.exports = {
   theme: {
     fontFamily: {
-      body: ['"Lato"', "sans-serif"],
+      body: ["\"Lato\"", "sans-serif"],
     },
     colors: {
       primary: {
@@ -32,6 +32,7 @@ module.exports = {
         4: "var(--danger-4)",
         5: "var(--danger-5)",
       },
+      black: "var(--black)",
       "dark-gray": {
         1: "var(--dark-gray-1)",
         2: "var(--dark-gray-2)",
@@ -53,6 +54,7 @@ module.exports = {
         4: "var(--light-gray-4)",
         5: "var(--light-gray-5)",
       },
+      white: "var(--white)",
     },
     boxShadow: {
       "elevation-0": "var(--shadow-elevation-0)",

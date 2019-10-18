@@ -1,13 +1,14 @@
 import React from "react";
 
 import BaseLayout from "../layout/BaseLayout";
+import ProjectBuilder from "../projectbuilder/ProjectBuilder";
 
 export default class Dashboard extends React.PureComponent {
-  render(): React.ReactNode {
+  public render(): React.ReactNode {
     return (
       <BaseLayout>
-        Hello
+        <ProjectBuilder/>
       </BaseLayout>
-    )
+    );
   }
 }

@@ -1,3 +1,4 @@
 export enum IconName {
-  OFFICE = "office"
+  Office = "office",
+  DragHandleVertical = "drag_handle_vertical"
 }

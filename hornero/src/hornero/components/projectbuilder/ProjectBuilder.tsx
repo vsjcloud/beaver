@@ -32,7 +32,7 @@ export default class ProjectBuilder extends React.PureComponent<{}, ProjectBuild
   public render(): React.ReactNode {
     const {photos} = this.state;
     return (
-      <div className="mx-auto py-5" style={{width: "600px"}}>
+      <div className="mx-auto py-5" style={{width: "500px"}}>
         <PhotoUploader photos={photos} onUpdatePhotos={this.onUpdatePhotos}/>
       </div>
     );

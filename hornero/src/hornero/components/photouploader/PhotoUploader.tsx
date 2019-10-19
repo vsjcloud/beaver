@@ -1,16 +1,18 @@
+import classNames from "classnames";
 // eslint-disable-next-line import/no-named-as-default
 import produce from "immer";
 import React from "react";
 import {
   DragDropContext,
-  Draggable, DraggableProvided,
+  Draggable,
+  DraggableProvided,
+  DraggableStateSnapshot,
   Droppable,
   DroppableProvided,
   DropResult,
 } from "react-beautiful-dnd";
 
 import {Intent} from "../../../base/core/common/intent";
-import Button from "../../../base/core/components/button/Button";
 import {Icon} from "../../../base/core/components/icon/Icon";
 import {IconName} from "../../../base/icons";
 
@@ -29,7 +31,7 @@ export interface PhotoUploaderProps {
 export class PhotoUploader extends React.PureComponent<PhotoUploaderProps, {}> {
   public render(): React.ReactNode {
     return (
-      <div className="bg-light-gray-4 shadow-elevation-1 rounded flex flex-col" style={{minHeight: "400px"}}>
+      <div className="bg-light-gray-5 shadow-elevation-1 rounded flex flex-col" style={{minHeight: "400px"}}>
         {this.renderToolbar()}
         {this.renderPhotos()}
       </div>
@@ -40,11 +42,8 @@ export class PhotoUploader extends React.PureComponent<PhotoUploaderProps, {}> {
     const {photos} = this.props;
 
     return (
-      <div className="flex">
-        <div className="flex-grow">{photos.length} ảnh</div>
-        <div>
-          <Button/>
-        </div>
+      <div className="flex px-3 pt-3">
+        <div className="flex-grow font-bold text-primary-1 text-lg">{photos.length} ảnh</div>
       </div>
     );
   }
@@ -52,22 +51,25 @@ export class PhotoUploader extends React.PureComponent<PhotoUploaderProps, {}> {
   private renderPhotoCard(photo: Photo, index: number): React.ReactNode {
     return (
       <Draggable key={photo.id} draggableId={photo.id} index={index}>
-        {(provided: DraggableProvided): React.ReactElement<HTMLElement> => (
+        {(provided: DraggableProvided, snapshot: DraggableStateSnapshot): React.ReactElement<HTMLElement> => (
           <div
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
-            className="flex border-b border-gray-5 bg-white py-2"
+            className={classNames("flex flex-row bg-white shadow-elevation-0 mb-3 rounded", snapshot.isDragging ? "shadow-elevation-3" : "")}
           >
-            <div className="flex items-center ml-2 mr-3">
-              <Icon intent={Intent.Primary} icon={IconName.DragHandleVertical}/>
-            </div>
-            <div className="shadow-elevation-0">
-              <img src={photo.preview} style={{height: "60px", width: "60px"}} alt="thumbnail"/>
-            </div>
-            <div>
-              {photo.name}
-              {photo.description}
+            <div className={classNames("w-1 mr-1 rounded-l", snapshot.isDragging ? "bg-primary-5" : "bg-primary-3")}/>
+            <div className="flex flex-row py-2">
+              <div className="flex items-center mr-2">
+                <Icon intent={Intent.Primary} icon={IconName.DragHandleVertical}/>
+              </div>
+              <div className="shadow-elevation-0">
+                <img src={photo.preview} style={{height: "60px", width: "60px"}} alt="thumbnail"/>
+              </div>
+              <div>
+                {photo.name}
+                {photo.description}
+              </div>
             </div>
           </div>
         )}
@@ -104,7 +106,7 @@ export class PhotoUploader extends React.PureComponent<PhotoUploaderProps, {}> {
             <div
               {...provided.droppableProps}
               ref={provided.innerRef}
-              className="flex flex-1 flex-col"
+              className="flex flex-1 flex-col px-3 mt-3"
             >
               {photoCards}
               {provided.placeholder}

@@ -2,12 +2,12 @@ import React from "react";
 
 import AbstractButton from "./AbstractButton";
 
-export default class Button extends AbstractButton {
+export default class Button extends AbstractButton<React.ButtonHTMLAttributes<HTMLButtonElement>> {
   public render(): React.ReactNode {
     return (
-      <button>
+      <button type="button" {...this.getCommonButtonProps()}>
         Hello
       </button>
-    )
+    );
   }
 }

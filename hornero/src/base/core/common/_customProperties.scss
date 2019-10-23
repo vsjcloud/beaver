@@ -48,7 +48,31 @@
 
   --white: #{$white};
 
-  // Elevations
+  --blue-1: #{$blue-1};
+  --blue-2: #{$blue-2};
+  --blue-3: #{$blue-3};
+  --blue-4: #{$blue-4};
+  --blue-5: #{$blue-5};
+
+  --green-1: #{$green-1};
+  --green-2: #{$green-2};
+  --green-3: #{$green-3};
+  --green-4: #{$green-4};
+  --green-5: #{$green-5};
+
+  --orange-1: #{$orange-1};
+  --orange-2: #{$orange-2};
+  --orange-3: #{$orange-3};
+  --orange-4: #{$orange-4};
+  --orange-5: #{$orange-5};
+
+  --red-1: #{$red-1};
+  --red-2: #{$red-2};
+  --red-3: #{$red-3};
+  --red-4: #{$red-4};
+  --red-5: #{$red-5};
+
+  // Shadows
   --shadow-elevation-0: #{$hr-shadow-elevation-0};
   --shadow-elevation-1: #{$hr-shadow-elevation-1};
   --shadow-elevation-2: #{$hr-shadow-elevation-2};
@@ -60,4 +84,13 @@
   --shadow-dark-elevation-2: #{$hr-shadow-dark-elevation-2};
   --shadow-dark-elevation-3: #{$hr-shadow-dark-elevation-3};
   --shadow-dark-elevation-4: #{$hr-shadow-dark-elevation-4};
+
+  --shadow-button-box: #{$hr-shadow-button-box};
+  --shadow-button-box-active: #{$hr-shadow-button-box-active};
+  --shadow-button-intent-box: #{$hr-shadow-button-intent-box};
+  --shadow-button-intent-box-active: #{$hr-shadow-button-intent-box-active};
+
+  // Gradients
+  --gradient-button: #{$hr-gradient-button};
+  --gradient-button-intent: #{$hr-gradient-button-intent};
 }

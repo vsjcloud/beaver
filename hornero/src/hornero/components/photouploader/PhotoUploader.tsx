@@ -13,6 +13,7 @@ import {
 } from "react-beautiful-dnd";
 
 import {Intent} from "../../../base/core/common/intent";
+import Button from "../../../base/core/components/button/Button";
 import {Icon} from "../../../base/core/components/icon/Icon";
 import {IconName} from "../../../base/icons";
 
@@ -44,6 +45,7 @@ export class PhotoUploader extends React.PureComponent<PhotoUploaderProps, {}> {
     return (
       <div className="flex px-3 pt-3">
         <div className="flex-grow font-bold text-primary-1 text-lg">{photos.length} ảnh</div>
+        <Button intent={Intent.Primary}/>
       </div>
     );
   }

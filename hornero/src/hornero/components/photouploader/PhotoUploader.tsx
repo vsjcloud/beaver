@@ -34,8 +34,10 @@ export class PhotoUploader extends React.PureComponent<PhotoUploaderProps, {}> {
     return (
       <div
         className={resolveProperties({
-          backgroundColor: Value.BackgroundColor.Gray1,
-          shadow: Value.Shadow.Px1Dark,
+          border: Value.Border.All,
+          borderColor: Value.BorderColor.Gray3,
+          backgroundColor: Value.BackgroundColor.White,
+          shadow: Value.Shadow.Px1Light,
           borderRadius: Value.BorderRadius.Px2,
           display: Value.Display.Flex,
           flexDirection: Value.FlexDirection.Col,
@@ -67,7 +69,7 @@ export class PhotoUploader extends React.PureComponent<PhotoUploaderProps, {}> {
             fontSize: Value.FontSize.Px20,
           })}
         >{photos.length} ảnh</div>
-        <Button intent={Intent.None} disabled={true}/>
+        <Button intent={Intent.None}>Thêm ảnh</Button>
       </div>
     );
   }
@@ -83,8 +85,10 @@ export class PhotoUploader extends React.PureComponent<PhotoUploaderProps, {}> {
             className={resolveProperties({
               display: Value.Display.Flex,
               flexDirection: Value.FlexDirection.Row,
+              border: Value.Border.All,
+              borderColor: Value.BorderColor.Gray3,
               backgroundColor: Value.BackgroundColor.White,
-              shadow: Value.Shadow.Px1Dark,
+              shadow: Value.Shadow.Px1Light,
               marginBottom: Value.MarginBottom.Px8,
               borderRadius: Value.BorderRadius.Px2,
             })}

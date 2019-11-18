@@ -27,9 +27,6 @@ export interface ActionProps extends IntentProps, Props {
 
   /** Click event handler. */
   onClick?: (event: React.MouseEvent<HTMLElement>) => void;
-
-  /** Action text. Can be any single React renderable. */
-  text?: React.ReactNode;
 }
 
 /** A collection of curated prop keys used across our Components which are not valid HTMLElement props. */

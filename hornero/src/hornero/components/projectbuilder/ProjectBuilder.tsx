@@ -1,5 +1,7 @@
 import React from "react";
 
+import CircleIndicator from "../../../base/core/components/progress/CircleIndicator";
+import {resolveProperties, Value} from "../../../base/core/style";
 import {Photo, PhotoUploader} from "../photouploader/PhotoUploader";
 
 export interface ProjectBuilderState {
@@ -32,7 +34,14 @@ export default class ProjectBuilder extends React.PureComponent<{}, ProjectBuild
   public render(): React.ReactNode {
     const {photos} = this.state;
     return (
-      <div className="mx-auto py-5" style={{width: "500px"}}>
+      <div
+        className={resolveProperties({
+          marginX: Value.MarginX.Auto,
+          paddingY: Value.PaddingY.Px12,
+        })}
+        style={{width: "500px"}}
+      >
+        <CircleIndicator/>
         <PhotoUploader photos={photos} onUpdatePhotos={this.onUpdatePhotos}/>
       </div>
     );

@@ -2,15 +2,18 @@ import React from "react";
 
 import Navbar from "./navbar/Navbar";
 
+import {resolveProperties, Value} from "../../../base/core/style";
+
+
 export default class BaseLayout extends React.PureComponent<{}, {}> {
-  render(): React.ReactNode {
+  public render(): React.ReactNode {
     return (
-      <div className="font-body">
+      <React.Fragment>
         <Navbar/>
-        <div className="mx-auto my-0" style={{width: "1280px"}}>
+        <div className={resolveProperties({marginX: Value.MarginX.Auto})} style={{width: "1280px"}}>
           {this.props.children}
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }

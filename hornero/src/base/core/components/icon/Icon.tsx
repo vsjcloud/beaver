@@ -9,7 +9,7 @@ import {TextColor} from "../../style/properties/text";
 
 export interface IconProps extends IntentProps {
   color?: string;
-  icon?: IconName;
+  icon: IconName;
   size?: number;
 }
 
@@ -23,6 +23,7 @@ export class Icon extends React.PureComponent<IconProps, {}> {
       icon,
       size = Icon.SIZE_STANDARD,
     } = this.props;
+
     const paths = this.renderSvgPaths(icon);
     return (
       <span className={this.getClassName()}>
@@ -56,10 +57,7 @@ export class Icon extends React.PureComponent<IconProps, {}> {
     return resolveProperties(properties);
   }
 
-  private renderSvgPaths(iconName?: IconName): React.ReactNode[] | null {
-    if (!iconName) {
-      return null;
-    }
+  private renderSvgPaths(iconName: IconName): React.ReactNode[] {
     return IconSvgPaths[iconName].map((d, i) => <path key={i} d={d} fillRule="evenodd"/>);
   }
 }

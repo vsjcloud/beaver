@@ -12,6 +12,7 @@ export default class Navbar extends React.PureComponent<{}, {}> {
         className={resolveProperties({
           paddingY: Value.PaddingY.Px16,
           shadow: Value.Shadow.Px1Dark,
+          backgroundColor: Value.BackgroundColor.White,
         })}
       >
         <div

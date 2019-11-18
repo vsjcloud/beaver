@@ -2,14 +2,11 @@ import React from "react";
 
 import AbstractButton from "./AbstractButton";
 
-import {removeNonHTMLProps} from "../../common/props";
-
-
-export default class Button extends AbstractButton<React.ButtonHTMLAttributes<HTMLButtonElement>> {
+export default class Button extends AbstractButton {
   public render(): React.ReactNode {
     return (
-      <button type="button" {...removeNonHTMLProps(this.props)} {...this.getCommonButtonProps()}>
-
+      <button {...this.getCommonButtonProps()}>
+        {this.renderChildren()}
       </button>
     );
   }

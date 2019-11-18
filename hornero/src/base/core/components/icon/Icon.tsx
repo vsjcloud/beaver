@@ -1,54 +1,65 @@
 import React from "react";
-import classNames from "classnames";
 
 import {IconName, IconSvgPaths} from "../../../icons";
 import {Intent} from "../../common/intent";
 import {IntentProps} from "../../common/props";
+import {resolveProperties, Value} from "../../style";
+import {StyleProperties} from "../../style/properties";
+import {TextColor} from "../../style/properties/text";
 
 export interface IconProps extends IntentProps {
   color?: string;
-  icon: IconName;
-  iconSize?: number;
+  icon?: IconName;
+  size?: number;
 }
 
 export class Icon extends React.PureComponent<IconProps, {}> {
-  static readonly SIZE_STANDARD = 16;
-  static readonly SIZE_LARGE = 20;
+  public static readonly SIZE_STANDARD = 16;
+  public static readonly SIZE_LARGE = 20;
 
-  render(): React.ReactNode {
+  public render(): React.ReactNode {
     const {
       color,
       icon,
-      iconSize = Icon.SIZE_STANDARD,
-      intent = Intent.None
+      size = Icon.SIZE_STANDARD,
     } = this.props;
     const paths = this.renderSvgPaths(icon);
-    const classes = classNames("inline-flex flex-grow-0 flex-shrink-0", this.intentClasses(intent));
     return (
-      <span className={classes}>
-        <svg style={{fill: "currentColor"}} fill={color} data-icon={icon} width={iconSize} height={iconSize} viewBox="0 0 20 20">
+      <span className={this.getClassName()}>
+        <svg style={{fill: "currentColor"}} fill={color} data-icon={icon} width={size} height={size} viewBox="0 0 20 20">
           {paths}
         </svg>
       </span>
     );
   }
 
-  private intentClasses(intent: Intent): string {
+  private getClassName(): string {
+    const {intent} = this.props;
+    const properties: StyleProperties = {
+      display: Value.Display.InlineFlex,
+      flexGrow: Value.FlexGrow.Zero,
+      flexShrink: Value.FlexShrink.Zero,
+    };
     switch (intent) {
     case Intent.Primary:
-      return "text-primary-3";
+      properties.textColor = TextColor.Blue3;
+      break;
     case Intent.Success:
-      return "text-success-3";
+      properties.textColor = TextColor.Green3;
+      break;
     case Intent.Warning:
-      return "text-warning-3";
+      properties.textColor = TextColor.Orange3;
+      break;
     case Intent.Danger:
-      return "text-danger-3";
-    default:
-      return "";
+      properties.textColor = TextColor.Red3;
     }
+    return resolveProperties(properties);
   }
 
-  private renderSvgPaths(iconName: IconName): React.ReactNode[] | null {
+  private renderSvgPaths(iconName?: IconName): React.ReactNode[] | null {
+    if (!iconName) {
+      return null;
+    }
     return IconSvgPaths[iconName].map((d, i) => <path key={i} d={d} fillRule="evenodd"/>);
   }
 }

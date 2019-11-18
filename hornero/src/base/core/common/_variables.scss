@@ -1,71 +1,50 @@
-@import "colors";
-@import "colorAliases";
-@import "mixins";
+:root {
+  --color-gray-1: #F5F9FC;
+  --color-gray-2: #EBF2F7;
+  --color-gray-3: #DFE9F0;
+  --color-gray-4: #BACDDB;
+  --color-gray-5: #9BB0C2;
+  --color-gray-6: #809AAD;
+  --color-gray-7: #4F6F89;
+  --color-gray-8: #20394D;
+  --color-gray-9: #182A38;
+  --color-white: #FFFFFF;
+  --color-red-1: #FCF0F0;
+  --color-red-2: #F5AAAA;
+  --color-red-3: #FF7373;
+  --color-red-4: #F55656;
+  --color-red-5: #DB3737;
+  --color-blue-1: #D3EEFF;
+  --color-blue-2: #ACDBF8;
+  --color-blue-3: #48AFF0;
+  --color-blue-4: #2B95D6;
+  --color-blue-5: #137CBD;
+  --color-green-1: #C7F2DF;
+  --color-green-2: #76D5AD;
+  --color-green-3: #3DCC91;
+  --color-green-4: #15B371;
+  --color-green-5: #0F9960;
+  --color-orange-1: #FAECDE;
+  --color-orange-2: #EFBE8E;
+  --color-orange-3: #FFB366;
+  --color-orange-4: #F29D49;
+  --color-orange-5: #D9822B;
 
-// easily the most important variable, so it comes up top
-// (so other variables can use it to define themselves)
-$hr-grid-size: 10px !default;
+  --space-0: 0;
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
 
-// Buttons
-$hr-button-border-width: 1px !default;
-$hr-button-height: $hr-grid-size * 3 !default;
-$hr-button-height-small: $hr-grid-size * 2.4 !default;
-$hr-button-height-smaller: $hr-grid-size * 2 !default;
-$hr-button-height-large: $hr-grid-size * 4 !default;
+  --shadow-1-light: 0px 1px 1px 0px rgba(0, 0, 0, 0.08);
+  --shadow-1-dark: 0px 1px 1px 0px rgba(0, 0, 0, 0.16);
+  --shadow-8: 0px 1px 8px 0px rgba(0, 0, 0, 0.16);
+  --shadow-12: 0px 4px 12px 0px rgba(0, 0, 0, 0.20);
 
-// Shadow opacities
-$hr-border-shadow-opacity: 0.1 !default;
-$hr-drop-shadow-opacity: 0.2 !default;
-$hr-dark-border-shadow-opacity: $hr-border-shadow-opacity * 2 !default;
-$hr-dark-drop-shadow-opacity: $hr-drop-shadow-opacity * 2 !default;
-
-// Elevations
-// all shadow lists must be the same length to avoid flicker in transitions.
-$hr-shadow-elevation-0: 0 0 0 1px $hr-divider-black,
-                        0 0 0 rgba($black, 0),
-                        0 0 0 rgba($black, 0) !default;
-$hr-shadow-elevation-1: border-shadow($hr-border-shadow-opacity),
-                        0 0 0 rgba($black, 0),
-                        0 1px 1px rgba($black, $hr-drop-shadow-opacity) !default;
-$hr-shadow-elevation-2: border-shadow($hr-border-shadow-opacity),
-                        0 1px 1px rgba($black, $hr-drop-shadow-opacity),
-                        0 2px 6px rgba($black, $hr-drop-shadow-opacity) !default;
-$hr-shadow-elevation-3: border-shadow($hr-border-shadow-opacity),
-                        0 2px 4px rgba($black, $hr-drop-shadow-opacity),
-                        0 8px 24px rgba($black, $hr-drop-shadow-opacity) !default;
-$hr-shadow-elevation-4: border-shadow($hr-border-shadow-opacity),
-                        0 4px 8px rgba($black, $hr-drop-shadow-opacity),
-                        0 18px 46px 6px rgba($black, $hr-drop-shadow-opacity) !default;
-
-$hr-shadow-dark-elevation-0: 0 0 0 1px $hr-dark-divider-black,
-                             0 0 0 rgba($black, 0),
-                             0 0 0 rgba($black, 0) !default;
-$hr-shadow-dark-elevation-1: border-shadow($hr-dark-border-shadow-opacity),
-                             0 0 0 rgba($black, 0),
-                             0 1px 1px rgba($black, $hr-dark-drop-shadow-opacity) !default;
-$hr-shadow-dark-elevation-2: border-shadow($hr-dark-border-shadow-opacity),
-                             0 1px 1px rgba($black, $hr-dark-drop-shadow-opacity),
-                             0 2px 6px rgba($black, $hr-dark-drop-shadow-opacity) !default;
-$hr-shadow-dark-elevation-3: border-shadow($hr-dark-border-shadow-opacity),
-                             0 2px 4px rgba($black, $hr-dark-drop-shadow-opacity),
-                             0 8px 24px rgba($black, $hr-dark-drop-shadow-opacity) !default;
-$hr-shadow-dark-elevation-4: border-shadow($hr-dark-border-shadow-opacity),
-                             0 4px 8px rgba($black, $hr-dark-drop-shadow-opacity),
-                             0 18px 46px 6px rgba($black, $hr-dark-drop-shadow-opacity) !default;
-
-$hr-shadow-button-box:
-        inset 0 0 0 $hr-button-border-width rgba($black, 0.2),
-        inset 0 (-$hr-button-border-width) 0 rgba($black, 0.1) !default;
-$hr-shadow-button-box-active:
-        inset 0 0 0 $hr-button-border-width rgba($black, 0.2),
-        inset 0 1px 2px rgba($black, 0.2) !default;
-$hr-shadow-button-intent-box:
-        inset 0 0 0 $hr-button-border-width rgba($black, 0.4),
-        inset 0 (-$hr-button-border-width) 0 rgba($black, 0.2) !default;
-$hr-shadow-button-intent-box-active:
-        inset 0 0 0 $hr-button-border-width rgba($black, 0.4),
-        inset 0 1px 2px rgba($black, 0.2) !default;
-
-// Gradients
-$hr-gradient-button: linear-gradient(to bottom, rgba($white, 0.8), rgba($white, 0)) !default;
-$hr-gradient-button-intent: linear-gradient(to bottom, rgba($white, 0.1), rgba($white, 0)) !default;
+  --font-sans: "Lato", sans-serif;
+}

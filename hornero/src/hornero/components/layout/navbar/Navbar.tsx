@@ -2,18 +2,33 @@ import React from "react";
 
 import {Intent} from "../../../../base/core/common/intent";
 import {Icon} from "../../../../base/core/components/icon/Icon";
+import {resolveProperties, Value} from "../../../../base/core/style";
 import {IconName} from "../../../../base/icons";
 
 export default class Navbar extends React.PureComponent<{}, {}> {
-  render(): React.ReactNode {
+  public render(): React.ReactNode {
     return (
-      <nav className="bg-blue-900 py-3 shadow-elevation-1">
+      <nav
+        className={resolveProperties({
+          paddingY: Value.PaddingY.Px16,
+          shadow: Value.Shadow.Px1Dark,
+        })}
+      >
         <div
-          className="mx-auto my-0 flex items-center"
+          className={resolveProperties({
+            display: Value.Display.Flex,
+            marginX: Value.MarginX.Auto,
+            alignItems: Value.AlignItems.Center,
+          })}
           style={{width: "1280px"}}
         >
-          <div className="text-2xl font-semibold">
-            <Icon icon={IconName.Office} intent={Intent.Primary}/> VSJ
+          <div
+            className={resolveProperties({
+              fontSize: Value.FontSize.Px23,
+              fontWeight: Value.FontWeight.SemiBold,
+            })}
+          >
+            <Icon icon={IconName.Office} intent={Intent.Primary} size={Icon.SIZE_LARGE}/> VSJ
           </div>
         </div>
       </nav>

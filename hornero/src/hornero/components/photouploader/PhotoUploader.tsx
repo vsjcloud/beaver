@@ -1,4 +1,3 @@
-import classNames from "classnames";
 // eslint-disable-next-line import/no-named-as-default
 import produce from "immer";
 import React from "react";
@@ -15,6 +14,7 @@ import {
 import {Intent} from "../../../base/core/common/intent";
 import Button from "../../../base/core/components/button/Button";
 import {Icon} from "../../../base/core/components/icon/Icon";
+import {resolveProperties, Value} from "../../../base/core/style";
 import {IconName} from "../../../base/icons";
 
 export interface Photo {
@@ -32,7 +32,16 @@ export interface PhotoUploaderProps {
 export class PhotoUploader extends React.PureComponent<PhotoUploaderProps, {}> {
   public render(): React.ReactNode {
     return (
-      <div className="bg-light-gray-5 shadow-elevation-1 rounded flex flex-col" style={{minHeight: "400px"}}>
+      <div
+        className={resolveProperties({
+          backgroundColor: Value.BackgroundColor.Gray1,
+          shadow: Value.Shadow.Px1Dark,
+          borderRadius: Value.BorderRadius.Px2,
+          display: Value.Display.Flex,
+          flexDirection: Value.FlexDirection.Col,
+        })}
+        style={{minHeight: "400px"}}
+      >
         {this.renderToolbar()}
         {this.renderPhotos()}
       </div>
@@ -43,9 +52,22 @@ export class PhotoUploader extends React.PureComponent<PhotoUploaderProps, {}> {
     const {photos} = this.props;
 
     return (
-      <div className="flex px-3 pt-3">
-        <div className="flex-grow font-bold text-primary-1 text-lg">{photos.length} ảnh</div>
-        <Button intent={Intent.Primary}/>
+      <div
+        className={resolveProperties({
+          display: Value.Display.Flex,
+          paddingX: Value.PaddingX.Px8,
+          paddingTop: Value.PaddingTop.Px8,
+        })}
+      >
+        <div
+          className={resolveProperties({
+            flexGrow: Value.FlexGrow.One,
+            fontWeight: Value.FontWeight.Bold,
+            textColor: Value.TextColor.Blue5,
+            fontSize: Value.FontSize.Px20,
+          })}
+        >{photos.length} ảnh</div>
+        <Button intent={Intent.None} disabled={true}/>
       </div>
     );
   }
@@ -58,19 +80,49 @@ export class PhotoUploader extends React.PureComponent<PhotoUploaderProps, {}> {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
-            className={classNames("flex flex-row bg-white shadow-elevation-0 mb-3 rounded", snapshot.isDragging ? "shadow-elevation-3" : "")}
+            className={resolveProperties({
+              display: Value.Display.Flex,
+              flexDirection: Value.FlexDirection.Row,
+              backgroundColor: Value.BackgroundColor.White,
+              shadow: Value.Shadow.Px1Dark,
+              marginBottom: Value.MarginBottom.Px8,
+              borderRadius: Value.BorderRadius.Px2,
+            })}
           >
-            <div className={classNames("w-1 mr-1 rounded-l", snapshot.isDragging ? "bg-primary-5" : "bg-primary-3")}/>
-            <div className="flex flex-row py-2">
-              <div className="flex items-center mr-2">
+            <div
+              className={resolveProperties({
+                display: Value.Display.Flex,
+                flexDirection: Value.FlexDirection.Row,
+                paddingY: Value.PaddingY.Px8,
+              })}
+            >
+              <div
+                className={resolveProperties({
+                  display: Value.Display.Flex,
+                  alignItems: Value.AlignItems.Center,
+                  marginX: Value.MarginX.Px8,
+                })}
+              >
                 <Icon intent={Intent.Primary} icon={IconName.DragHandleVertical}/>
               </div>
-              <div className="shadow-elevation-0">
+              <div
+                className={resolveProperties({
+                  display: Value.Display.Flex,
+                  shadow: Value.Shadow.Px1Dark,
+                })}
+              >
                 <img src={photo.preview} style={{height: "60px", width: "60px"}} alt="thumbnail"/>
               </div>
-              <div>
-                {photo.name}
-                {photo.description}
+              <div
+                className={resolveProperties({
+                  display: Value.Display.Flex,
+                  flexDirection: Value.FlexDirection.Col,
+                  fontSize: Value.FontSize.Px15,
+                  marginLeft: Value.MarginLeft.Px8,
+                })}
+              >
+                <div>{photo.name}</div>
+                <div>{photo.description}</div>
               </div>
             </div>
           </div>
@@ -108,7 +160,13 @@ export class PhotoUploader extends React.PureComponent<PhotoUploaderProps, {}> {
             <div
               {...provided.droppableProps}
               ref={provided.innerRef}
-              className="flex flex-1 flex-col px-3 mt-3"
+              className={resolveProperties({
+                display: Value.Display.Flex,
+                flex: Value.Flex.One,
+                flexDirection: Value.FlexDirection.Col,
+                paddingX: Value.PaddingX.Px8,
+                marginTop: Value.MarginTop.Px8,
+              })}
             >
               {photoCards}
               {provided.placeholder}

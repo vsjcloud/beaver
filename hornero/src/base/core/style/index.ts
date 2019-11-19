@@ -1,7 +1,7 @@
 import classNames from "classnames";
 
 import {StyleProperties} from "./properties";
-import Value from "./value";
+import Value from "./properties/value";
 
 export interface StyleBuilder {
   toClassName(): string;
@@ -51,6 +51,15 @@ export class StyleVariants implements StyleBuilder {
     for (let i = 0; i < N_VARIANTS; i++) {
       if ((1 << i) & variants) {
         Object.assign(this.variants[i], partialProperties);
+      }
+    }
+    return this;
+  }
+
+  public clear(variants: number): StyleVariants {
+    for (let i = 0; i < N_VARIANTS; i++) {
+      if ((1 << i) & variants) {
+        this.variants[i] = {};
       }
     }
     return this;

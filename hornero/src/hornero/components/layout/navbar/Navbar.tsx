@@ -27,9 +27,16 @@ export default class Navbar extends React.PureComponent<{}, {}> {
             className={resolveProperties({
               fontSize: Value.FontSize.Px23,
               fontWeight: Value.FontWeight.SemiBold,
+              display: Value.Display.Flex,
+              flexDirection: Value.FlexDirection.Row,
             })}
           >
-            <Icon icon={IconName.Office} intent={Intent.Primary} size={Icon.SIZE_LARGE}/> VSJ
+            <Icon icon={IconName.Office} intent={Intent.Primary} size={Icon.SIZE_LARGE}/>
+            <span className={resolveProperties({
+              marginLeft: Value.MarginLeft.Px8,
+            })}>
+              VSJ
+            </span>
           </div>
         </div>
       </nav>

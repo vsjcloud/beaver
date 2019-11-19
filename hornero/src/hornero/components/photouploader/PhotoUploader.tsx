@@ -8,7 +8,7 @@ import {
   DraggableStateSnapshot,
   Droppable,
   DroppableProvided,
-  DropResult,
+  DropResult
 } from "react-beautiful-dnd";
 
 import {Intent} from "../../../base/core/common/intent";
@@ -69,7 +69,7 @@ export class PhotoUploader extends React.PureComponent<PhotoUploaderProps, {}> {
             fontSize: Value.FontSize.Px20,
           })}
         >{photos.length} ảnh</div>
-        <Button intent={Intent.None}>Thêm ảnh</Button>
+        <Button intent={Intent.Danger}>Thêm ảnh</Button>
       </div>
     );
   }

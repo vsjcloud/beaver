@@ -29,13 +29,13 @@ export enum FontWeight {
 }
 
 export enum LineHeight {
-  Px16 = "leading-px16",
-  Px20 = "leading-px20",
-  Px24 = "leading-px24",
-  Px28 = "leading-px28",
-  Px32 = "leading-px32",
-  Px40 = "leading-px40",
-  Px44 = "leading-px44",
+  Px16 = "leading-16",
+  Px20 = "leading-20",
+  Px24 = "leading-24",
+  Px28 = "leading-28",
+  Px32 = "leading-32",
+  Px40 = "leading-40",
+  Px44 = "leading-44",
   R1p5 = "leading-r1p5",
 }
 

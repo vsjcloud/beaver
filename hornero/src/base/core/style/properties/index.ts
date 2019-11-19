@@ -23,6 +23,7 @@ import {
   JustifyContent,
 } from "./flexbox";
 import {Height, MinHeight} from "./height";
+import {Inset} from "./inset";
 import {Margin, MarginBottom, MarginLeft, MarginRight, MarginTop, MarginX, MarginY} from "./margin";
 import {Opacity} from "./opacity";
 import {Padding, PaddingBottom, PaddingLeft, PaddingRight, PaddingTop, PaddingX, PaddingY} from "./padding";
@@ -44,7 +45,7 @@ import {
   Whitespace,
   WordBreak,
 } from "./text";
-import {UserSelect} from "./UserSelect";
+import {UserSelect} from "./userSelect";
 import {MaxWidth, Width} from "./width";
 import {ZIndex} from "./zIndex";
 
@@ -52,6 +53,7 @@ export interface StyleProperties {
   // Layout
   display?: Display;
   position?: Position;
+  inset?: Inset;
   zIndex?: ZIndex;
 
   // Typography

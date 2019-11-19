@@ -126,6 +126,9 @@ module.exports = {
       vh100: "100vh",
       auto: "auto",
     },
+    inset: {
+      "0": "0",
+    },
     lineHeight: {
       "16": "16px",
       "20": "20px",
@@ -265,7 +268,7 @@ module.exports = {
     fontStyle: [],
     fontWeight: [],
     height: [],
-    inset: false,
+    inset: [],
     justifyContent: [],
     letterSpacing: false,
     lineHeight: [],

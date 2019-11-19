@@ -1,5 +1,5 @@
-import {Animation} from "./properties/animation";
-import {BackgroundColor} from "./properties/background";
+import {Animation} from "./animation";
+import {BackgroundColor} from "./background";
 import {
   Border,
   BorderColor,
@@ -8,9 +8,9 @@ import {
   BorderRadiusRight,
   BorderRadiusTop,
   BorderStyle,
-} from "./properties/border";
-import {Cursor} from "./properties/cursor";
-import {Display} from "./properties/display";
+} from "./border";
+import {Cursor} from "./cursor";
+import {Display} from "./display";
 import {
   AlignContent,
   AlignItems,
@@ -21,15 +21,16 @@ import {
   FlexShrink,
   FlexWrap,
   JustifyContent,
-} from "./properties/flexbox";
-import {Height, MinHeight} from "./properties/height";
-import {Margin, MarginBottom, MarginLeft, MarginRight, MarginTop, MarginX, MarginY} from "./properties/margin";
-import {Opacity} from "./properties/opacity";
-import {Padding, PaddingBottom, PaddingLeft, PaddingRight, PaddingTop, PaddingX, PaddingY} from "./properties/padding";
-import {PointerEvents} from "./properties/pointerEvents";
-import {Position} from "./properties/position";
-import {Shadow} from "./properties/shadow";
-import {Fill, Stroke} from "./properties/svg";
+} from "./flexbox";
+import {Height, MinHeight} from "./height";
+import {Inset} from "./inset";
+import {Margin, MarginBottom, MarginLeft, MarginRight, MarginTop, MarginX, MarginY} from "./margin";
+import {Opacity} from "./opacity";
+import {Padding, PaddingBottom, PaddingLeft, PaddingRight, PaddingTop, PaddingX, PaddingY} from "./padding";
+import {PointerEvents} from "./pointerEvents";
+import {Position} from "./position";
+import {Shadow} from "./shadow";
+import {Fill, Stroke} from "./svg";
 import {
   FontFamily,
   FontSize,
@@ -43,15 +44,16 @@ import {
   VerticalAlign,
   Whitespace,
   WordBreak,
-} from "./properties/text";
-import {UserSelect} from "./properties/UserSelect";
-import {MaxWidth, Width} from "./properties/width";
-import {ZIndex} from "./properties/zIndex";
+} from "./text";
+import {UserSelect} from "./userSelect";
+import {MaxWidth, Width} from "./width";
+import {ZIndex} from "./zIndex";
 
 export default {
   // Layout
   Display,
   Position,
+  Inset,
   ZIndex,
 
   // Typography

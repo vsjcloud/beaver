@@ -41,7 +41,6 @@ export default class ProjectBuilder extends React.PureComponent<{}, ProjectBuild
         })}
         style={{width: "500px"}}
       >
-        <CircleIndicator/>
         <PhotoUploader photos={photos} onUpdatePhotos={this.onUpdatePhotos}/>
       </div>
     );

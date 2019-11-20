@@ -81,7 +81,7 @@ export default abstract class AbstractButton extends React.PureComponent<ButtonP
         height: Value.Height.Px32,
         width: Value.Width.Max,
         border: Value.Border.All,
-        lineHeight: Value.LineHeight.R1p5,
+        lineHeight: Value.LineHeight.Px24,
         fontWeight: Value.FontWeight.SemiBold,
         whitespace: Value.Whitespace.NoWrap,
         borderRadius: Value.BorderRadius.Px2,

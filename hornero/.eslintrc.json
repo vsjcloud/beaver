@@ -3,14 +3,11 @@
     "eslint:recommended",
     "react-app",
     "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
     "plugin:import/errors",
-    "plugin:import/warnings",
-    "plugin:import/typescript"
+    "plugin:import/warnings"
   ],
   "plugins": [
-    "react",
-    "@typescript-eslint"
+    "react"
   ],
   "rules": {
     "indent": [
@@ -38,8 +35,7 @@
         "avoidEscape": true
       }
     ],
-    "comma-dangle": ["error", "always-multiline"],
-    "@typescript-eslint/explicit-member-accessibility": ["error", { "accessibility": "explicit" }]
+    "comma-dangle": ["error", "always-multiline"]
   },
   "env": {
     "browser": true,
@@ -52,5 +48,20 @@
       "version": "detect"
     }
   },
-  "parser": "@typescript-eslint/parser"
+  "parser": "@typescript-eslint/parser",
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:import/typescript"
+      ],
+      "plugins": [
+        "@typescript-eslint"
+      ],
+      "rules": {
+        "@typescript-eslint/explicit-member-accessibility": ["error", { "accessibility": "explicit" }]
+      }
+    }
+  ]
 }

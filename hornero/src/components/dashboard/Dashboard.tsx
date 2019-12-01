@@ -1,14 +1,14 @@
-import {Icon} from "@blueprintjs/core";
-import {IconNames} from "@blueprintjs/icons";
 import React from "react";
+
+import BaseLayout from "../layout/BaseLayout";
+import ProjectBuilder from "../projectbuilder/ProjectBuilder";
 
 export default class Dashboard extends React.PureComponent {
   public render(): React.ReactNode {
     return (
-      <div className="bg-red-500">
-        Hello
-        <Icon icon={IconNames.OFFICE}/>
-      </div>
+      <BaseLayout>
+        <ProjectBuilder/>
+      </BaseLayout>
     );
   }
 }

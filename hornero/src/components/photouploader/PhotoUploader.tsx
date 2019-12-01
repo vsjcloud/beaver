@@ -1,8 +1,8 @@
 import {
   Button,
+  ButtonGroup,
   Card,
   Classes,
-  EditableText,
   Elevation,
   Icon,
   Intent,
@@ -75,7 +75,8 @@ export default class PhotoUploader extends React.PureComponent<PhotoUploaderProp
           ? PhotoUploader.renderNonIdeaState()
           : this.renderNormalState()
         }
-        <EditPhotoDialog onClose={this.onCloseEditPhotoDialog} photo={this.state.editPhoto}/>
+        <EditPhotoDialog onClose={this.onCloseEditPhotoDialog} photo={this.state.editPhoto}
+          onSubmit={this.onUpdatePhoto}/>
       </Card>
     );
   }
@@ -98,36 +99,31 @@ export default class PhotoUploader extends React.PureComponent<PhotoUploaderProp
           (
             <Button icon={IconNames.CLOUD_UPLOAD} intent={Intent.PRIMARY}>Thêm ảnh</Button>
           ) : (
-            <Button icon={IconNames.DELETE} intent={Intent.DANGER}>Xóa ảnh</Button>
+            <Button onClick={this.onDeletePhoto(photos[0].id)} icon={IconNames.DELETE} intent={Intent.DANGER}>Xóa ảnh</Button>
           )}
       </div>
     );
   }
 
-  private updatePhoto(photoID: string, updater: (photo: Photo) => void): void {
+  private onUpdatePhoto = (newPhoto: Photo): void => {
     const nextPhotos = produce(this.props.photos, draft => {
-      const photo = draft.find(photo => photo.id === photoID);
-      if (photo) {
-        updater(photo);
-        // Ensure that the updater do not change the photo's ID
-        photo.id = photoID;
+      const index = draft.findIndex(photo => photo.id === newPhoto.id);
+      if (index >= 0) {
+        draft[index] = newPhoto;
       }
     });
-
     this.props.onUpdatePhotos(nextPhotos);
-  }
+  };
 
-  private onUpdatePhotoName(photoID: string): ((newName: string) => void) {
-    return ((newName: string): void => {
-      this.updatePhoto(photoID, (photo => photo.name = newName));
-    });
-  }
-
-  private onUpdatePhotoDescription(photoID: string): ((newDescription: string) => void) {
-    return ((newDescription: string): void => {
-      this.updatePhoto(photoID, (photo => photo.description = newDescription));
-    });
-  }
+  private onDeletePhoto = (photoID: string): (() => void) => {
+    return (): void => {
+      const nextPhotos = produce(this.props.photos, draft => {
+        const index = draft.findIndex(photo => photo.id === photoID);
+        draft.splice(index, 1);
+      });
+      this.props.onUpdatePhotos(nextPhotos);
+    };
+  };
 
   private onOpenEditPhotoDialog(editPhoto: Photo): () => void {
     return (): void => this.setState({editPhoto: editPhoto});
@@ -141,15 +137,16 @@ export default class PhotoUploader extends React.PureComponent<PhotoUploaderProp
       <div className="mt-3">
         <img style={{height: "300px"}} className="block max-w-full max-h-full m-auto" src={photo.preview}
           alt={photo.description}/>
+        <div className="mt-3 flex justify-center">
+          <ButtonGroup>
+            <Button icon={IconNames.ZOOM_IN}>Xem ảnh</Button>
+            <Button icon={IconNames.EDIT} onClick={this.onOpenEditPhotoDialog(photo)}>Sửa nội dung</Button>
+          </ButtonGroup>
+        </div>
         <div className="mt-3">
-          <div className="font-bold">
-            <EditableText className="text-center" value={photo.name} placeholder="Chọn để sửa tên ảnh" minWidth={460}
-              onChange={this.onUpdatePhotoName(photo.id)}/>
-          </div>
-          <div className="italic mt-1">
-            <EditableText className="text-center" value={photo.description} placeholder="Chọn để sửa nội dung của ảnh"
-              minWidth={460} onChange={this.onUpdatePhotoDescription(photo.id)}/>
-          </div>
+          <div className="font-bold text-center">{photo.name}</div>
+          <div
+            className={classNames("mt-1 italic text-center", photo.description || "text-gray-3")}>{photo.description || "Nội dung của ảnh"}</div>
         </div>
       </div>
     );
@@ -180,7 +177,7 @@ export default class PhotoUploader extends React.PureComponent<PhotoUploaderProp
               <Menu>
                 <Menu.Item icon={IconNames.ZOOM_IN} text="Xem ảnh"/>
                 <Menu.Item icon={IconNames.EDIT} onClick={this.onOpenEditPhotoDialog(photo)} text="Sửa nội dung"/>
-                <Menu.Item icon={IconNames.DELETE} intent={Intent.DANGER} text="Xóa ảnh"/>
+                <Menu.Item onClick={this.onDeletePhoto(photo.id)} icon={IconNames.DELETE} intent={Intent.DANGER} text="Xóa ảnh"/>
               </Menu>
             </Popover>
           </div>

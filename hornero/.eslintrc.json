@@ -28,6 +28,7 @@
         "newlines-between": "always"
       }
     ],
+    "import/no-named-as-default": "off",
     "quotes": [
       "error",
       "double",

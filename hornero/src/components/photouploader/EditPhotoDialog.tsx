@@ -1,6 +1,7 @@
 import {Button, Classes, Dialog, FormGroup, InputGroup} from "@blueprintjs/core";
 import {Intent} from "@blueprintjs/core/lib/esm/common/intent";
 import {IconNames} from "@blueprintjs/icons";
+import produce from "immer";
 import React from "react";
 
 import {Photo} from "./PhotoUploader";
@@ -14,6 +15,7 @@ export interface EditPhotoDialogProps {
   photo?: Photo;
 
   onClose(): void;
+  onSubmit(photo: Photo): void;
 }
 
 export interface EditPhotoDialogState {
@@ -82,7 +84,7 @@ export default class EditPhotoDialog extends React.PureComponent<EditPhotoDialog
         <div className={Classes.DIALOG_FOOTER}>
           <div className={Classes.DIALOG_FOOTER_ACTIONS}>
             <Button onClick={this.props.onClose}>Đóng</Button>
-            <Button intent={Intent.PRIMARY} disabled={!this.validate()}>Lưu nội dung</Button>
+            <Button onClick={this.onSubmit} intent={Intent.PRIMARY} disabled={!this.validate()}>Lưu nội dung</Button>
           </div>
         </div>
       </Dialog>
@@ -100,4 +102,16 @@ export default class EditPhotoDialog extends React.PureComponent<EditPhotoDialog
   private onUpdateDescription = (event: React.FormEvent<HTMLInputElement>): void => {
     this.setState({description: this.state.description.updateValue(event.currentTarget.value)});
   };
+
+  private onSubmit = (): void => {
+    if (!this.props.photo) {
+      return;
+    }
+    const nextPhoto = produce(this.props.photo, draft => {
+      draft.name = this.state.name.getValue();
+      draft.description = this.state.description.getValue();
+    });
+    this.props.onSubmit(nextPhoto);
+    this.props.onClose();
+  }
 }

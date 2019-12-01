@@ -39,7 +39,7 @@ export default class ProjectBuilder extends React.PureComponent<{}, ProjectBuild
     // const height = this.randomBetween(200, 300);
     // const noise = Math.random().toString(36).substring(7);
     // return `https://picsum.photos/${width}/${height}?noise=${noise}`;
-    return "https://picsum.photos/200/200";
+    return "https://picsum.photos/400/300";
   }
 
   public render(): React.ReactNode {

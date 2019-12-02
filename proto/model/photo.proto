@@ -1,0 +1,13 @@
+syntax = "proto3";
+package model;
+
+message PhotoResolution {
+    int32 height = 1;
+    int32 width = 2;
+    int64 size = 3;
+}
+
+message Photo {
+    string name = 1;
+    map<string, PhotoResolution> resolutions = 2;
+}

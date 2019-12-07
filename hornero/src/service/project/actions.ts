@@ -7,7 +7,7 @@ export function createProject(request: CreateProjectRequest): Promise<GeneralSer
   return invokeGRPCAction({
     methodDescriptor: ProjectService.create,
     metadata: {
-      Authorization: "Bearer 123",
+      authorization: "Bearer 123",
     },
     request: request,
   });

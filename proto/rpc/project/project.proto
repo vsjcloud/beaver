@@ -1,0 +1,14 @@
+syntax = "proto3";
+package project;
+option go_package="github.com/vsjcloud/beaver/cathedral/generated/proto/rpc/project";
+
+import "models/project.proto";
+import "rpc/common/response.proto";
+
+service ProjectService {
+    rpc create (CreateProjectRequest) returns (common.GeneralServiceResponse);
+}
+
+message CreateProjectRequest {
+    models.Project project = 1;
+}

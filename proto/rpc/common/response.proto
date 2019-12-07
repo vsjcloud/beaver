@@ -1,0 +1,7 @@
+syntax = "proto3";
+package common;
+option go_package="github.com/vsjcloud/beaver/cathedral/generated/proto/rpc/common";
+
+message GeneralServiceResponse {
+    string message = 1;
+}

@@ -38,7 +38,7 @@
     ],
     "comma-dangle": ["error", "always-multiline"]
   },
-  "ignorePatterns": ["src/model", "src/rpc"],
+  "ignorePatterns": ["src/generated/proto"],
   "env": {
     "browser": true,
     "jasmine": true,

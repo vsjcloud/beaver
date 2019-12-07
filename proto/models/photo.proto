@@ -1,0 +1,14 @@
+syntax = "proto3";
+package models;
+option go_package="github.com/vsjcloud/beaver/cathedral/generated/proto/models";
+
+message PhotoResolution {
+    int32 height = 1;
+    int32 width = 2;
+    int64 size = 3;
+}
+
+message Photo {
+    string name = 1;
+    map<string, PhotoResolution> resolutions = 2;
+}

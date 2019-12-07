@@ -2,6 +2,7 @@ package cathedral
 
 import (
 	"github.com/google/wire"
+	"github.com/vsjcloud/beaver/cathedral/common/auth"
 	"github.com/vsjcloud/beaver/cathedral/common/config"
 	protoProject "github.com/vsjcloud/beaver/cathedral/generated/proto/rpc/project"
 	"github.com/vsjcloud/beaver/cathedral/modules/project"
@@ -11,6 +12,7 @@ import (
 type ModuleSet struct {
 	Config *config.Cathedral
 	Logger *zap.Logger
+	Auth   *auth.Auth
 
 	// Services
 	ProjectService protoProject.ProjectServiceServer
@@ -30,5 +32,6 @@ var serviceModules = wire.NewSet(
 var cathedralModules = wire.NewSet(
 	wire.Struct(new(ModuleSet), "*"),
 	configModules,
+	auth.NewAuth,
 	serviceModules,
 )

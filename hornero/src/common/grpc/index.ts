@@ -17,9 +17,13 @@ export function invokeGRPCAction<TRequest extends pb.Message, TResponse extends 
       host: grpcHost,
       metadata: action.metadata,
       request: action.request,
-      onHeaders: headers => {},
+      onHeaders: () => {},
       onMessage: (response: TResponse) => resolve(response),
-      onEnd: (code, message, trailers) => {},
+      onEnd: (code: grpc.Code, message: string, trailers: grpc.Metadata) => {
+        if (code !== grpc.Code.OK) {
+          return reject({code, message, trailers});
+        }
+      },
     });
   });
 }

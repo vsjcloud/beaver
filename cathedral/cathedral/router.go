@@ -13,6 +13,7 @@ func setupRouter(router chi.Router, modules *ModuleSet) {
 }
 
 func setupAPIRouter(router chi.Router, modules *ModuleSet) {
+	router.Use(middlewares.Auth(modules.Config.Auth))
 	router.Route("/grpc", func(grpcRouter chi.Router) {
 		grpcRouter.Handle("/*", grpcHandler(modules))
 	})

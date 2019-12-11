@@ -6,9 +6,9 @@ import React from "react";
 
 import {Photo} from "./PhotoUploader";
 
-import {Field} from "../../../common/form/field";
-import {RequiredRule} from "../../../common/form/rules";
-import {FieldValidator, NoopValidator} from "../../../common/form/validator";
+import {Field} from "../../../core/form/field";
+import {RequiredRule} from "../../../core/form/rules";
+import {FieldValidator, NoopValidator} from "../../../core/form/validator";
 
 
 export interface EditPhotoDialogProps {

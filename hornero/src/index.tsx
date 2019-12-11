@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import "./index.scss";
-import AppRouter from "./AppRouter";
+import {AppRouter} from "./hornero/AppRouter";
 
-ReactDOM.render(<AppRouter />, document.getElementById("root"));
+import "./index.scss";
+
+ReactDOM.render(<AppRouter/>, document.getElementById("root"));

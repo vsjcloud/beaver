@@ -7,7 +7,8 @@
     "plugin:import/warnings"
   ],
   "plugins": [
-    "react"
+    "react",
+    "react-hooks"
   ],
   "rules": {
     "indent": [
@@ -36,7 +37,8 @@
         "avoidEscape": true
       }
     ],
-    "comma-dangle": ["error", "always-multiline"]
+    "comma-dangle": ["error", "always-multiline"],
+    "react-hooks/rules-of-hooks": "error"
   },
   "ignorePatterns": ["src/generated/proto"],
   "env": {
@@ -62,7 +64,8 @@
         "@typescript-eslint"
       ],
       "rules": {
-        "@typescript-eslint/explicit-member-accessibility": ["error", { "accessibility": "explicit" }]
+        "@typescript-eslint/explicit-member-accessibility": ["error", { "accessibility": "explicit" }],
+        "@typescript-eslint/no-non-null-assertion": 0
       }
     }
   ]

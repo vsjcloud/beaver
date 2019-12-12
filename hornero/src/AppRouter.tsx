@@ -6,8 +6,7 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {Auth0Callback} from "./components/auth0/Auth0Callback";
 import {Auth0Provider, useAuth0} from "./components/auth0/Auth0Provider";
 import {Dashboard} from "./components/dashboard/Dashboard";
-
-import {Config} from "../core/config";
+import {Config} from "./config";
 
 export const AppRouter: React.FC = () => {
   return (
@@ -29,16 +28,16 @@ export const AppRouter: React.FC = () => {
 };
 
 export const AuthGuard: React.FC = () => {
-  const {checked, authenticated, loginWithRedirect} = useAuth0();
+  const {token, authenticated, loginWithRedirect} = useAuth0()!;
 
   React.useEffect(() => {
-    if (!checked || authenticated) {
+    if (authenticated === undefined || authenticated) {
       return;
     }
     (async (): Promise<void> => {
       await loginWithRedirect();
     })();
-  }, [checked, authenticated, loginWithRedirect]);
+  }, [authenticated, loginWithRedirect, token]);
 
   if (authenticated) {
     return (
@@ -52,7 +51,7 @@ export const AuthGuard: React.FC = () => {
 };
 
 export const Logout: React.FC = () => {
-  const {logout} = useAuth0();
+  const {logout} = useAuth0()!;
   React.useEffect(() => {
     (async (): Promise<void> => {
       await logout();

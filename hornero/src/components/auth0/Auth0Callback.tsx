@@ -5,16 +5,16 @@ import React from "react";
 import {useAuth0} from "./Auth0Provider";
 
 export const Auth0Callback: React.FC = () => {
-  const {checked, authenticated, handleRedirectCallback} = useAuth0();
+  const {authenticated, handleRedirectCallback} = useAuth0()!;
 
   React.useEffect(() => {
-    if (!checked || authenticated) {
+    if (authenticated === undefined || authenticated) {
       return;
     }
     (async (): Promise<void> => {
       await handleRedirectCallback();
     })();
-  }, [checked, authenticated, handleRedirectCallback]);
+  }, [authenticated, handleRedirectCallback]);
 
   return (
     <div className="h-screen w-screen flex justify-center items-center">

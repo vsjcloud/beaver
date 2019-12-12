@@ -7,7 +7,7 @@ import React from "react";
 import {useAuth0} from "../auth0/Auth0Provider";
 
 export const BaseLayout: React.FC = (props: React.PropsWithChildren<{}>) => {
-  const {logout} = useAuth0();
+  const {logout} = useAuth0()!;
   return (
     <div className="min-h-screen bg-light-gray-5">
       <Navbar>

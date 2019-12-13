@@ -22,8 +22,8 @@ func NewService(auth *auth.Auth, logger *zap.Logger) project.ProjectServiceServe
 }
 
 func (s *service) Create(ctx context.Context, req *project.CreateProjectRequest) (*common.GeneralServiceResponse, error) {
-	if !serviceUtils.Authorized(s.auth, ctx) {
-		return nil, serviceUtils.ErrUnauthorized
+	if !serviceUtils.GRPCAuthorized(s.auth, ctx) {
+		return nil, serviceUtils.GRPCErrUnauthorized
 	}
 	return &common.GeneralServiceResponse{
 		Message: req.Project.Name,

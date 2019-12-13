@@ -23,11 +23,16 @@ type Auth struct {
 	SigningSecret string `toml:"signing_secret"`
 }
 
+type Photo struct {
+	MaxUploadSize int64 `toml:"max_upload_size"`
+}
+
 type Cathedral struct {
-	Mode Mode  `toml:"mode"`
-	HTTP *HTTP `toml:"http"`
-	CORS *CORS `toml:"cors"`
-	Auth *Auth `toml:"auth"`
+	Mode  Mode   `toml:"mode"`
+	HTTP  *HTTP  `toml:"http"`
+	CORS  *CORS  `toml:"cors"`
+	Auth  *Auth  `toml:"auth"`
+	Photo *Photo `toml:"photo"`
 }
 
 func LoadConfigFromFile(configPath string) (*Cathedral, error) {

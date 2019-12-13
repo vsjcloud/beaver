@@ -10,7 +10,7 @@ import (
 )
 
 type Cathedral struct {
-	modules *ModuleSet
+	Modules *ModuleSet
 }
 
 func NewCathedral(config *config.Cathedral) (*Cathedral, error) {
@@ -27,20 +27,20 @@ func NewCathedral(config *config.Cathedral) (*Cathedral, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Cathedral{modules: modules}, nil
+	return &Cathedral{Modules: modules}, nil
 }
 
 func (c *Cathedral) Serve() {
-	if c.modules == nil {
-		log.Panic("modules is nil")
+	if c.Modules == nil {
+		log.Panic("Modules is nil")
 	}
 	router := chi.NewRouter()
-	setupRouter(router, c.modules)
-	if c.modules.Config.Mode == "production" {
-		c.modules.Logger.Info("serve Cathedral in production mode")
+	setupRouter(router, c.Modules)
+	if c.Modules.Config.Mode == "production" {
+		c.Modules.Logger.Info("serve Cathedral in production mode")
 	} else {
-		c.modules.Logger.Info("serve Cathedral in development mode")
+		c.Modules.Logger.Info("serve Cathedral in development mode")
 	}
-	c.modules.Logger.Info(fmt.Sprintf("serving at address %s", c.modules.Config.HTTP.Address))
-	c.modules.Logger.Panic("serving error", zap.Error(http.ListenAndServe(c.modules.Config.HTTP.Address, router)))
+	c.Modules.Logger.Info(fmt.Sprintf("serving at address %s", c.Modules.Config.HTTP.Address))
+	c.Modules.Logger.Panic("serving error", zap.Error(http.ListenAndServe(c.Modules.Config.HTTP.Address, router)))
 }

@@ -1,2 +1,4 @@
 .idea
 resources/cathedral.toml
+tests/resources/cathedral.toml
+tests/resources/references.toml

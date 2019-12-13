@@ -17,4 +17,7 @@ func setupAPIRouter(router chi.Router, modules *ModuleSet) {
 	router.Route("/grpc", func(grpcRouter chi.Router) {
 		grpcRouter.Handle("/*", grpcHandler(modules))
 	})
+	router.Route("/photo", func (photoRouter chi.Router) {
+		modules.PhotoService.RegisterRoutes(photoRouter)
+	})
 }

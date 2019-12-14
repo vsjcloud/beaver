@@ -67,7 +67,7 @@ func (s *Service) DoesObjectExist(ctx context.Context, key string) (bool, error)
 	_, err := s.client.HeadObjectWithContext(ctx, &input)
 	if err != nil {
 		if awsErr, ok := err.(awserr.Error); ok {
-			// TODO: Workout since SDK does not have NotFound error code
+			// TODO: Work out since SDK does not have NotFound error code
 			// Follow up here: https://github.com/aws/aws-sdk-go/issues/1208
 			if awsErr.Code() == "NotFound" || awsErr.Code() == s3.ErrCodeNoSuchKey {
 				return false, nil

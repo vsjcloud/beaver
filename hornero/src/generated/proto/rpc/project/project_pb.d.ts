@@ -2,14 +2,14 @@
 // file: rpc/project/project.proto
 
 import * as jspb from "google-protobuf";
-import * as models_project_pb from "../../models/project_pb";
+import * as model_project_pb from "../../model/project_pb";
 import * as rpc_common_response_pb from "../../rpc/common/response_pb";
 
 export class CreateProjectRequest extends jspb.Message {
   hasProject(): boolean;
   clearProject(): void;
-  getProject(): models_project_pb.Project | undefined;
-  setProject(value?: models_project_pb.Project): void;
+  getProject(): model_project_pb.Project | undefined;
+  setProject(value?: model_project_pb.Project): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CreateProjectRequest.AsObject;
@@ -23,7 +23,7 @@ export class CreateProjectRequest extends jspb.Message {
 
 export namespace CreateProjectRequest {
   export type AsObject = {
-    project?: models_project_pb.Project.AsObject,
+    project?: model_project_pb.Project.AsObject,
   }
 }
 

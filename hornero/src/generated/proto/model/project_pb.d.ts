@@ -1,5 +1,5 @@
-// package: models
-// file: models/project.proto
+// package: model
+// file: model/project.proto
 
 import * as jspb from "google-protobuf";
 import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";

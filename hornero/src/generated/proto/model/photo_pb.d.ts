@@ -1,5 +1,5 @@
-// package: models
-// file: models/photo.proto
+// package: model
+// file: model/photo.proto
 
 import * as jspb from "google-protobuf";
 

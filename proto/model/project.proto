@@ -1,6 +1,6 @@
 syntax = "proto3";
-package models;
-option go_package="github.com/vsjcloud/beaver/cathedral/generated/proto/models";
+package model;
+option go_package="github.com/vsjcloud/beaver/cathedral/generated/proto/model";
 
 import "google/protobuf/timestamp.proto";
 

@@ -12,8 +12,8 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
-var models_project_pb = require('../../models/project_pb.js');
-goog.object.extend(proto, models_project_pb);
+var model_project_pb = require('../../model/project_pb.js');
+goog.object.extend(proto, model_project_pb);
 var rpc_common_response_pb = require('../../rpc/common/response_pb.js');
 goog.object.extend(proto, rpc_common_response_pb);
 goog.exportSymbol('proto.project.CreateProjectRequest', null, global);
@@ -68,7 +68,7 @@ proto.project.CreateProjectRequest.prototype.toObject = function(opt_includeInst
  */
 proto.project.CreateProjectRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    project: (f = msg.getProject()) && models_project_pb.Project.toObject(includeInstance, f)
+    project: (f = msg.getProject()) && model_project_pb.Project.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -106,8 +106,8 @@ proto.project.CreateProjectRequest.deserializeBinaryFromReader = function(msg, r
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new models_project_pb.Project;
-      reader.readMessage(value,models_project_pb.Project.deserializeBinaryFromReader);
+      var value = new model_project_pb.Project;
+      reader.readMessage(value,model_project_pb.Project.deserializeBinaryFromReader);
       msg.setProject(value);
       break;
     default:
@@ -144,23 +144,23 @@ proto.project.CreateProjectRequest.serializeBinaryToWriter = function(message, w
     writer.writeMessage(
       1,
       f,
-      models_project_pb.Project.serializeBinaryToWriter
+      model_project_pb.Project.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional models.Project project = 1;
- * @return {?proto.models.Project}
+ * optional model.Project project = 1;
+ * @return {?proto.model.Project}
  */
 proto.project.CreateProjectRequest.prototype.getProject = function() {
-  return /** @type{?proto.models.Project} */ (
-    jspb.Message.getWrapperField(this, models_project_pb.Project, 1));
+  return /** @type{?proto.model.Project} */ (
+    jspb.Message.getWrapperField(this, model_project_pb.Project, 1));
 };
 
 
-/** @param {?proto.models.Project|undefined} value */
+/** @param {?proto.model.Project|undefined} value */
 proto.project.CreateProjectRequest.prototype.setProject = function(value) {
   jspb.Message.setWrapperField(this, 1, value);
 };

@@ -2,7 +2,7 @@ syntax = "proto3";
 package project;
 option go_package="github.com/vsjcloud/beaver/cathedral/generated/proto/rpc/project";
 
-import "models/project.proto";
+import "model/project.proto";
 import "rpc/common/response.proto";
 
 service ProjectService {
@@ -10,5 +10,5 @@ service ProjectService {
 }
 
 message CreateProjectRequest {
-    models.Project project = 1;
+    model.Project project = 1;
 }

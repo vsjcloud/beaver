@@ -10,6 +10,7 @@ import (
 	"github.com/vsjcloud/beaver/cathedral/common/config"
 	"github.com/vsjcloud/beaver/cathedral/modules/photo"
 	"github.com/vsjcloud/beaver/cathedral/modules/project"
+	"github.com/vsjcloud/beaver/cathedral/modules/store/modelstore"
 	"go.uber.org/zap"
 )
 
@@ -18,6 +19,11 @@ import (
 func initializeModuleSet(cathedralConfig *config.Cathedral, logger *zap.Logger) (*ModuleSet, error) {
 	configAuth := cathedralConfig.Auth
 	authAuth := auth.NewAuth(configAuth)
+	modelStore := cathedralConfig.ModelStore
+	store, err := modelstore.NewModelStore(modelStore)
+	if err != nil {
+		return nil, err
+	}
 	projectServiceServer := project.NewService(authAuth, logger)
 	configPhoto := cathedralConfig.Photo
 	service := photo.NewService(configPhoto, authAuth)
@@ -25,6 +31,7 @@ func initializeModuleSet(cathedralConfig *config.Cathedral, logger *zap.Logger) 
 		Config:         cathedralConfig,
 		Logger:         logger,
 		Auth:           authAuth,
+		ModelStore:     store,
 		ProjectService: projectServiceServer,
 		PhotoService:   service,
 	}

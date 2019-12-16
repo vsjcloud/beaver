@@ -7,6 +7,8 @@ import (
 	"github.com/vsjcloud/beaver/cathedral/generated/proto/rpc/project"
 	"github.com/vsjcloud/beaver/cathedral/modules/photo"
 	projectImpl "github.com/vsjcloud/beaver/cathedral/modules/project"
+	"github.com/vsjcloud/beaver/cathedral/modules/store"
+	"github.com/vsjcloud/beaver/cathedral/modules/store/modelstore"
 	"go.uber.org/zap"
 )
 
@@ -14,6 +16,9 @@ type ModuleSet struct {
 	Config *config.Cathedral
 	Logger *zap.Logger
 	Auth   *auth.Auth
+
+	// Store
+	ModelStore store.Store
 
 	// Services
 	ProjectService project.ProjectServiceServer
@@ -25,6 +30,7 @@ var configModules = wire.NewSet(
 		new(*config.Cathedral),
 		"Auth",
 		"Photo",
+		"ModelStore",
 	),
 )
 
@@ -37,5 +43,6 @@ var cathedralModules = wire.NewSet(
 	wire.Struct(new(ModuleSet), "*"),
 	configModules,
 	auth.NewAuth,
+	modelstore.NewModelStore,
 	serviceModules,
 )

@@ -52,10 +52,3 @@ func decodeID(av map[string]*dynamodb.AttributeValue) store.ID {
 	}
 	return id
 }
-
-func asRawValue(av *dynamodb.AttributeValue) store.RawValue {
-	return &rawValue{
-		decoder: globalDecoder,
-		av:      av,
-	}
-}

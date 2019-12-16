@@ -1,4 +1,4 @@
-package dynamodbstore
+package store
 
 import (
 	"errors"

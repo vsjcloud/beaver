@@ -1,4 +1,4 @@
-package dynamodbstore
+package cachestore
 
 import (
 	"context"
@@ -30,47 +30,47 @@ var (
 
 func TestPut(t *testing.T) {
 	tester.WithTimeoutContext(tester.DefaultTimeout, func(ctx context.Context) {
-		assert.NoError(t, dynamodbStore.Put(ctx, firstItemID, firstItemValue))
-		raw, err := dynamodbStore.Get(ctx, firstItemID)
+		assert.NoError(t, cacheStore.Put(ctx, firstItemID, firstItemValue))
+		raw, err := cacheStore.Get(ctx, firstItemID)
 		assert.NoError(t, err)
 		actual := &model.Project{}
 		assert.NoError(t, raw.Decode(actual))
 		assert.Equal(t, firstItemValue, actual)
-		assert.NoError(t, dynamodbStore.Delete(ctx, firstItemID))
+		assert.NoError(t, cacheStore.Delete(ctx, firstItemID))
 	})
 }
 
 func TestPutAlreadyExistedID(t *testing.T) {
 	tester.WithTimeoutContext(tester.DefaultTimeout, func(ctx context.Context) {
-		assert.NoError(t, dynamodbStore.Put(ctx, firstItemID, firstItemValue))
-		assert.NoError(t, dynamodbStore.Put(ctx, firstItemID, secondItemValue))
-		raw, err := dynamodbStore.Get(ctx, firstItemID)
+		assert.NoError(t, cacheStore.Put(ctx, firstItemID, firstItemValue))
+		assert.NoError(t, cacheStore.Put(ctx, firstItemID, secondItemValue))
+		raw, err := cacheStore.Get(ctx, firstItemID)
 		assert.NoError(t, err)
 		actual := &model.Project{}
 		assert.NoError(t, raw.Decode(actual))
 		assert.Equal(t, secondItemValue, actual)
-		assert.NoError(t, dynamodbStore.Delete(ctx, firstItemID))
+		assert.NoError(t, cacheStore.Delete(ctx, firstItemID))
 	})
 }
 
 func TestPutIfNotExists(t *testing.T) {
 	tester.WithTimeoutContext(tester.DefaultTimeout, func(ctx context.Context) {
-		assert.NoError(t, dynamodbStore.Put(ctx, firstItemID, firstItemValue))
-		ok, err := dynamodbStore.PutIfNotExists(ctx, firstItemID, secondItemValue)
+		assert.NoError(t, cacheStore.Put(ctx, firstItemID, firstItemValue))
+		ok, err := cacheStore.PutIfNotExists(ctx, firstItemID, secondItemValue)
 		assert.False(t, ok)
 		assert.NoError(t, err)
-		raw, err := dynamodbStore.Get(ctx, firstItemID)
+		raw, err := cacheStore.Get(ctx, firstItemID)
 		assert.NoError(t, err)
 		actual := &model.Project{}
 		assert.NoError(t, raw.Decode(actual))
 		assert.Equal(t, firstItemValue, actual)
-		assert.NoError(t, dynamodbStore.Delete(ctx, firstItemID))
+		assert.NoError(t, cacheStore.Delete(ctx, firstItemID))
 	})
 }
 
 func TestGetNonExistedID(t *testing.T) {
 	tester.WithTimeoutContext(tester.DefaultTimeout, func(ctx context.Context) {
-		_, err := dynamodbStore.Get(ctx, thirdItemID)
+		_, err := cacheStore.Get(ctx, thirdItemID)
 		assert.Equal(t, store.ErrNoSuchItem, err)
 	})
 }
@@ -82,14 +82,14 @@ func TestBulkPut(t *testing.T) {
 			secondItemID: secondItemValue,
 			thirdItemID:  thirdItemValue,
 		}
-		assert.NoError(t, dynamodbStore.BulkPut(ctx, items))
-		ok, err := dynamodbStore.DoesItemExists(ctx, firstItemID)
+		assert.NoError(t, cacheStore.BulkPut(ctx, items))
+		ok, err := cacheStore.DoesItemExists(ctx, firstItemID)
 		assert.NoError(t, err)
 		assert.True(t, ok)
-		ok, err = dynamodbStore.DoesItemExists(ctx, secondItemID)
+		ok, err = cacheStore.DoesItemExists(ctx, secondItemID)
 		assert.NoError(t, err)
 		assert.True(t, ok)
-		ok, err = dynamodbStore.DoesItemExists(ctx, thirdItemID)
+		ok, err = cacheStore.DoesItemExists(ctx, thirdItemID)
 		assert.NoError(t, err)
 		assert.True(t, ok)
 		ids := map[store.ID]bool{
@@ -97,7 +97,7 @@ func TestBulkPut(t *testing.T) {
 			secondItemID: true,
 			thirdItemID:  true,
 		}
-		assert.NoError(t, dynamodbStore.BulkDelete(ctx, ids))
+		assert.NoError(t, cacheStore.BulkDelete(ctx, ids))
 	})
 }
 
@@ -108,13 +108,13 @@ func TestBulkGet(t *testing.T) {
 			secondItemID: secondItemValue,
 			thirdItemID:  thirdItemValue,
 		}
-		assert.NoError(t, dynamodbStore.BulkPut(ctx, items))
+		assert.NoError(t, cacheStore.BulkPut(ctx, items))
 		ids := map[store.ID]bool{
 			firstItemID:  true,
 			secondItemID: true,
 			thirdItemID:  true,
 		}
-		raws, err := dynamodbStore.BulkGet(ctx, ids)
+		raws, err := cacheStore.BulkGet(ctx, ids)
 		assert.NoError(t, err)
 		actualFirst := &model.Project{}
 		assert.NoError(t, raws[firstItemID].Decode(actualFirst))
@@ -125,7 +125,7 @@ func TestBulkGet(t *testing.T) {
 		actualThird := &model.Project{}
 		assert.NoError(t, raws[thirdItemID].Decode(actualThird))
 		assert.Equal(t, thirdItemValue, actualThird)
-		assert.NoError(t, dynamodbStore.BulkDelete(ctx, ids))
+		assert.NoError(t, cacheStore.BulkDelete(ctx, ids))
 	})
 }
 
@@ -136,8 +136,8 @@ func TestBulkGetPartitionPage(t *testing.T) {
 			secondItemID: secondItemValue,
 			thirdItemID:  thirdItemValue,
 		}
-		assert.NoError(t, dynamodbStore.BulkPut(ctx, items))
-		raws, err := dynamodbStore.BulkGetPartition(ctx, id.ProjectIDPrefix)
+		assert.NoError(t, cacheStore.BulkPut(ctx, items))
+		raws, err := cacheStore.BulkGetPartition(ctx, id.ProjectIDPrefix)
 		assert.NoError(t, err)
 		actualFirst := &model.Project{}
 		assert.NoError(t, raws[firstItemID].Decode(actualFirst))
@@ -153,6 +153,7 @@ func TestBulkGetPartitionPage(t *testing.T) {
 			secondItemID: true,
 			thirdItemID:  true,
 		}
-		assert.NoError(t, dynamodbStore.BulkDelete(ctx, ids))
+		assert.NoError(t, cacheStore.BulkDelete(ctx, ids))
 	})
 }
+

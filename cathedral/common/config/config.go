@@ -24,15 +24,30 @@ type Auth struct {
 }
 
 type Photo struct {
-	MaxUploadSize int64 `toml:"max_upload_size"`
+	AWSRegion          string `toml:"aws_region"`
+	AWSAccessKeyID     string `toml:"aws_access_key_id"`
+	AWSSecretAccessKey string `toml:"aws_secret_access_key"`
+	S3Bucket           string `toml:"s3_bucket"`
+	AWSSessionToken    string `toml:"aws_session_token"`
+	MaxUploadSize      int64  `toml:"max_upload_size"`
+}
+
+type ModelStore struct {
+	AWSRegion          string `toml:"aws_region"`
+	AWSAccessKeyID     string `toml:"aws_access_key_id"`
+	AWSSecretAccessKey string `toml:"aws_secret_access_key"`
+	AWSSessionToken    string `toml:"aws_session_token"`
+	DynamoDBTable      string `toml:"dynamodb_table"`
+	MaxCacheSize       int    `toml:"max_cache_size"`
 }
 
 type Cathedral struct {
-	Mode  Mode   `toml:"mode"`
-	HTTP  *HTTP  `toml:"http"`
-	CORS  *CORS  `toml:"cors"`
-	Auth  *Auth  `toml:"auth"`
-	Photo *Photo `toml:"photo"`
+	Mode       Mode        `toml:"mode"`
+	HTTP       *HTTP       `toml:"http"`
+	CORS       *CORS       `toml:"cors"`
+	Auth       *Auth       `toml:"auth"`
+	Photo      *Photo      `toml:"photo"`
+	ModelStore *ModelStore `toml:"model_store"`
 }
 
 func LoadConfigFromFile(configPath string) (*Cathedral, error) {

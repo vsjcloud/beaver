@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Project} from "../../generated/proto/models/project_pb";
+import {Project} from "../../generated/proto/model/project_pb";
 import {CreateProjectRequest} from "../../generated/proto/rpc/project/project_pb";
 import {ProjectService} from "../../service/project";
 import {useAuth0} from "../auth0/Auth0Provider";

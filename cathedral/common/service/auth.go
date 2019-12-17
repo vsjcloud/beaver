@@ -3,13 +3,9 @@ package service
 import (
 	"context"
 	"github.com/vsjcloud/beaver/cathedral/common/auth"
-	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
-	"google.golang.org/grpc/status"
 	"net/http"
 )
-
-var GRPCErrUnauthorized = status.Error(codes.PermissionDenied, "unauthorized")
 
 func GRPCAuthorized(auth *auth.Auth, ctx context.Context) bool {
 	md, ok := metadata.FromIncomingContext(ctx)
@@ -21,10 +17,6 @@ func GRPCAuthorized(auth *auth.Auth, ctx context.Context) bool {
 		}
 	}
 	return false
-}
-
-func HTTPErrUnauthorized(w http.ResponseWriter) {
-	http.Error(w, "unauthorized", http.StatusUnauthorized)
 }
 
 func HTTPAuthorized(auth *auth.Auth, r *http.Request) bool {

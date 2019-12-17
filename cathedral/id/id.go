@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"encoding/hex"
 	"fmt"
+	"github.com/vsjcloud/beaver/cathedral/modules/store"
 	"io"
 	"strings"
 	"sync/atomic"
@@ -64,4 +65,31 @@ func parentID(child string) string {
 		return ""
 	}
 	return child[:p]
+}
+
+func isRandomPart(s string) bool {
+	if len(s)%2 != 0 {
+		return false
+	}
+	for _, c := range s {
+		if ('0' <= c && c <= '9') || ('a' <= c && c <= 'f') {
+			continue
+		}
+		return false
+	}
+	return true
+}
+
+func StoreID(prefix string, id string) store.ID {
+	parent := parentID(id)
+	if parent == "" {
+		return store.ID{
+			Partition: prefix,
+			Sort:      id[len(prefix):],
+		}
+	}
+	return store.ID{
+		Partition: parent + "." + prefix,
+		Sort:      id[len(parent)+1+len(prefix):],
+	}
 }

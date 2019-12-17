@@ -11,17 +11,17 @@ import (
 )
 
 var (
-	firstItemID    = id.ProjectIDStore(id.GenerateProjectID())
+	firstItemID    = id.PhotoIDToStoreID(id.GenerateProjectID())
 	firstItemValue = &model.Project{
 		Name:        "First project",
 		Description: "First description",
 	}
-	secondItemID    = id.ProjectIDStore(id.GenerateProjectID())
+	secondItemID    = id.PhotoIDToStoreID(id.GenerateProjectID())
 	secondItemValue = &model.Project{
 		Name:        "Second project",
 		Description: "Second description",
 	}
-	thirdItemID    = id.ProjectIDStore(id.GenerateProjectID())
+	thirdItemID    = id.PhotoIDToStoreID(id.GenerateProjectID())
 	thirdItemValue = &model.Project{
 		Name:        "Third project",
 		Description: "third description",

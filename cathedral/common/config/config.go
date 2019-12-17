@@ -41,6 +41,10 @@ type ModelStore struct {
 	MaxCacheSize       int    `toml:"max_cache_size"`
 }
 
+type Service struct {
+	Timeout duration `toml:"timeout"`
+}
+
 type Cathedral struct {
 	Mode       Mode        `toml:"mode"`
 	HTTP       *HTTP       `toml:"http"`
@@ -48,6 +52,7 @@ type Cathedral struct {
 	Auth       *Auth       `toml:"auth"`
 	Photo      *Photo      `toml:"photo"`
 	ModelStore *ModelStore `toml:"model_store"`
+	Service    *Service    `toml:"service"`
 }
 
 func LoadConfigFromFile(configPath string) (*Cathedral, error) {

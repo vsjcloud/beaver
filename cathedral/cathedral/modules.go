@@ -31,6 +31,7 @@ var configModules = wire.NewSet(
 		"Auth",
 		"Photo",
 		"ModelStore",
+		"Service",
 	),
 )
 

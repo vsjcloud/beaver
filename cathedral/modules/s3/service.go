@@ -31,12 +31,19 @@ func NewService(sess *session.Session, bucket string) *Service {
 	}
 }
 
-func (s *Service) PutObject(ctx context.Context, key string, body io.Reader, acl string) error {
+func (s *Service) PutObject(
+	ctx context.Context,
+	key string,
+	body io.Reader,
+	acl string,
+	contentDisposition string,
+) error {
 	input := s3manager.UploadInput{
-		Bucket: &s.bucket,
-		Key:    &key,
-		Body:   body,
-		ACL:    &acl,
+		Bucket:             &s.bucket,
+		Key:                &key,
+		Body:               body,
+		ACL:                &acl,
+		ContentDisposition: &contentDisposition,
 	}
 	_, err := s.uploader.UploadWithContext(ctx, &input)
 	return err

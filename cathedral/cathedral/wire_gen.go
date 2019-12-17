@@ -25,15 +25,19 @@ func initializeModuleSet(cathedralConfig *config.Cathedral, logger *zap.Logger) 
 		return nil, err
 	}
 	projectServiceServer := project.NewService(authAuth, logger)
+	service := cathedralConfig.Service
 	configPhoto := cathedralConfig.Photo
-	service := photo.NewService(configPhoto, authAuth)
+	photoService, err := photo.NewService(service, configPhoto, logger, authAuth, store)
+	if err != nil {
+		return nil, err
+	}
 	moduleSet := &ModuleSet{
 		Config:         cathedralConfig,
 		Logger:         logger,
 		Auth:           authAuth,
 		ModelStore:     store,
 		ProjectService: projectServiceServer,
-		PhotoService:   service,
+		PhotoService:   photoService,
 	}
 	return moduleSet, nil
 }

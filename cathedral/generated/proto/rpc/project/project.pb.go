@@ -7,6 +7,7 @@ import (
 	context "context"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
+	empty "github.com/golang/protobuf/ptypes/empty"
 	model "github.com/vsjcloud/beaver/cathedral/generated/proto/model"
 	common "github.com/vsjcloud/beaver/cathedral/generated/proto/rpc/common"
 	grpc "google.golang.org/grpc"
@@ -26,67 +27,232 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
-type CreateProjectRequest struct {
-	Project              *model.Project `protobuf:"bytes,1,opt,name=project,proto3" json:"project,omitempty"`
+type CreateEmptyProjectWithSwapResponse struct {
+	ProjectID            string   `protobuf:"bytes,1,opt,name=projectID,proto3" json:"projectID,omitempty"`
+	SwapID               string   `protobuf:"bytes,2,opt,name=swapID,proto3" json:"swapID,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *CreateEmptyProjectWithSwapResponse) Reset()         { *m = CreateEmptyProjectWithSwapResponse{} }
+func (m *CreateEmptyProjectWithSwapResponse) String() string { return proto.CompactTextString(m) }
+func (*CreateEmptyProjectWithSwapResponse) ProtoMessage()    {}
+func (*CreateEmptyProjectWithSwapResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b29952f92ab12fc8, []int{0}
+}
+
+func (m *CreateEmptyProjectWithSwapResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CreateEmptyProjectWithSwapResponse.Unmarshal(m, b)
+}
+func (m *CreateEmptyProjectWithSwapResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CreateEmptyProjectWithSwapResponse.Marshal(b, m, deterministic)
+}
+func (m *CreateEmptyProjectWithSwapResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateEmptyProjectWithSwapResponse.Merge(m, src)
+}
+func (m *CreateEmptyProjectWithSwapResponse) XXX_Size() int {
+	return xxx_messageInfo_CreateEmptyProjectWithSwapResponse.Size(m)
+}
+func (m *CreateEmptyProjectWithSwapResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateEmptyProjectWithSwapResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreateEmptyProjectWithSwapResponse proto.InternalMessageInfo
+
+func (m *CreateEmptyProjectWithSwapResponse) GetProjectID() string {
+	if m != nil {
+		return m.ProjectID
+	}
+	return ""
+}
+
+func (m *CreateEmptyProjectWithSwapResponse) GetSwapID() string {
+	if m != nil {
+		return m.SwapID
+	}
+	return ""
+}
+
+type UpdateProjectRequest struct {
+	ProjectID            string         `protobuf:"bytes,1,opt,name=projectID,proto3" json:"projectID,omitempty"`
+	Project              *model.Project `protobuf:"bytes,2,opt,name=project,proto3" json:"project,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
 }
 
-func (m *CreateProjectRequest) Reset()         { *m = CreateProjectRequest{} }
-func (m *CreateProjectRequest) String() string { return proto.CompactTextString(m) }
-func (*CreateProjectRequest) ProtoMessage()    {}
-func (*CreateProjectRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_b29952f92ab12fc8, []int{0}
+func (m *UpdateProjectRequest) Reset()         { *m = UpdateProjectRequest{} }
+func (m *UpdateProjectRequest) String() string { return proto.CompactTextString(m) }
+func (*UpdateProjectRequest) ProtoMessage()    {}
+func (*UpdateProjectRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b29952f92ab12fc8, []int{1}
 }
 
-func (m *CreateProjectRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_CreateProjectRequest.Unmarshal(m, b)
+func (m *UpdateProjectRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateProjectRequest.Unmarshal(m, b)
 }
-func (m *CreateProjectRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_CreateProjectRequest.Marshal(b, m, deterministic)
+func (m *UpdateProjectRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateProjectRequest.Marshal(b, m, deterministic)
 }
-func (m *CreateProjectRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CreateProjectRequest.Merge(m, src)
+func (m *UpdateProjectRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateProjectRequest.Merge(m, src)
 }
-func (m *CreateProjectRequest) XXX_Size() int {
-	return xxx_messageInfo_CreateProjectRequest.Size(m)
+func (m *UpdateProjectRequest) XXX_Size() int {
+	return xxx_messageInfo_UpdateProjectRequest.Size(m)
 }
-func (m *CreateProjectRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_CreateProjectRequest.DiscardUnknown(m)
+func (m *UpdateProjectRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateProjectRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_CreateProjectRequest proto.InternalMessageInfo
+var xxx_messageInfo_UpdateProjectRequest proto.InternalMessageInfo
 
-func (m *CreateProjectRequest) GetProject() *model.Project {
+func (m *UpdateProjectRequest) GetProjectID() string {
+	if m != nil {
+		return m.ProjectID
+	}
+	return ""
+}
+
+func (m *UpdateProjectRequest) GetProject() *model.Project {
 	if m != nil {
 		return m.Project
 	}
 	return nil
 }
 
+type UpdateOriginalProjectAndRemoveSwapRequest struct {
+	SwapID               string         `protobuf:"bytes,1,opt,name=swapID,proto3" json:"swapID,omitempty"`
+	ProjectID            string         `protobuf:"bytes,2,opt,name=projectID,proto3" json:"projectID,omitempty"`
+	Project              *model.Project `protobuf:"bytes,3,opt,name=project,proto3" json:"project,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
+}
+
+func (m *UpdateOriginalProjectAndRemoveSwapRequest) Reset() {
+	*m = UpdateOriginalProjectAndRemoveSwapRequest{}
+}
+func (m *UpdateOriginalProjectAndRemoveSwapRequest) String() string { return proto.CompactTextString(m) }
+func (*UpdateOriginalProjectAndRemoveSwapRequest) ProtoMessage()    {}
+func (*UpdateOriginalProjectAndRemoveSwapRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b29952f92ab12fc8, []int{2}
+}
+
+func (m *UpdateOriginalProjectAndRemoveSwapRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateOriginalProjectAndRemoveSwapRequest.Unmarshal(m, b)
+}
+func (m *UpdateOriginalProjectAndRemoveSwapRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateOriginalProjectAndRemoveSwapRequest.Marshal(b, m, deterministic)
+}
+func (m *UpdateOriginalProjectAndRemoveSwapRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateOriginalProjectAndRemoveSwapRequest.Merge(m, src)
+}
+func (m *UpdateOriginalProjectAndRemoveSwapRequest) XXX_Size() int {
+	return xxx_messageInfo_UpdateOriginalProjectAndRemoveSwapRequest.Size(m)
+}
+func (m *UpdateOriginalProjectAndRemoveSwapRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateOriginalProjectAndRemoveSwapRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateOriginalProjectAndRemoveSwapRequest proto.InternalMessageInfo
+
+func (m *UpdateOriginalProjectAndRemoveSwapRequest) GetSwapID() string {
+	if m != nil {
+		return m.SwapID
+	}
+	return ""
+}
+
+func (m *UpdateOriginalProjectAndRemoveSwapRequest) GetProjectID() string {
+	if m != nil {
+		return m.ProjectID
+	}
+	return ""
+}
+
+func (m *UpdateOriginalProjectAndRemoveSwapRequest) GetProject() *model.Project {
+	if m != nil {
+		return m.Project
+	}
+	return nil
+}
+
+type DeleteProjectRequest struct {
+	ProjectID            string   `protobuf:"bytes,1,opt,name=projectID,proto3" json:"projectID,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DeleteProjectRequest) Reset()         { *m = DeleteProjectRequest{} }
+func (m *DeleteProjectRequest) String() string { return proto.CompactTextString(m) }
+func (*DeleteProjectRequest) ProtoMessage()    {}
+func (*DeleteProjectRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b29952f92ab12fc8, []int{3}
+}
+
+func (m *DeleteProjectRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DeleteProjectRequest.Unmarshal(m, b)
+}
+func (m *DeleteProjectRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DeleteProjectRequest.Marshal(b, m, deterministic)
+}
+func (m *DeleteProjectRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteProjectRequest.Merge(m, src)
+}
+func (m *DeleteProjectRequest) XXX_Size() int {
+	return xxx_messageInfo_DeleteProjectRequest.Size(m)
+}
+func (m *DeleteProjectRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteProjectRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteProjectRequest proto.InternalMessageInfo
+
+func (m *DeleteProjectRequest) GetProjectID() string {
+	if m != nil {
+		return m.ProjectID
+	}
+	return ""
+}
+
 func init() {
-	proto.RegisterType((*CreateProjectRequest)(nil), "project.CreateProjectRequest")
+	proto.RegisterType((*CreateEmptyProjectWithSwapResponse)(nil), "project.CreateEmptyProjectWithSwapResponse")
+	proto.RegisterType((*UpdateProjectRequest)(nil), "project.UpdateProjectRequest")
+	proto.RegisterType((*UpdateOriginalProjectAndRemoveSwapRequest)(nil), "project.UpdateOriginalProjectAndRemoveSwapRequest")
+	proto.RegisterType((*DeleteProjectRequest)(nil), "project.DeleteProjectRequest")
 }
 
 func init() { proto.RegisterFile("rpc/project/project.proto", fileDescriptor_b29952f92ab12fc8) }
 
 var fileDescriptor_b29952f92ab12fc8 = []byte{
-	// 217 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x90, 0x3f, 0x4b, 0x04, 0x31,
-	0x10, 0xc5, 0xb9, 0xe6, 0x84, 0x08, 0x57, 0xac, 0x16, 0xba, 0xa0, 0x88, 0xd5, 0x55, 0x19, 0x38,
-	0xbf, 0xc0, 0x71, 0x16, 0xd7, 0xca, 0x59, 0x69, 0x97, 0x4d, 0x1e, 0xf7, 0x87, 0xec, 0x4e, 0x9c,
-	0x64, 0xf7, 0xf3, 0x8b, 0xd9, 0x04, 0x14, 0xac, 0x42, 0xe6, 0xbd, 0xf7, 0xcb, 0xcb, 0xa8, 0x7b,
-	0x09, 0x96, 0x82, 0xf0, 0x05, 0x36, 0xd5, 0x53, 0x07, 0xe1, 0xc4, 0xcd, 0x55, 0xb9, 0xb6, 0x37,
-	0x3d, 0x3b, 0xf8, 0xbf, 0x6a, 0x9b, 0x83, 0x96, 0xfb, 0x9e, 0x07, 0x12, 0xc4, 0xc0, 0x43, 0xc4,
-	0x2c, 0x3d, 0x6f, 0xd5, 0xed, 0xab, 0xc0, 0x24, 0xbc, 0xcd, 0x89, 0x03, 0xbe, 0x46, 0xc4, 0xd4,
-	0xac, 0x55, 0x45, 0xde, 0x2d, 0x9e, 0x16, 0xeb, 0xeb, 0xcd, 0x4a, 0x67, 0xb2, 0xae, 0xbe, 0x2a,
-	0x6f, 0x3e, 0xd4, 0xaa, 0xcc, 0xde, 0x21, 0xd3, 0xd9, 0xa2, 0xd9, 0xab, 0xa5, 0xcd, 0xcc, 0xe6,
-	0x41, 0xd7, 0x22, 0xff, 0x3d, 0xd2, 0x3e, 0xea, 0xb9, 0x94, 0xde, 0x63, 0x80, 0x18, 0x5f, 0x00,
-	0x87, 0x52, 0x71, 0xb7, 0xfb, 0xdc, 0x1e, 0xcf, 0xe9, 0x34, 0x76, 0x3f, 0x3e, 0x9a, 0xe2, 0xc5,
-	0x7a, 0x1e, 0x1d, 0x75, 0x30, 0x13, 0x84, 0xac, 0x49, 0x27, 0x38, 0x31, 0x9e, 0x8e, 0x39, 0x9e,
-	0xe0, 0x28, 0x7f, 0x8a, 0x7e, 0xed, 0xa9, 0x5b, 0xe6, 0xd1, 0xcb, 0x77, 0x00, 0x00, 0x00, 0xff,
-	0xff, 0x2b, 0x69, 0xab, 0x6e, 0x3d, 0x01, 0x00, 0x00,
+	// 394 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x93, 0xdd, 0x8a, 0xda, 0x40,
+	0x14, 0xc7, 0x89, 0x82, 0xc5, 0x29, 0x7a, 0x91, 0x8a, 0xd8, 0xf4, 0x83, 0x92, 0x2b, 0x4b, 0x61,
+	0x06, 0x6c, 0x1f, 0xa0, 0xb5, 0x96, 0xe2, 0x8d, 0x2d, 0x91, 0x52, 0xf0, 0x62, 0x61, 0x92, 0x9c,
+	0x8d, 0x91, 0x24, 0x33, 0x3b, 0x99, 0xc4, 0xdd, 0x67, 0x58, 0xf6, 0x9d, 0x17, 0x67, 0x26, 0x1a,
+	0x17, 0xd7, 0xb8, 0x57, 0x61, 0xce, 0xc7, 0xff, 0xfc, 0x4f, 0x7e, 0x33, 0xe8, 0xad, 0xe0, 0x01,
+	0xe1, 0x82, 0x6d, 0x20, 0x90, 0xd5, 0x17, 0x73, 0xc1, 0x24, 0xb3, 0x5f, 0x99, 0xa3, 0xf3, 0x2e,
+	0x62, 0x2c, 0x4a, 0x80, 0xa8, 0xb0, 0x5f, 0x5c, 0x13, 0x48, 0xb9, 0xbc, 0xd3, 0x55, 0xce, 0x9b,
+	0x94, 0x85, 0x90, 0x1c, 0xb7, 0x3a, 0x4a, 0x35, 0x60, 0x69, 0xca, 0x32, 0x22, 0x20, 0xe7, 0x2c,
+	0xcb, 0x41, 0xa7, 0xdc, 0x15, 0x72, 0x7f, 0x0a, 0xa0, 0x12, 0x7e, 0xed, 0x44, 0xfe, 0xea, 0xb6,
+	0xff, 0xb1, 0x5c, 0x2f, 0xb7, 0x94, 0x7b, 0xa6, 0xd6, 0x7e, 0x8f, 0xba, 0x46, 0x71, 0x3e, 0x1b,
+	0x59, 0x9f, 0xac, 0x71, 0xd7, 0x3b, 0x04, 0xec, 0x21, 0xea, 0xe4, 0x5b, 0xca, 0xe7, 0xb3, 0x51,
+	0x4b, 0xa5, 0xcc, 0xc9, 0xbd, 0x42, 0x83, 0x7f, 0x3c, 0xa4, 0x12, 0x8c, 0xac, 0x07, 0x37, 0x05,
+	0xe4, 0xb2, 0x41, 0x6d, 0x8c, 0xaa, 0x4d, 0x95, 0xdc, 0xeb, 0x49, 0x1f, 0xab, 0x9d, 0x70, 0xa5,
+	0x52, 0xa5, 0xdd, 0x7b, 0x0b, 0x7d, 0xd6, 0x03, 0xfe, 0x88, 0x38, 0x8a, 0x33, 0x9a, 0x98, 0x92,
+	0x1f, 0x59, 0xe8, 0x41, 0xca, 0x4a, 0xd0, 0x4b, 0xe8, 0xa9, 0x07, 0x97, 0x56, 0xdd, 0xe5, 0xb1,
+	0x9b, 0xd6, 0x19, 0x37, 0xed, 0xf3, 0x6e, 0xbe, 0xa1, 0xc1, 0x0c, 0x12, 0x78, 0xd9, 0xb6, 0x93,
+	0x87, 0x36, 0xea, 0x9b, 0x86, 0x25, 0x88, 0x32, 0x0e, 0xc0, 0xa6, 0xc8, 0x09, 0x9e, 0x45, 0x62,
+	0x0f, 0xb1, 0xc6, 0x8f, 0x2b, 0xfc, 0x58, 0x95, 0x39, 0x5f, 0x70, 0xc5, 0xfc, 0x02, 0x9e, 0x0b,
+	0xd4, 0x2b, 0xea, 0x64, 0xec, 0x0f, 0xfb, 0xee, 0x53, 0xc4, 0x9c, 0x8f, 0x58, 0xdf, 0x1e, 0xfc,
+	0x1b, 0x32, 0x10, 0x34, 0x31, 0x56, 0xf7, 0x7a, 0xb7, 0xc8, 0x2d, 0x1a, 0x41, 0xd8, 0x93, 0x27,
+	0x43, 0x2e, 0xa0, 0xd6, 0x38, 0x79, 0x81, 0x7a, 0x61, 0xfd, 0xaf, 0xd7, 0x36, 0x39, 0x45, 0xa3,
+	0x49, 0x6f, 0x3a, 0x5d, 0x7d, 0x8f, 0x62, 0xb9, 0x2e, 0xfc, 0x5d, 0x1d, 0x29, 0xf3, 0x4d, 0x90,
+	0xb0, 0x22, 0x24, 0x3e, 0xd0, 0x12, 0x04, 0x09, 0xa8, 0x5c, 0x43, 0x28, 0x68, 0x42, 0x22, 0xd5,
+	0x2e, 0x21, 0xd4, 0xcf, 0x90, 0xd4, 0xde, 0xad, 0xdf, 0x51, 0xa1, 0xaf, 0x8f, 0x01, 0x00, 0x00,
+	0xff, 0xff, 0x61, 0x00, 0x28, 0x36, 0xcd, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -101,7 +267,10 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type ProjectServiceClient interface {
-	Create(ctx context.Context, in *CreateProjectRequest, opts ...grpc.CallOption) (*common.GeneralServiceResponse, error)
+	CreateEmptyProjectWithSwap(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*CreateEmptyProjectWithSwapResponse, error)
+	UpdateProject(ctx context.Context, in *UpdateProjectRequest, opts ...grpc.CallOption) (*common.GeneralServiceResponse, error)
+	UpdateOriginalProjectAndRemoveSwap(ctx context.Context, in *UpdateOriginalProjectAndRemoveSwapRequest, opts ...grpc.CallOption) (*common.GeneralServiceResponse, error)
+	DeleteProject(ctx context.Context, in *DeleteProjectRequest, opts ...grpc.CallOption) (*common.GeneralServiceResponse, error)
 }
 
 type projectServiceClient struct {
@@ -112,9 +281,36 @@ func NewProjectServiceClient(cc *grpc.ClientConn) ProjectServiceClient {
 	return &projectServiceClient{cc}
 }
 
-func (c *projectServiceClient) Create(ctx context.Context, in *CreateProjectRequest, opts ...grpc.CallOption) (*common.GeneralServiceResponse, error) {
+func (c *projectServiceClient) CreateEmptyProjectWithSwap(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*CreateEmptyProjectWithSwapResponse, error) {
+	out := new(CreateEmptyProjectWithSwapResponse)
+	err := c.cc.Invoke(ctx, "/project.ProjectService/createEmptyProjectWithSwap", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectServiceClient) UpdateProject(ctx context.Context, in *UpdateProjectRequest, opts ...grpc.CallOption) (*common.GeneralServiceResponse, error) {
 	out := new(common.GeneralServiceResponse)
-	err := c.cc.Invoke(ctx, "/project.ProjectService/create", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/project.ProjectService/updateProject", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectServiceClient) UpdateOriginalProjectAndRemoveSwap(ctx context.Context, in *UpdateOriginalProjectAndRemoveSwapRequest, opts ...grpc.CallOption) (*common.GeneralServiceResponse, error) {
+	out := new(common.GeneralServiceResponse)
+	err := c.cc.Invoke(ctx, "/project.ProjectService/updateOriginalProjectAndRemoveSwap", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectServiceClient) DeleteProject(ctx context.Context, in *DeleteProjectRequest, opts ...grpc.CallOption) (*common.GeneralServiceResponse, error) {
+	out := new(common.GeneralServiceResponse)
+	err := c.cc.Invoke(ctx, "/project.ProjectService/deleteProject", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -123,35 +319,101 @@ func (c *projectServiceClient) Create(ctx context.Context, in *CreateProjectRequ
 
 // ProjectServiceServer is the server API for ProjectService service.
 type ProjectServiceServer interface {
-	Create(context.Context, *CreateProjectRequest) (*common.GeneralServiceResponse, error)
+	CreateEmptyProjectWithSwap(context.Context, *empty.Empty) (*CreateEmptyProjectWithSwapResponse, error)
+	UpdateProject(context.Context, *UpdateProjectRequest) (*common.GeneralServiceResponse, error)
+	UpdateOriginalProjectAndRemoveSwap(context.Context, *UpdateOriginalProjectAndRemoveSwapRequest) (*common.GeneralServiceResponse, error)
+	DeleteProject(context.Context, *DeleteProjectRequest) (*common.GeneralServiceResponse, error)
 }
 
 // UnimplementedProjectServiceServer can be embedded to have forward compatible implementations.
 type UnimplementedProjectServiceServer struct {
 }
 
-func (*UnimplementedProjectServiceServer) Create(ctx context.Context, req *CreateProjectRequest) (*common.GeneralServiceResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+func (*UnimplementedProjectServiceServer) CreateEmptyProjectWithSwap(ctx context.Context, req *empty.Empty) (*CreateEmptyProjectWithSwapResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateEmptyProjectWithSwap not implemented")
+}
+func (*UnimplementedProjectServiceServer) UpdateProject(ctx context.Context, req *UpdateProjectRequest) (*common.GeneralServiceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateProject not implemented")
+}
+func (*UnimplementedProjectServiceServer) UpdateOriginalProjectAndRemoveSwap(ctx context.Context, req *UpdateOriginalProjectAndRemoveSwapRequest) (*common.GeneralServiceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateOriginalProjectAndRemoveSwap not implemented")
+}
+func (*UnimplementedProjectServiceServer) DeleteProject(ctx context.Context, req *DeleteProjectRequest) (*common.GeneralServiceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteProject not implemented")
 }
 
 func RegisterProjectServiceServer(s *grpc.Server, srv ProjectServiceServer) {
 	s.RegisterService(&_ProjectService_serviceDesc, srv)
 }
 
-func _ProjectService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateProjectRequest)
+func _ProjectService_CreateEmptyProjectWithSwap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(empty.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ProjectServiceServer).Create(ctx, in)
+		return srv.(ProjectServiceServer).CreateEmptyProjectWithSwap(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/project.ProjectService/Create",
+		FullMethod: "/project.ProjectService/CreateEmptyProjectWithSwap",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProjectServiceServer).Create(ctx, req.(*CreateProjectRequest))
+		return srv.(ProjectServiceServer).CreateEmptyProjectWithSwap(ctx, req.(*empty.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectService_UpdateProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateProjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectServiceServer).UpdateProject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/project.ProjectService/UpdateProject",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectServiceServer).UpdateProject(ctx, req.(*UpdateProjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectService_UpdateOriginalProjectAndRemoveSwap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateOriginalProjectAndRemoveSwapRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectServiceServer).UpdateOriginalProjectAndRemoveSwap(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/project.ProjectService/UpdateOriginalProjectAndRemoveSwap",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectServiceServer).UpdateOriginalProjectAndRemoveSwap(ctx, req.(*UpdateOriginalProjectAndRemoveSwapRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectService_DeleteProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteProjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectServiceServer).DeleteProject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/project.ProjectService/DeleteProject",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectServiceServer).DeleteProject(ctx, req.(*DeleteProjectRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -161,8 +423,20 @@ var _ProjectService_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*ProjectServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "create",
-			Handler:    _ProjectService_Create_Handler,
+			MethodName: "createEmptyProjectWithSwap",
+			Handler:    _ProjectService_CreateEmptyProjectWithSwap_Handler,
+		},
+		{
+			MethodName: "updateProject",
+			Handler:    _ProjectService_UpdateProject_Handler,
+		},
+		{
+			MethodName: "updateOriginalProjectAndRemoveSwap",
+			Handler:    _ProjectService_UpdateOriginalProjectAndRemoveSwap_Handler,
+		},
+		{
+			MethodName: "deleteProject",
+			Handler:    _ProjectService_DeleteProject_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

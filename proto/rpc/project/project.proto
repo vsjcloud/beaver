@@ -1,14 +1,34 @@
 syntax = "proto3";
 package project;
-option go_package="github.com/vsjcloud/beaver/cathedral/generated/proto/rpc/project";
+option go_package = "github.com/vsjcloud/beaver/cathedral/generated/proto/rpc/project";
 
+import "google/protobuf/empty.proto";
 import "model/project.proto";
 import "rpc/common/response.proto";
 
 service ProjectService {
-    rpc create (CreateProjectRequest) returns (common.GeneralServiceResponse);
+    rpc createEmptyProjectWithSwap (google.protobuf.Empty) returns (CreateEmptyProjectWithSwapResponse);
+    rpc updateProject (UpdateProjectRequest) returns (common.GeneralServiceResponse);
+    rpc updateOriginalProjectAndRemoveSwap (UpdateOriginalProjectAndRemoveSwapRequest) returns (common.GeneralServiceResponse);
+    rpc deleteProject (DeleteProjectRequest) returns (common.GeneralServiceResponse);
 }
 
-message CreateProjectRequest {
-    model.Project project = 1;
+message CreateEmptyProjectWithSwapResponse {
+    string projectID = 1;
+    string swapID = 2;
+}
+
+message UpdateProjectRequest {
+    string projectID = 1;
+    model.Project project = 2;
+}
+
+message UpdateOriginalProjectAndRemoveSwapRequest {
+    string swapID = 1;
+    string projectID = 2;
+    model.Project project = 3;
+}
+
+message DeleteProjectRequest {
+    string projectID = 1;
 }

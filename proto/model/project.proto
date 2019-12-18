@@ -1,6 +1,6 @@
 syntax = "proto3";
 package model;
-option go_package="github.com/vsjcloud/beaver/cathedral/generated/proto/model";
+option go_package = "github.com/vsjcloud/beaver/cathedral/generated/proto/model";
 
 import "google/protobuf/timestamp.proto";
 
@@ -22,4 +22,5 @@ message Project {
     google.protobuf.Timestamp finishDate = 5;
     ProjectPhoto featurePhotoID = 6;
     repeated ProjectPhoto albumPhotoIDs = 7;
+    string swapID = 8;
 }

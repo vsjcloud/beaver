@@ -84,6 +84,9 @@ export class Project extends jspb.Message {
   setAlbumphotoidsList(value: Array<ProjectPhoto>): void;
   addAlbumphotoids(value?: ProjectPhoto, index?: number): ProjectPhoto;
 
+  getSwapid(): string;
+  setSwapid(value: string): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Project.AsObject;
   static toObject(includeInstance: boolean, msg: Project): Project.AsObject;
@@ -103,6 +106,7 @@ export namespace Project {
     finishdate?: google_protobuf_timestamp_pb.Timestamp.AsObject,
     featurephotoid?: ProjectPhoto.AsObject,
     albumphotoidsList: Array<ProjectPhoto.AsObject>,
+    swapid: string,
   }
 }
 

@@ -66,8 +66,7 @@ func NewService(
 }
 
 func (s *Service) RegisterRoutes(router chi.Router) {
-	timeout := s.serviceConfig.Timeout.Duration
-	router.Post("/upload", service.HTTPWithTimeout(timeout, s.uploadPhoto))
+	router.Post("/upload", s.uploadPhoto)
 }
 
 func (s *Service) createVariationsAndUpload(
@@ -178,8 +177,11 @@ func (s *Service) uploadPhoto(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	ctx, cancel := context.WithTimeout(context.Background(), s.serviceConfig.Timeout.Duration)
+	defer cancel()
+
 	photoModel, err := s.createVariationsAndUpload(
-		r.Context(),
+		ctx,
 		id.GeneratePhotoID(parentID.Partition + parentID.Sort),
 		handler.Filename,
 		buf,

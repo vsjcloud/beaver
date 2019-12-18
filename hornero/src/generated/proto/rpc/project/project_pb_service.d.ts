@@ -2,21 +2,52 @@
 // file: rpc/project/project.proto
 
 import * as rpc_project_project_pb from "../../rpc/project/project_pb";
+import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
 import * as rpc_common_response_pb from "../../rpc/common/response_pb";
 import {grpc} from "@improbable-eng/grpc-web";
 
-type ProjectServicecreate = {
+type ProjectServicecreateEmptyProjectWithSwap = {
   readonly methodName: string;
   readonly service: typeof ProjectService;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof rpc_project_project_pb.CreateProjectRequest;
+  readonly requestType: typeof google_protobuf_empty_pb.Empty;
+  readonly responseType: typeof rpc_project_project_pb.CreateEmptyProjectWithSwapResponse;
+};
+
+type ProjectServiceupdateProject = {
+  readonly methodName: string;
+  readonly service: typeof ProjectService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof rpc_project_project_pb.UpdateProjectRequest;
+  readonly responseType: typeof rpc_common_response_pb.GeneralServiceResponse;
+};
+
+type ProjectServiceupdateOriginalProjectAndRemoveSwap = {
+  readonly methodName: string;
+  readonly service: typeof ProjectService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof rpc_project_project_pb.UpdateOriginalProjectAndRemoveSwapRequest;
+  readonly responseType: typeof rpc_common_response_pb.GeneralServiceResponse;
+};
+
+type ProjectServicedeleteProject = {
+  readonly methodName: string;
+  readonly service: typeof ProjectService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof rpc_project_project_pb.DeleteProjectRequest;
   readonly responseType: typeof rpc_common_response_pb.GeneralServiceResponse;
 };
 
 export class ProjectService {
   static readonly serviceName: string;
-  static readonly create: ProjectServicecreate;
+  static readonly createEmptyProjectWithSwap: ProjectServicecreateEmptyProjectWithSwap;
+  static readonly updateProject: ProjectServiceupdateProject;
+  static readonly updateOriginalProjectAndRemoveSwap: ProjectServiceupdateOriginalProjectAndRemoveSwap;
+  static readonly deleteProject: ProjectServicedeleteProject;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -51,13 +82,40 @@ export class ProjectServiceClient {
   readonly serviceHost: string;
 
   constructor(serviceHost: string, options?: grpc.RpcOptions);
-  create(
-    requestMessage: rpc_project_project_pb.CreateProjectRequest,
+  createEmptyProjectWithSwap(
+    requestMessage: google_protobuf_empty_pb.Empty,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: rpc_project_project_pb.CreateEmptyProjectWithSwapResponse|null) => void
+  ): UnaryResponse;
+  createEmptyProjectWithSwap(
+    requestMessage: google_protobuf_empty_pb.Empty,
+    callback: (error: ServiceError|null, responseMessage: rpc_project_project_pb.CreateEmptyProjectWithSwapResponse|null) => void
+  ): UnaryResponse;
+  updateProject(
+    requestMessage: rpc_project_project_pb.UpdateProjectRequest,
     metadata: grpc.Metadata,
     callback: (error: ServiceError|null, responseMessage: rpc_common_response_pb.GeneralServiceResponse|null) => void
   ): UnaryResponse;
-  create(
-    requestMessage: rpc_project_project_pb.CreateProjectRequest,
+  updateProject(
+    requestMessage: rpc_project_project_pb.UpdateProjectRequest,
+    callback: (error: ServiceError|null, responseMessage: rpc_common_response_pb.GeneralServiceResponse|null) => void
+  ): UnaryResponse;
+  updateOriginalProjectAndRemoveSwap(
+    requestMessage: rpc_project_project_pb.UpdateOriginalProjectAndRemoveSwapRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: rpc_common_response_pb.GeneralServiceResponse|null) => void
+  ): UnaryResponse;
+  updateOriginalProjectAndRemoveSwap(
+    requestMessage: rpc_project_project_pb.UpdateOriginalProjectAndRemoveSwapRequest,
+    callback: (error: ServiceError|null, responseMessage: rpc_common_response_pb.GeneralServiceResponse|null) => void
+  ): UnaryResponse;
+  deleteProject(
+    requestMessage: rpc_project_project_pb.DeleteProjectRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: rpc_common_response_pb.GeneralServiceResponse|null) => void
+  ): UnaryResponse;
+  deleteProject(
+    requestMessage: rpc_project_project_pb.DeleteProjectRequest,
     callback: (error: ServiceError|null, responseMessage: rpc_common_response_pb.GeneralServiceResponse|null) => void
   ): UnaryResponse;
 }

@@ -429,7 +429,8 @@ proto.model.Project.toObject = function(includeInstance, msg) {
     finishdate: (f = msg.getFinishdate()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
     featurephotoid: (f = msg.getFeaturephotoid()) && proto.model.ProjectPhoto.toObject(includeInstance, f),
     albumphotoidsList: jspb.Message.toObjectList(msg.getAlbumphotoidsList(),
-    proto.model.ProjectPhoto.toObject, includeInstance)
+    proto.model.ProjectPhoto.toObject, includeInstance),
+    swapid: jspb.Message.getFieldWithDefault(msg, 8, "")
   };
 
   if (includeInstance) {
@@ -498,6 +499,10 @@ proto.model.Project.deserializeBinaryFromReader = function(msg, reader) {
       var value = new proto.model.ProjectPhoto;
       reader.readMessage(value,proto.model.ProjectPhoto.deserializeBinaryFromReader);
       msg.addAlbumphotoids(value);
+      break;
+    case 8:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSwapid(value);
       break;
     default:
       reader.skipField();
@@ -580,6 +585,13 @@ proto.model.Project.serializeBinaryToWriter = function(message, writer) {
       7,
       f,
       proto.model.ProjectPhoto.serializeBinaryToWriter
+    );
+  }
+  f = message.getSwapid();
+  if (f.length > 0) {
+    writer.writeString(
+      8,
+      f
     );
   }
 };
@@ -779,6 +791,21 @@ proto.model.Project.prototype.addAlbumphotoids = function(opt_value, opt_index) 
  */
 proto.model.Project.prototype.clearAlbumphotoidsList = function() {
   this.setAlbumphotoidsList([]);
+};
+
+
+/**
+ * optional string swapID = 8;
+ * @return {string}
+ */
+proto.model.Project.prototype.getSwapid = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
+};
+
+
+/** @param {string} value */
+proto.model.Project.prototype.setSwapid = function(value) {
+  jspb.Message.setProto3StringField(this, 8, value);
 };
 
 

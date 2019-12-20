@@ -24,7 +24,7 @@ func initializeModuleSet(cathedralConfig *config.Cathedral, logger *zap.Logger) 
 	if err != nil {
 		return nil, err
 	}
-	projectServiceServer := project.NewService(authAuth, logger)
+	projectServiceServer := project.NewService(store)
 	service := cathedralConfig.Service
 	configPhoto := cathedralConfig.Photo
 	photoService, err := photo.NewService(service, configPhoto, logger, authAuth, store)

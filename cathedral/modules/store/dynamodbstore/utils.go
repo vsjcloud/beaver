@@ -3,7 +3,7 @@ package dynamodbstore
 import (
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
-	"github.com/vsjcloud/beaver/cathedral/modules/store"
+	idCommon "github.com/vsjcloud/beaver/cathedral/common/id"
 )
 
 var (
@@ -11,7 +11,7 @@ var (
 	globalDecoder = dynamodbattribute.NewDecoder()
 )
 
-func encodeItem(id store.ID, value interface{}) (map[string]*dynamodb.AttributeValue, error) {
+func encodeItem(id idCommon.ID, value interface{}) (map[string]*dynamodb.AttributeValue, error) {
 	av, err := encodeID(id)
 	if err != nil {
 		return nil, err
@@ -24,7 +24,7 @@ func encodeItem(id store.ID, value interface{}) (map[string]*dynamodb.AttributeV
 	return av, nil
 }
 
-func encodeID(id store.ID) (map[string]*dynamodb.AttributeValue, error) {
+func encodeID(id idCommon.ID) (map[string]*dynamodb.AttributeValue, error) {
 	encodedPartitionID, err := globalEncoder.Encode(id.Partition)
 	if err != nil {
 		return nil, err
@@ -39,11 +39,11 @@ func encodeID(id store.ID) (map[string]*dynamodb.AttributeValue, error) {
 	return av, nil
 }
 
-func decodeID(av map[string]*dynamodb.AttributeValue) store.ID {
+func decodeID(av map[string]*dynamodb.AttributeValue) idCommon.ID {
 	if av == nil {
-		return store.ID{}
+		return idCommon.ID{}
 	}
-	id := store.ID{}
+	id := idCommon.ID{}
 	if v, ok := av[partitionIDField]; ok {
 		id.Partition = *v.S
 	}

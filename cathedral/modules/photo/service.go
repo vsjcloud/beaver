@@ -11,9 +11,9 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/vsjcloud/beaver/cathedral/common/auth"
 	"github.com/vsjcloud/beaver/cathedral/common/config"
+	"github.com/vsjcloud/beaver/cathedral/common/id"
 	"github.com/vsjcloud/beaver/cathedral/common/service"
 	"github.com/vsjcloud/beaver/cathedral/generated/proto/model"
-	"github.com/vsjcloud/beaver/cathedral/id"
 	"github.com/vsjcloud/beaver/cathedral/modules/s3"
 	"github.com/vsjcloud/beaver/cathedral/modules/store"
 	"go.uber.org/zap"
@@ -71,7 +71,6 @@ func (s *Service) RegisterRoutes(router chi.Router) {
 
 func (s *Service) createVariationsAndUpload(
 	ctx context.Context,
-	photoID string,
 	photoName string,
 	buf []byte,
 	variations []int,
@@ -87,13 +86,14 @@ func (s *Service) createVariationsAndUpload(
 		return nil, err
 	}
 
+	photoID := id.GeneratePhotoID()
 	photoModel := &model.Photo{
 		Name:        photoName,
 		Resolutions: make(map[string]*model.PhotoResolution),
 	}
 
 	for i := len(variations) - 1; i >= 0; i-- {
-		if i < len(variations) - 1 && photoSize.Height <= variations[i] && photoSize.Width <= variations[i] {
+		if i < len(variations)-1 && photoSize.Height <= variations[i] && photoSize.Width <= variations[i] {
 			break
 		}
 		l := float32(variations[i])
@@ -115,7 +115,7 @@ func (s *Service) createVariationsAndUpload(
 		contentDisposition := fmt.Sprintf("attachment; filename=\"%s\"", photoName)
 		err = s.s3Service.PutObject(
 			ctx,
-			resolutionID,
+			resolutionID.String(),
 			bytes.NewReader(resized),
 			s3.ACLPublicRead,
 			contentDisposition,
@@ -123,14 +123,14 @@ func (s *Service) createVariationsAndUpload(
 		if err != nil {
 			return nil, err
 		}
-		photoModel.Resolutions[resolutionID] = &model.PhotoResolution{
+		photoModel.Resolutions[resolutionID.String()] = &model.PhotoResolution{
 			Height: int32(h),
 			Width:  int32(w),
 			Size:   int64(len(resized)),
 		}
 	}
 
-	if err := s.modelStore.Put(ctx, id.StoreID(id.PhotoIDPrefix, photoID), photoModel); err != nil {
+	if err := s.modelStore.Put(ctx, photoID, photoModel); err != nil {
 		return nil, err
 	}
 
@@ -171,18 +171,11 @@ func (s *Service) uploadPhoto(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	parentID, err := id.StringToStoreID(r.FormValue("parentID"))
-	if err != nil {
-		http.Error(w, "invalid parent id", http.StatusBadRequest)
-		return
-	}
-
 	ctx, cancel := context.WithTimeout(context.Background(), s.serviceConfig.Timeout.Duration)
 	defer cancel()
 
 	photoModel, err := s.createVariationsAndUpload(
 		ctx,
-		id.GeneratePhotoID(parentID.Partition + parentID.Sort),
 		handler.Filename,
 		buf,
 		[]int{hdSize, fullHDSize},

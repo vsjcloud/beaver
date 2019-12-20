@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {Auth0Callback} from "./components/auth0/Auth0Callback";
 import {Auth0Provider, useAuth0} from "./components/auth0/Auth0Provider";
 import {Dashboard} from "./components/dashboard/Dashboard";
+import {ProjectBuilder} from "./components/projectbuilder/ProjectBuilder";
 import {Config} from "./config";
 
 export const AppRouter: React.FC = () => {
@@ -18,9 +19,9 @@ export const AppRouter: React.FC = () => {
         audience={Config.AUTH0_AUDIENCE}
       >
         <Switch>
-          <Route exact={true} path="/auth0/callback" component={Auth0Callback}/>
-          <Route exact={true} path="/logout" component={Logout}/>
-          <Route exact={true} path="/" component={AuthGuard}/>
+          <Route path="/auth0/callback" component={Auth0Callback}/>
+          <Route path="/logout" component={Logout}/>
+          <Route path="/" component={AuthGuard}/>
         </Switch>
       </Auth0Provider>
     </Router>
@@ -43,6 +44,7 @@ export const AuthGuard: React.FC = () => {
     return (
       <Switch>
         <Route exact={true} path="/" component={Dashboard}/>
+        <Route path="/project/build/:projectID" component={ProjectBuilder}/>
       </Switch>
     );
   }

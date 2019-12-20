@@ -4,13 +4,10 @@ import (
 	"context"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/vsjcloud/beaver/cathedral/common/id"
-	serviceCommon "github.com/vsjcloud/beaver/cathedral/common/service"
 	"github.com/vsjcloud/beaver/cathedral/generated/proto/model"
 	"github.com/vsjcloud/beaver/cathedral/generated/proto/rpc/common"
 	"github.com/vsjcloud/beaver/cathedral/generated/proto/rpc/project"
 	"github.com/vsjcloud/beaver/cathedral/modules/store"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 type service struct {
@@ -29,35 +26,46 @@ func (s *service) CreateEmptyProjectWithSwap(
 ) (*project.CreateEmptyProjectWithSwapResponse, error) {
 	projectID := id.GenerateProjectID()
 	if err := s.modelStore.Put(ctx, projectID, &model.Project{}); err != nil {
-		return nil, serviceCommon.GRPCInternalErr(err)
+		return nil, err
 	}
 	err := s.modelStore.Put(ctx, id.ProjectSwapID(projectID), &model.Project{})
 	if err != nil {
-		return nil, serviceCommon.GRPCInternalErr(err)
+		return nil, err
 	}
 	return &project.CreateEmptyProjectWithSwapResponse{
 		ProjectID: projectID.String(),
 	}, nil
 }
 
-func (s *service) GetProject(
+func (s *service) GetProjectWithSwap(
 	ctx context.Context,
-	request *project.GetProjectRequest,
-) (*project.GetProjectResponse, error) {
+	request *project.GetProjectWithSwapRequest,
+) (*project.GetProjectWithSwapResponse, error) {
 	projectID := id.ParseID(request.ProjectID)
-	if !id.IsProjectID(projectID) {
-		return nil, status.Error(codes.InvalidArgument, "invalid project id")
-	}
 	raw, err := s.modelStore.Get(ctx, projectID)
 	if err != nil {
-		return nil, serviceCommon.GRPCInternalErr(err)
+		return nil, err
 	}
 	projectModel := &model.Project{}
 	if err = raw.Decode(projectModel); err != nil {
-		return nil, serviceCommon.GRPCInternalErr(err)
+		return nil, err
 	}
-	return &project.GetProjectResponse{
+	swapModel := &model.Project{}
+	raw, err = s.modelStore.Get(ctx, id.ProjectSwapID(projectID))
+	if err != nil {
+		if err == store.ErrNoSuchItem {
+			swapModel = nil
+		} else {
+			return nil, err
+		}
+	} else {
+		if err = raw.Decode(swapModel); err != nil {
+			return nil, err
+		}
+	}
+	return &project.GetProjectWithSwapResponse{
 		Project: projectModel,
+		Swap:    swapModel,
 	}, nil
 }
 
@@ -67,13 +75,13 @@ func (s *service) GetProjects(
 ) (*project.GetProjectsResponse, error) {
 	raws, err := s.modelStore.BulkGetPartition(ctx, id.ProjectPartition)
 	if err != nil {
-		return nil, serviceCommon.GRPCInternalErr(err)
+		return nil, err
 	}
 	projects := make(map[string]*model.Project)
 	for projectID, raw := range raws {
 		projectModel := &model.Project{}
 		if err = raw.Decode(projectModel); err != nil {
-			return nil, serviceCommon.GRPCInternalErr(err)
+			return nil, err
 		}
 		projects[projectID.String()] = projectModel
 	}
@@ -87,14 +95,8 @@ func (s *service) UpdateProject(
 	request *project.UpdateProjectRequest,
 ) (*common.GeneralServiceResponse, error) {
 	projectID := id.ParseID(request.ProjectID)
-	if !id.IsProjectID(projectID) {
-		return nil, status.Error(codes.InvalidArgument, "invalid project id")
-	}
-	if request.Project == nil {
-		return nil, status.Error(codes.InvalidArgument, "project is empty")
-	}
 	if err := s.modelStore.Put(ctx, projectID, request.Project); err != nil {
-		return nil, serviceCommon.GRPCInternalErr(err)
+		return nil, err
 	}
 	return &common.GeneralServiceResponse{
 		Message: "project is updated successfully",
@@ -106,17 +108,11 @@ func (s *service) UpdateOriginalProjectAndRemoveSwap(
 	request *project.UpdateOriginalProjectAndRemoveSwapRequest,
 ) (*common.GeneralServiceResponse, error) {
 	projectID := id.ParseID(request.ProjectID)
-	if !id.IsProjectID(projectID) {
-		return nil, status.Error(codes.InvalidArgument, "invalid projectID id")
-	}
-	if request.Project == nil {
-		return nil, status.Error(codes.InvalidArgument, "project is empty")
-	}
 	if err := s.modelStore.Put(ctx, projectID, request.Project); err != nil {
-		return nil, serviceCommon.GRPCInternalErr(err)
+		return nil, err
 	}
 	if err := s.modelStore.Delete(ctx, id.ProjectSwapID(projectID)); err != nil {
-		return nil, serviceCommon.GRPCInternalErr(err)
+		return nil, err
 	}
 	return &common.GeneralServiceResponse{
 		Message: "update original project and remove swap successfully",

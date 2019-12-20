@@ -26,10 +26,6 @@ func GenerateProjectID() ID {
 	}
 }
 
-func IsProjectID(projectID ID) bool {
-	return projectID.Partition == ProjectPartition
-}
-
 func ProjectSwapID(projectID ID) ID {
 	return ID{
 		Partition: ID{
@@ -40,20 +36,11 @@ func ProjectSwapID(projectID ID) ID {
 	}
 }
 
-func IsProjectSwapID(swapID ID) bool {
-	partitionID := ParseID(swapID.Partition)
-	return partitionID.Sort == ProjectSwapPartition && IsProjectID(ParseID(partitionID.Partition))
-}
-
 func GeneratePhotoID() ID {
 	return ID{
 		Partition: PhotoPartition,
 		Sort:      generateID(),
 	}
-}
-
-func IsPhotoID(photoID ID) bool {
-	return photoID.Partition == PhotoPartition
 }
 
 func GeneratePhotoResolutionID(photoID ID) ID {
@@ -64,9 +51,4 @@ func GeneratePhotoResolutionID(photoID ID) ID {
 		}.String(),
 		Sort: generateID(),
 	}
-}
-
-func IsPhotoResolutionID(resolutionID ID) bool {
-	partitionID := ParseID(resolutionID.Partition)
-	return partitionID.Sort == PhotoResolutionPartition && IsPhotoID(ParseID(partitionID.Partition))
 }

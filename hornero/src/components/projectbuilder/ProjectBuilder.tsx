@@ -1,13 +1,12 @@
 import {Intent, Spinner} from "@blueprintjs/core";
 import React from "react";
-import {useHistory, useLocation, useParams} from "react-router";
+import {useLocation, useParams} from "react-router";
 
 import {Project} from "../../generated/proto/model/project_pb";
-import {GetProjectRequest} from "../../generated/proto/rpc/project/project_pb";
+import {GetProjectWithSwapRequest} from "../../generated/proto/rpc/project/project_pb";
 import {ProjectService} from "../../service/project";
 import {useAuth0} from "../auth0/Auth0Provider";
 import {BaseLayout} from "../layout/BaseLayout";
-import {AppToaster} from "../toaster/AppToaster";
 
 function useQuery(): URLSearchParams {
   return new URLSearchParams(useLocation().search);
@@ -23,15 +22,21 @@ export function ProjectBuilder(): React.ReactElement {
   React.useEffect(() => {
     (async (): Promise<void> => {
       if (!query.get("new") && projectID) {
-        const request = new GetProjectRequest();
+        const request = new GetProjectWithSwapRequest();
         request.setProjectid(projectID);
-        const response = await ProjectService.getProject(token, request);
-        setProject(response.getProject()!);
+        const response = await ProjectService.getProjectWithSwap(token, request);
+        if (response.getSwap()) {
+          setProject(response.getSwap()!);
+        } else {
+          setProject(response.getProject()!);
+        }
       }
       setLoading(false);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, projectID]);
+
+  console.log(project);
 
   return (
     <BaseLayout>
@@ -40,7 +45,7 @@ export function ProjectBuilder(): React.ReactElement {
           <Spinner intent={Intent.PRIMARY}/>
         </div>
       ) : (
-        <div>Hello</div>
+        <div>{project.getName()}</div>
       )}
     </BaseLayout>
   );

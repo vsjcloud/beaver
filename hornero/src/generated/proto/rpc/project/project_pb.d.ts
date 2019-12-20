@@ -26,45 +26,51 @@ export namespace CreateEmptyProjectWithSwapResponse {
   }
 }
 
-export class GetProjectRequest extends jspb.Message {
+export class GetProjectWithSwapRequest extends jspb.Message {
   getProjectid(): string;
   setProjectid(value: string): void;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): GetProjectRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: GetProjectRequest): GetProjectRequest.AsObject;
+  toObject(includeInstance?: boolean): GetProjectWithSwapRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetProjectWithSwapRequest): GetProjectWithSwapRequest.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: GetProjectRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): GetProjectRequest;
-  static deserializeBinaryFromReader(message: GetProjectRequest, reader: jspb.BinaryReader): GetProjectRequest;
+  static serializeBinaryToWriter(message: GetProjectWithSwapRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetProjectWithSwapRequest;
+  static deserializeBinaryFromReader(message: GetProjectWithSwapRequest, reader: jspb.BinaryReader): GetProjectWithSwapRequest;
 }
 
-export namespace GetProjectRequest {
+export namespace GetProjectWithSwapRequest {
   export type AsObject = {
     projectid: string,
   }
 }
 
-export class GetProjectResponse extends jspb.Message {
+export class GetProjectWithSwapResponse extends jspb.Message {
   hasProject(): boolean;
   clearProject(): void;
   getProject(): model_project_pb.Project | undefined;
   setProject(value?: model_project_pb.Project): void;
 
+  hasSwap(): boolean;
+  clearSwap(): void;
+  getSwap(): model_project_pb.Project | undefined;
+  setSwap(value?: model_project_pb.Project): void;
+
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): GetProjectResponse.AsObject;
-  static toObject(includeInstance: boolean, msg: GetProjectResponse): GetProjectResponse.AsObject;
+  toObject(includeInstance?: boolean): GetProjectWithSwapResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetProjectWithSwapResponse): GetProjectWithSwapResponse.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: GetProjectResponse, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): GetProjectResponse;
-  static deserializeBinaryFromReader(message: GetProjectResponse, reader: jspb.BinaryReader): GetProjectResponse;
+  static serializeBinaryToWriter(message: GetProjectWithSwapResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetProjectWithSwapResponse;
+  static deserializeBinaryFromReader(message: GetProjectWithSwapResponse, reader: jspb.BinaryReader): GetProjectWithSwapResponse;
 }
 
-export namespace GetProjectResponse {
+export namespace GetProjectWithSwapResponse {
   export type AsObject = {
     project?: model_project_pb.Project.AsObject,
+    swap?: model_project_pb.Project.AsObject,
   }
 }
 

@@ -22,13 +22,13 @@ ProjectService.createEmptyProjectWithSwap = {
   responseType: rpc_project_project_pb.CreateEmptyProjectWithSwapResponse
 };
 
-ProjectService.getProject = {
-  methodName: "getProject",
+ProjectService.getProjectWithSwap = {
+  methodName: "getProjectWithSwap",
   service: ProjectService,
   requestStream: false,
   responseStream: false,
-  requestType: rpc_project_project_pb.GetProjectRequest,
-  responseType: rpc_project_project_pb.GetProjectResponse
+  requestType: rpc_project_project_pb.GetProjectWithSwapRequest,
+  responseType: rpc_project_project_pb.GetProjectWithSwapResponse
 };
 
 ProjectService.getProjects = {
@@ -96,11 +96,11 @@ ProjectServiceClient.prototype.createEmptyProjectWithSwap = function createEmpty
   };
 };
 
-ProjectServiceClient.prototype.getProject = function getProject(requestMessage, metadata, callback) {
+ProjectServiceClient.prototype.getProjectWithSwap = function getProjectWithSwap(requestMessage, metadata, callback) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
-  var client = grpc.unary(ProjectService.getProject, {
+  var client = grpc.unary(ProjectService.getProjectWithSwap, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

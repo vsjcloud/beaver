@@ -38,3 +38,9 @@ export async function invokeWithAuthToken<TRequest extends pb.Message, TResponse
     "auth-token": authToken,
   }, action);
 }
+
+export function pbMapToJSMap<K, V>(m: pb.Map<K, V>): Map<K, V> {
+  const result = new Map<K, V>();
+  m.forEach((v, k) => result.set(k, v));
+  return result;
+}

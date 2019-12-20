@@ -29,11 +29,9 @@ func unaryServerInterceptor(modules *ModuleSet) grpc.UnaryServerInterceptor {
 			return nil, serviceCommon.GRPCErrUnauthorized
 		}
 		resp, err = handler(ctx, req)
-		errCode := status.Code(err)
-		if errCode == codes.Unknown || errCode == codes.Internal {
+		if err != nil {
 			logger.Error("error while serving method", zap.String("method", info.FullMethod), zap.Error(err))
-			// Mask internal error
-			return resp, status.Error(errCode, "unexpected error")
+			return resp, status.Error(codes.Internal, "internal error")
 		}
 		return
 	}

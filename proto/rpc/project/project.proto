@@ -8,14 +8,26 @@ import "rpc/common/response.proto";
 
 service ProjectService {
     rpc createEmptyProjectWithSwap (google.protobuf.Empty) returns (CreateEmptyProjectWithSwapResponse);
+    rpc getProject (GetProjectRequest) returns (GetProjectResponse);
+    rpc getProjects (google.protobuf.Empty) returns (GetProjectsResponse);
     rpc updateProject (UpdateProjectRequest) returns (common.GeneralServiceResponse);
     rpc updateOriginalProjectAndRemoveSwap (UpdateOriginalProjectAndRemoveSwapRequest) returns (common.GeneralServiceResponse);
-    rpc deleteProject (DeleteProjectRequest) returns (common.GeneralServiceResponse);
 }
 
 message CreateEmptyProjectWithSwapResponse {
     string projectID = 1;
-    string swapID = 2;
+}
+
+message GetProjectRequest {
+    string projectID = 1;
+}
+
+message GetProjectResponse {
+    model.Project project = 1;
+}
+
+message GetProjectsResponse {
+    map<string, model.Project> projects = 1;
 }
 
 message UpdateProjectRequest {
@@ -24,11 +36,6 @@ message UpdateProjectRequest {
 }
 
 message UpdateOriginalProjectAndRemoveSwapRequest {
-    string swapID = 1;
-    string projectID = 2;
-    model.Project project = 3;
-}
-
-message DeleteProjectRequest {
     string projectID = 1;
+    model.Project project = 2;
 }

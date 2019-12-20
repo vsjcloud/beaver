@@ -137,7 +137,7 @@ func TestBulkGetPartitionPage(t *testing.T) {
 			thirdItemID:  thirdItemValue,
 		}
 		assert.NoError(t, dynamodbStore.BulkPut(ctx, items))
-		raws, err := dynamodbStore.BulkGetPartition(ctx, id.ProjectIDPrefix)
+		raws, err := dynamodbStore.BulkGetPartition(ctx, id.ProjectPartition)
 		assert.NoError(t, err)
 		actualFirst := &model.Project{}
 		assert.NoError(t, raws[firstItemID].Decode(actualFirst))

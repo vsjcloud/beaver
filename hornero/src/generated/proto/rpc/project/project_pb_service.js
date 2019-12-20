@@ -22,6 +22,24 @@ ProjectService.createEmptyProjectWithSwap = {
   responseType: rpc_project_project_pb.CreateEmptyProjectWithSwapResponse
 };
 
+ProjectService.getProject = {
+  methodName: "getProject",
+  service: ProjectService,
+  requestStream: false,
+  responseStream: false,
+  requestType: rpc_project_project_pb.GetProjectRequest,
+  responseType: rpc_project_project_pb.GetProjectResponse
+};
+
+ProjectService.getProjects = {
+  methodName: "getProjects",
+  service: ProjectService,
+  requestStream: false,
+  responseStream: false,
+  requestType: google_protobuf_empty_pb.Empty,
+  responseType: rpc_project_project_pb.GetProjectsResponse
+};
+
 ProjectService.updateProject = {
   methodName: "updateProject",
   service: ProjectService,
@@ -40,15 +58,6 @@ ProjectService.updateOriginalProjectAndRemoveSwap = {
   responseType: rpc_common_response_pb.GeneralServiceResponse
 };
 
-ProjectService.deleteProject = {
-  methodName: "deleteProject",
-  service: ProjectService,
-  requestStream: false,
-  responseStream: false,
-  requestType: rpc_project_project_pb.DeleteProjectRequest,
-  responseType: rpc_common_response_pb.GeneralServiceResponse
-};
-
 exports.ProjectService = ProjectService;
 
 function ProjectServiceClient(serviceHost, options) {
@@ -61,6 +70,68 @@ ProjectServiceClient.prototype.createEmptyProjectWithSwap = function createEmpty
     callback = arguments[1];
   }
   var client = grpc.unary(ProjectService.createEmptyProjectWithSwap, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+ProjectServiceClient.prototype.getProject = function getProject(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(ProjectService.getProject, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+ProjectServiceClient.prototype.getProjects = function getProjects(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(ProjectService.getProjects, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,
@@ -123,37 +194,6 @@ ProjectServiceClient.prototype.updateOriginalProjectAndRemoveSwap = function upd
     callback = arguments[1];
   }
   var client = grpc.unary(ProjectService.updateOriginalProjectAndRemoveSwap, {
-    request: requestMessage,
-    host: this.serviceHost,
-    metadata: metadata,
-    transport: this.options.transport,
-    debug: this.options.debug,
-    onEnd: function (response) {
-      if (callback) {
-        if (response.status !== grpc.Code.OK) {
-          var err = new Error(response.statusMessage);
-          err.code = response.status;
-          err.metadata = response.trailers;
-          callback(err, null);
-        } else {
-          callback(null, response.message);
-        }
-      }
-    }
-  });
-  return {
-    cancel: function () {
-      callback = null;
-      client.close();
-    }
-  };
-};
-
-ProjectServiceClient.prototype.deleteProject = function deleteProject(requestMessage, metadata, callback) {
-  if (arguments.length === 2) {
-    callback = arguments[1];
-  }
-  var client = grpc.unary(ProjectService.deleteProject, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

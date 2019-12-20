@@ -5,12 +5,13 @@ import (
 	"encoding/binary"
 	"encoding/hex"
 	"fmt"
-	"github.com/vsjcloud/beaver/cathedral/modules/store"
 	"io"
 	"strings"
 	"sync/atomic"
 	"time"
 )
+
+var EmptyID = ID{}
 
 var objectIDCounter = readRandomUint32()
 var processUnique = processUniqueBytes()
@@ -41,55 +42,23 @@ func putUint24(b []byte, v uint32) {
 	b[2] = byte(v)
 }
 
-func generateIDFromTimestamp(timestamp time.Time) string {
+func generateID() string {
 	var b [12]byte
 
-	binary.BigEndian.PutUint32(b[0:4], uint32(timestamp.Unix()))
+	binary.BigEndian.PutUint32(b[0:4], uint32(time.Now().Unix()))
 	copy(b[4:9], processUnique[:])
 	putUint24(b[9:12], atomic.AddUint32(&objectIDCounter, 1))
 
 	return hex.EncodeToString(b[:])
 }
 
-func generateIDWithPrefix(prefix string) string {
-	return prefix + generateIDFromTimestamp(time.Now())
-}
-
-func concatID(parent, child string) string {
-	return parent + "." + child
-}
-
-func parentID(child string) string {
-	p := strings.LastIndexByte(child, '.')
+func ParseID(id string) ID {
+	p := strings.LastIndexByte(id, '.')
 	if p == -1 {
-		return ""
+		return EmptyID
 	}
-	return child[:p]
-}
-
-func isRandomPart(s string) bool {
-	if len(s)%2 != 0 {
-		return false
-	}
-	for _, c := range s {
-		if ('0' <= c && c <= '9') || ('a' <= c && c <= 'f') {
-			continue
-		}
-		return false
-	}
-	return true
-}
-
-func StoreID(prefix string, id string) store.ID {
-	parent := parentID(id)
-	if parent == "" {
-		return store.ID{
-			Partition: prefix,
-			Sort:      id[len(prefix):],
-		}
-	}
-	return store.ID{
-		Partition: parent + "." + prefix,
-		Sort:      id[len(parent)+1+len(prefix):],
+	return ID{
+		Partition: id[:p],
+		Sort:      id[p+1:],
 	}
 }

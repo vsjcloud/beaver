@@ -15,6 +15,24 @@ type ProjectServicecreateEmptyProjectWithSwap = {
   readonly responseType: typeof rpc_project_project_pb.CreateEmptyProjectWithSwapResponse;
 };
 
+type ProjectServicegetProject = {
+  readonly methodName: string;
+  readonly service: typeof ProjectService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof rpc_project_project_pb.GetProjectRequest;
+  readonly responseType: typeof rpc_project_project_pb.GetProjectResponse;
+};
+
+type ProjectServicegetProjects = {
+  readonly methodName: string;
+  readonly service: typeof ProjectService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof google_protobuf_empty_pb.Empty;
+  readonly responseType: typeof rpc_project_project_pb.GetProjectsResponse;
+};
+
 type ProjectServiceupdateProject = {
   readonly methodName: string;
   readonly service: typeof ProjectService;
@@ -33,21 +51,13 @@ type ProjectServiceupdateOriginalProjectAndRemoveSwap = {
   readonly responseType: typeof rpc_common_response_pb.GeneralServiceResponse;
 };
 
-type ProjectServicedeleteProject = {
-  readonly methodName: string;
-  readonly service: typeof ProjectService;
-  readonly requestStream: false;
-  readonly responseStream: false;
-  readonly requestType: typeof rpc_project_project_pb.DeleteProjectRequest;
-  readonly responseType: typeof rpc_common_response_pb.GeneralServiceResponse;
-};
-
 export class ProjectService {
   static readonly serviceName: string;
   static readonly createEmptyProjectWithSwap: ProjectServicecreateEmptyProjectWithSwap;
+  static readonly getProject: ProjectServicegetProject;
+  static readonly getProjects: ProjectServicegetProjects;
   static readonly updateProject: ProjectServiceupdateProject;
   static readonly updateOriginalProjectAndRemoveSwap: ProjectServiceupdateOriginalProjectAndRemoveSwap;
-  static readonly deleteProject: ProjectServicedeleteProject;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -91,6 +101,24 @@ export class ProjectServiceClient {
     requestMessage: google_protobuf_empty_pb.Empty,
     callback: (error: ServiceError|null, responseMessage: rpc_project_project_pb.CreateEmptyProjectWithSwapResponse|null) => void
   ): UnaryResponse;
+  getProject(
+    requestMessage: rpc_project_project_pb.GetProjectRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: rpc_project_project_pb.GetProjectResponse|null) => void
+  ): UnaryResponse;
+  getProject(
+    requestMessage: rpc_project_project_pb.GetProjectRequest,
+    callback: (error: ServiceError|null, responseMessage: rpc_project_project_pb.GetProjectResponse|null) => void
+  ): UnaryResponse;
+  getProjects(
+    requestMessage: google_protobuf_empty_pb.Empty,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: rpc_project_project_pb.GetProjectsResponse|null) => void
+  ): UnaryResponse;
+  getProjects(
+    requestMessage: google_protobuf_empty_pb.Empty,
+    callback: (error: ServiceError|null, responseMessage: rpc_project_project_pb.GetProjectsResponse|null) => void
+  ): UnaryResponse;
   updateProject(
     requestMessage: rpc_project_project_pb.UpdateProjectRequest,
     metadata: grpc.Metadata,
@@ -107,15 +135,6 @@ export class ProjectServiceClient {
   ): UnaryResponse;
   updateOriginalProjectAndRemoveSwap(
     requestMessage: rpc_project_project_pb.UpdateOriginalProjectAndRemoveSwapRequest,
-    callback: (error: ServiceError|null, responseMessage: rpc_common_response_pb.GeneralServiceResponse|null) => void
-  ): UnaryResponse;
-  deleteProject(
-    requestMessage: rpc_project_project_pb.DeleteProjectRequest,
-    metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: rpc_common_response_pb.GeneralServiceResponse|null) => void
-  ): UnaryResponse;
-  deleteProject(
-    requestMessage: rpc_project_project_pb.DeleteProjectRequest,
     callback: (error: ServiceError|null, responseMessage: rpc_common_response_pb.GeneralServiceResponse|null) => void
   ): UnaryResponse;
 }

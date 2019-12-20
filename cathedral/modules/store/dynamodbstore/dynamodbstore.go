@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
+	idCommon "github.com/vsjcloud/beaver/cathedral/common/id"
 	"github.com/vsjcloud/beaver/cathedral/modules/store"
 	"github.com/vsjcloud/beaver/cathedral/modules/store/rawvalue"
 )
@@ -32,7 +33,7 @@ func NewDynamoDBStore(sess *session.Session, table string) *DynamoDBStore {
 	}
 }
 
-func (d *DynamoDBStore) Put(ctx context.Context, id store.ID, value interface{}) error {
+func (d *DynamoDBStore) Put(ctx context.Context, id idCommon.ID, value interface{}) error {
 	av, err := encodeItem(id, value)
 	if err != nil {
 		return err
@@ -45,7 +46,7 @@ func (d *DynamoDBStore) Put(ctx context.Context, id store.ID, value interface{})
 	return err
 }
 
-func (d *DynamoDBStore) PutIfNotExists(ctx context.Context, id store.ID, value interface{}) (bool, error) {
+func (d *DynamoDBStore) PutIfNotExists(ctx context.Context, id idCommon.ID, value interface{}) (bool, error) {
 	av, err := encodeItem(id, value)
 	if err != nil {
 		return false, err
@@ -67,7 +68,7 @@ func (d *DynamoDBStore) PutIfNotExists(ctx context.Context, id store.ID, value i
 	return true, nil
 }
 
-func (d *DynamoDBStore) Get(ctx context.Context, id store.ID) (rawvalue.RawValue, error) {
+func (d *DynamoDBStore) Get(ctx context.Context, id idCommon.ID) (rawvalue.RawValue, error) {
 	avID, err := encodeID(id)
 	if err != nil {
 		return nil, err
@@ -88,7 +89,7 @@ func (d *DynamoDBStore) Get(ctx context.Context, id store.ID) (rawvalue.RawValue
 	return rawvalue.AVToDynamoDBAVRawValue(globalDecoder, av), nil
 }
 
-func (d *DynamoDBStore) Delete(ctx context.Context, id store.ID) error {
+func (d *DynamoDBStore) Delete(ctx context.Context, id idCommon.ID) error {
 	avID, err := encodeID(id)
 	if err != nil {
 		return err
@@ -101,7 +102,7 @@ func (d *DynamoDBStore) Delete(ctx context.Context, id store.ID) error {
 	return err
 }
 
-func (d *DynamoDBStore) DoesItemExists(ctx context.Context, key store.ID) (bool, error) {
+func (d *DynamoDBStore) DoesItemExists(ctx context.Context, key idCommon.ID) (bool, error) {
 	_, err := d.Get(ctx, key)
 	if err != nil {
 		if err == store.ErrNoSuchItem {
@@ -135,7 +136,7 @@ func (d *DynamoDBStore) bulkWrite(ctx context.Context, reqs []*dynamodb.WriteReq
 	return nil
 }
 
-func (d *DynamoDBStore) BulkPut(ctx context.Context, items map[store.ID]interface{}) error {
+func (d *DynamoDBStore) BulkPut(ctx context.Context, items map[idCommon.ID]interface{}) error {
 	reqs := make([]*dynamodb.WriteRequest, len(items))
 	i := 0
 	for id, value := range items {
@@ -153,7 +154,7 @@ func (d *DynamoDBStore) BulkPut(ctx context.Context, items map[store.ID]interfac
 	return d.bulkWrite(ctx, reqs)
 }
 
-func (d *DynamoDBStore) BulkDelete(ctx context.Context, ids map[store.ID]bool) error {
+func (d *DynamoDBStore) BulkDelete(ctx context.Context, ids map[idCommon.ID]bool) error {
 	reqs := make([]*dynamodb.WriteRequest, len(ids))
 	i := 0
 	for id := range ids {
@@ -171,8 +172,8 @@ func (d *DynamoDBStore) BulkDelete(ctx context.Context, ids map[store.ID]bool) e
 	return d.bulkWrite(ctx, reqs)
 }
 
-func (d *DynamoDBStore) BulkGet(ctx context.Context, ids map[store.ID]bool) (map[store.ID]rawvalue.RawValue, error) {
-	items := make(map[store.ID]rawvalue.RawValue)
+func (d *DynamoDBStore) BulkGet(ctx context.Context, ids map[idCommon.ID]bool) (map[idCommon.ID]rawvalue.RawValue, error) {
+	items := make(map[idCommon.ID]rawvalue.RawValue)
 	avKeys := make([]map[string]*dynamodb.AttributeValue, len(ids))
 	i := 0
 	for id := range ids {
@@ -216,13 +217,13 @@ func (d *DynamoDBStore) BulkGet(ctx context.Context, ids map[store.ID]bool) (map
 	return items, nil
 }
 
-func (d *DynamoDBStore) BulkGetPartition(ctx context.Context, partition string) (map[store.ID]rawvalue.RawValue, error) {
+func (d *DynamoDBStore) BulkGetPartition(ctx context.Context, partition string) (map[idCommon.ID]rawvalue.RawValue, error) {
 	var exclusiveStartKey map[string]*dynamodb.AttributeValue
 	avPartitionKey, err := globalEncoder.Encode(partition)
 	if err != nil {
 		return nil, err
 	}
-	items := make(map[store.ID]rawvalue.RawValue)
+	items := make(map[idCommon.ID]rawvalue.RawValue)
 	for {
 		expressionAttributeValues := make(map[string]*dynamodb.AttributeValue)
 		expressionAttributeValues[":partitionKey"] = avPartitionKey

@@ -8,8 +8,8 @@ import (
 
 var GRPCErrUnauthorized = status.Error(codes.PermissionDenied, "unauthorized")
 
-func GRPCErr(code codes.Code, err error) error {
-	return status.Error(code, err.Error())
+func GRPCInternalErr(err error) error {
+	return status.Error(codes.Internal, err.Error())
 }
 
 func HTTPErrUnauthorized(w http.ResponseWriter) {

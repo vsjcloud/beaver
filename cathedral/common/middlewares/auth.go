@@ -86,10 +86,9 @@ func Auth(config *config.Auth) func(http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			rr := r
 			if h := r.Header.Get("Authorization"); len(h) > 7 && h[0:7] == "Bearer " {
-				rr = r.WithContext(context.WithValue(r.Context(), AuthContextKey, h[7:]))
-				// if claims, err := getAuthClaims([]byte(config.SigningSecret), h[7:]); err == nil {
-				// 	rr = r.WithContext(context.WithValue(r.Context(), AuthContextKey, claims))
-				// }
+				if claims, err := getAuthClaims([]byte(config.SigningSecret), h[7:]); err == nil {
+					rr = r.WithContext(context.WithValue(r.Context(), AuthContextKey, claims))
+				}
 			}
 			next.ServeHTTP(w, rr)
 		})

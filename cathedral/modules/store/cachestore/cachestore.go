@@ -3,6 +3,7 @@ package cachestore
 import (
 	"context"
 	"github.com/hashicorp/golang-lru"
+	idCommon "github.com/vsjcloud/beaver/cathedral/common/id"
 	"github.com/vsjcloud/beaver/cathedral/modules/store"
 	"github.com/vsjcloud/beaver/cathedral/modules/store/rawvalue"
 	"sync"
@@ -12,7 +13,7 @@ type CacheStore struct {
 	store      store.Store
 	cache      *lru.ARCCache
 	mu         sync.Mutex
-	partitions map[string]map[store.ID]bool
+	partitions map[string]map[idCommon.ID]bool
 }
 
 func NewCacheStore(innerStore store.Store, maxSize int) (*CacheStore, error) {
@@ -23,18 +24,18 @@ func NewCacheStore(innerStore store.Store, maxSize int) (*CacheStore, error) {
 	return &CacheStore{
 		store:      innerStore,
 		cache:      cache,
-		partitions: make(map[string]map[store.ID]bool),
+		partitions: make(map[string]map[idCommon.ID]bool),
 	}, nil
 }
 
-func (c *CacheStore) cacheAdd(id store.ID, raw rawvalue.RawValue) {
+func (c *CacheStore) cacheAdd(id idCommon.ID, raw rawvalue.RawValue) {
 	c.cache.Add(id, raw)
 	if partition, ok := c.partitions[id.Partition]; ok {
 		partition[id] = true
 	}
 }
 
-func (c *CacheStore) cacheGet(id store.ID) (rawvalue.RawValue, error) {
+func (c *CacheStore) cacheGet(id idCommon.ID) (rawvalue.RawValue, error) {
 	value, ok := c.cache.Get(id)
 	if !ok {
 		return nil, store.ErrNoSuchItem
@@ -42,14 +43,14 @@ func (c *CacheStore) cacheGet(id store.ID) (rawvalue.RawValue, error) {
 	return value.(rawvalue.RawValue), nil
 }
 
-func (c *CacheStore) cacheDelete(id store.ID) {
+func (c *CacheStore) cacheDelete(id idCommon.ID) {
 	c.cache.Remove(id)
 	if partition, ok := c.partitions[id.Partition]; ok {
 		delete(partition, id)
 	}
 }
 
-func (c *CacheStore) Put(ctx context.Context, id store.ID, value interface{}) error {
+func (c *CacheStore) Put(ctx context.Context, id idCommon.ID, value interface{}) error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -61,7 +62,7 @@ func (c *CacheStore) Put(ctx context.Context, id store.ID, value interface{}) er
 	return nil
 }
 
-func (c *CacheStore) PutIfNotExists(ctx context.Context, id store.ID, value interface{}) (bool, error) {
+func (c *CacheStore) PutIfNotExists(ctx context.Context, id idCommon.ID, value interface{}) (bool, error) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -79,7 +80,7 @@ func (c *CacheStore) PutIfNotExists(ctx context.Context, id store.ID, value inte
 	return false, nil
 }
 
-func (c *CacheStore) Get(ctx context.Context, id store.ID) (rawvalue.RawValue, error) {
+func (c *CacheStore) Get(ctx context.Context, id idCommon.ID) (rawvalue.RawValue, error) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -98,7 +99,7 @@ func (c *CacheStore) Get(ctx context.Context, id store.ID) (rawvalue.RawValue, e
 	return raw, nil
 }
 
-func (c *CacheStore) Delete(ctx context.Context, id store.ID) error {
+func (c *CacheStore) Delete(ctx context.Context, id idCommon.ID) error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -109,7 +110,7 @@ func (c *CacheStore) Delete(ctx context.Context, id store.ID) error {
 	return nil
 }
 
-func (c *CacheStore) DoesItemExists(ctx context.Context, id store.ID) (bool, error) {
+func (c *CacheStore) DoesItemExists(ctx context.Context, id idCommon.ID) (bool, error) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -127,7 +128,7 @@ func (c *CacheStore) DoesItemExists(ctx context.Context, id store.ID) (bool, err
 	return true, nil
 }
 
-func (c *CacheStore) BulkPut(ctx context.Context, items map[store.ID]interface{}) error {
+func (c *CacheStore) BulkPut(ctx context.Context, items map[idCommon.ID]interface{}) error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -140,7 +141,7 @@ func (c *CacheStore) BulkPut(ctx context.Context, items map[store.ID]interface{}
 	return nil
 }
 
-func (c *CacheStore) BulkDelete(ctx context.Context, ids map[store.ID]bool) error {
+func (c *CacheStore) BulkDelete(ctx context.Context, ids map[idCommon.ID]bool) error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -153,12 +154,12 @@ func (c *CacheStore) BulkDelete(ctx context.Context, ids map[store.ID]bool) erro
 	return nil
 }
 
-func (c *CacheStore) BulkGet(ctx context.Context, ids map[store.ID]bool) (map[store.ID]rawvalue.RawValue, error) {
+func (c *CacheStore) BulkGet(ctx context.Context, ids map[idCommon.ID]bool) (map[idCommon.ID]rawvalue.RawValue, error) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
-	result := make(map[store.ID]rawvalue.RawValue)
-	notInCache := make(map[store.ID]bool)
+	result := make(map[idCommon.ID]rawvalue.RawValue)
+	notInCache := make(map[idCommon.ID]bool)
 	for id := range ids {
 		raw, err := c.cacheGet(id)
 		if err == nil {
@@ -180,18 +181,21 @@ func (c *CacheStore) BulkGet(ctx context.Context, ids map[store.ID]bool) (map[st
 	return result, nil
 }
 
-func (c *CacheStore) BulkGetPartition(ctx context.Context, partition string) (map[store.ID]rawvalue.RawValue, error) {
+func (c *CacheStore) BulkGetPartition(ctx context.Context, partition string) (map[idCommon.ID]rawvalue.RawValue, error) {
 	c.mu.Lock()
-	defer c.mu.Unlock()
 
 	if partitionIDs, ok := c.partitions[partition]; ok {
+		c.mu.Unlock()
 		return c.BulkGet(ctx, partitionIDs)
 	}
+
+	defer c.mu.Unlock()
+
 	result, err := c.store.BulkGetPartition(ctx, partition)
 	if err != nil {
 		return nil, err
 	}
-	c.partitions[partition] = make(map[store.ID]bool)
+	c.partitions[partition] = make(map[idCommon.ID]bool)
 	for id, raw := range result {
 		c.cacheAdd(id, raw)
 	}

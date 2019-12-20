@@ -13,11 +13,11 @@ func setupRouter(router chi.Router, modules *ModuleSet) {
 }
 
 func setupAPIRouter(router chi.Router, modules *ModuleSet) {
-	router.Use(middlewares.Auth(modules.Config.Auth))
 	router.Route("/grpc", func(grpcRouter chi.Router) {
 		grpcRouter.Handle("/*", grpcHandler(modules))
 	})
 	router.Route("/photo", func (photoRouter chi.Router) {
+		photoRouter.Use(middlewares.Auth(modules.Config.Auth))
 		modules.PhotoService.RegisterRoutes(photoRouter)
 	})
 }

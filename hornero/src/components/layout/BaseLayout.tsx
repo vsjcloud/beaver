@@ -1,4 +1,4 @@
-import {Button, Classes, Icon, IconName, Navbar} from "@blueprintjs/core";
+import {Button, Classes, Icon, IconName, Navbar, Spinner} from "@blueprintjs/core";
 import {Alignment} from "@blueprintjs/core/lib/esm/common/alignment";
 import {Intent} from "@blueprintjs/core/lib/esm/common/intent";
 import {IconNames} from "@blueprintjs/icons";
@@ -8,7 +8,7 @@ import {Link, useRouteMatch} from "react-router-dom";
 
 import {useAuth0} from "../auth0/Auth0Provider";
 
-function NavLink(props: {to: string; text: string; icon: IconName}): React.ReactElement {
+function NavLink(props: { to: string; text: string; icon: IconName }): React.ReactElement {
   const route = useRouteMatch();
   return (
     <Link
@@ -22,7 +22,7 @@ function NavLink(props: {to: string; text: string; icon: IconName}): React.React
   );
 }
 
-export function BaseLayout(props: React.PropsWithChildren<{}>): React.ReactElement {
+export function BaseLayout(props: React.PropsWithChildren<{ loading?: boolean }>): React.ReactElement {
   const {logout} = useAuth0()!;
   return (
     <div className="min-h-screen bg-light-gray-5">
@@ -34,18 +34,24 @@ export function BaseLayout(props: React.PropsWithChildren<{}>): React.ReactEleme
               <span className="ml-1 text-xl">VSJ</span>
             </Navbar.Heading>
             <Navbar.Divider/>
-            <NavLink to="/" text="Dự án" icon={IconNames.PROJECTS}/>
+            <NavLink to="/projects" text="Dự án" icon={IconNames.PROJECTS}/>
           </Navbar.Group>
           <Navbar.Group align={Alignment.RIGHT}>
             <Button icon={IconNames.LOG_OUT} minimal={true} intent={Intent.DANGER} onClick={logout}/>
           </Navbar.Group>
         </div>
       </Navbar>
-      <div style={{paddingLeft: "15px", paddingRight: "15px"}}>
-        <div className="mx-auto" style={{width: "1260px"}}>
-          {props.children}
+      {props.loading ? (
+        <div className="flex justify-center items-center w-full" style={{height: "calc(100vh - 50px)"}}>
+          <Spinner intent={Intent.PRIMARY}/>
         </div>
-      </div>
+      ) : (
+        <div style={{paddingLeft: "15px", paddingRight: "15px"}}>
+          <div className="mx-auto" style={{width: "1260px"}}>
+            {props.children}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

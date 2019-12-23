@@ -24,13 +24,13 @@ type ProjectServicegetProjectWithSwap = {
   readonly responseType: typeof rpc_project_project_pb.GetProjectWithSwapResponse;
 };
 
-type ProjectServicegetProjects = {
+type ProjectServicegetProjectsWithSwap = {
   readonly methodName: string;
   readonly service: typeof ProjectService;
   readonly requestStream: false;
   readonly responseStream: false;
   readonly requestType: typeof google_protobuf_empty_pb.Empty;
-  readonly responseType: typeof rpc_project_project_pb.GetProjectsResponse;
+  readonly responseType: typeof rpc_project_project_pb.GetProjectsWithSwapResponse;
 };
 
 type ProjectServiceupdateProject = {
@@ -55,7 +55,7 @@ export class ProjectService {
   static readonly serviceName: string;
   static readonly createEmptyProjectWithSwap: ProjectServicecreateEmptyProjectWithSwap;
   static readonly getProjectWithSwap: ProjectServicegetProjectWithSwap;
-  static readonly getProjects: ProjectServicegetProjects;
+  static readonly getProjectsWithSwap: ProjectServicegetProjectsWithSwap;
   static readonly updateProject: ProjectServiceupdateProject;
   static readonly updateOriginalProjectAndRemoveSwap: ProjectServiceupdateOriginalProjectAndRemoveSwap;
 }
@@ -110,14 +110,14 @@ export class ProjectServiceClient {
     requestMessage: rpc_project_project_pb.GetProjectWithSwapRequest,
     callback: (error: ServiceError|null, responseMessage: rpc_project_project_pb.GetProjectWithSwapResponse|null) => void
   ): UnaryResponse;
-  getProjects(
+  getProjectsWithSwap(
     requestMessage: google_protobuf_empty_pb.Empty,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: rpc_project_project_pb.GetProjectsResponse|null) => void
+    callback: (error: ServiceError|null, responseMessage: rpc_project_project_pb.GetProjectsWithSwapResponse|null) => void
   ): UnaryResponse;
-  getProjects(
+  getProjectsWithSwap(
     requestMessage: google_protobuf_empty_pb.Empty,
-    callback: (error: ServiceError|null, responseMessage: rpc_project_project_pb.GetProjectsResponse|null) => void
+    callback: (error: ServiceError|null, responseMessage: rpc_project_project_pb.GetProjectsWithSwapResponse|null) => void
   ): UnaryResponse;
   updateProject(
     requestMessage: rpc_project_project_pb.UpdateProjectRequest,

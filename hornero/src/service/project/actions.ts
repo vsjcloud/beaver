@@ -3,9 +3,9 @@ import * as emptyPB from "google-protobuf/google/protobuf/empty_pb";
 import {GeneralServiceResponse} from "../../generated/proto/rpc/common/response_pb";
 import {
   CreateEmptyProjectWithSwapResponse,
+  GetProjectsWithSwapResponse,
   GetProjectWithSwapRequest,
   GetProjectWithSwapResponse,
-  GetProjectsResponse,
   UpdateOriginalProjectAndRemoveSwapRequest,
   UpdateProjectRequest,
 } from "../../generated/proto/rpc/project/project_pb";
@@ -26,9 +26,9 @@ export function getProjectWithSwap(authToken: string, request: GetProjectWithSwa
   });
 }
 
-export function getProjects(authToken: string, request: emptyPB.Empty): Promise<GetProjectsResponse> {
+export function getProjectsWithSwap(authToken: string, request: emptyPB.Empty): Promise<GetProjectsWithSwapResponse> {
   return GRPCService.invokeWithAuthToken(authToken, {
-    methodDescriptor: ProjectService.getProjects,
+    methodDescriptor: ProjectService.getProjectsWithSwap,
     request: request,
   });
 }

@@ -31,13 +31,13 @@ ProjectService.getProjectWithSwap = {
   responseType: rpc_project_project_pb.GetProjectWithSwapResponse
 };
 
-ProjectService.getProjects = {
-  methodName: "getProjects",
+ProjectService.getProjectsWithSwap = {
+  methodName: "getProjectsWithSwap",
   service: ProjectService,
   requestStream: false,
   responseStream: false,
   requestType: google_protobuf_empty_pb.Empty,
-  responseType: rpc_project_project_pb.GetProjectsResponse
+  responseType: rpc_project_project_pb.GetProjectsWithSwapResponse
 };
 
 ProjectService.updateProject = {
@@ -127,11 +127,11 @@ ProjectServiceClient.prototype.getProjectWithSwap = function getProjectWithSwap(
   };
 };
 
-ProjectServiceClient.prototype.getProjects = function getProjects(requestMessage, metadata, callback) {
+ProjectServiceClient.prototype.getProjectsWithSwap = function getProjectsWithSwap(requestMessage, metadata, callback) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
-  var client = grpc.unary(ProjectService.getProjects, {
+  var client = grpc.unary(ProjectService.getProjectsWithSwap, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

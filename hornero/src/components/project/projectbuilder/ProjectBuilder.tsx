@@ -1,12 +1,11 @@
-import {Intent, Spinner} from "@blueprintjs/core";
 import React from "react";
 import {useLocation, useParams} from "react-router";
 
-import {Project} from "../../generated/proto/model/project_pb";
-import {GetProjectWithSwapRequest} from "../../generated/proto/rpc/project/project_pb";
-import {ProjectService} from "../../service/project";
-import {useAuth0} from "../auth0/Auth0Provider";
-import {BaseLayout} from "../layout/BaseLayout";
+import {Project} from "../../../generated/proto/model/project_pb";
+import {GetProjectWithSwapRequest} from "../../../generated/proto/rpc/project/project_pb";
+import {ProjectService} from "../../../service/project";
+import {useAuth0} from "../../auth0/Auth0Provider";
+import {BaseLayout} from "../../layout/BaseLayout";
 
 function useQuery(): URLSearchParams {
   return new URLSearchParams(useLocation().search);
@@ -39,14 +38,8 @@ export function ProjectBuilder(): React.ReactElement {
   console.log(project);
 
   return (
-    <BaseLayout>
-      {loading ? (
-        <div className="flex justify-center items-center" style={{height: "calc(100vh - 50px)"}}>
-          <Spinner intent={Intent.PRIMARY}/>
-        </div>
-      ) : (
-        <div>{project.getName()}</div>
-      )}
+    <BaseLayout loading={loading}>
+      <div>{project.getName()}</div>
     </BaseLayout>
   );
 }

@@ -69,10 +69,10 @@ func (s *service) GetProjectWithSwap(
 	}, nil
 }
 
-func (s *service) GetProjects(
+func (s *service) GetProjectsWithSwap(
 	ctx context.Context,
 	_ *empty.Empty,
-) (*project.GetProjectsResponse, error) {
+) (*project.GetProjectsWithSwapResponse, error) {
 	raws, err := s.modelStore.BulkGetPartition(ctx, id.ProjectPartition)
 	if err != nil {
 		return nil, err
@@ -85,8 +85,23 @@ func (s *service) GetProjects(
 		}
 		projects[projectID.String()] = projectModel
 	}
-	return &project.GetProjectsResponse{
+	swaps := make(map[string]*model.Project)
+	for projectID := range raws {
+		swapID := id.ProjectSwapID(projectID)
+		swapRaw, err := s.modelStore.Get(ctx, swapID)
+		if err == nil {
+			projectModel := &model.Project{}
+			if decodeErr := swapRaw.Decode(projectModel); decodeErr != nil {
+				return nil, err
+			}
+			swaps[swapID.String()] = projectModel
+		} else if err != store.ErrNoSuchItem {
+			return nil, err
+		}
+	}
+	return &project.GetProjectsWithSwapResponse{
 		Projects: projects,
+		Swaps:    swaps,
 	}, nil
 }
 

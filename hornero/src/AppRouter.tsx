@@ -6,7 +6,8 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {Auth0Callback} from "./components/auth0/Auth0Callback";
 import {Auth0Provider, useAuth0} from "./components/auth0/Auth0Provider";
 import {Dashboard} from "./components/dashboard/Dashboard";
-import {ProjectBuilder} from "./components/projectbuilder/ProjectBuilder";
+import {ProjectBuilder} from "./components/project/projectbuilder/ProjectBuilder";
+import {ProjectsGrid} from "./components/project/ProjectsGrid";
 import {Config} from "./config";
 
 export const AppRouter: React.FC = () => {
@@ -44,7 +45,8 @@ export const AuthGuard: React.FC = () => {
     return (
       <Switch>
         <Route exact={true} path="/" component={Dashboard}/>
-        <Route path="/project/build/:projectID" component={ProjectBuilder}/>
+        <Route path="/projects" component={ProjectsGrid}/>
+        <Route path="/project/:projectID/build" component={ProjectBuilder}/>
       </Switch>
     );
   }

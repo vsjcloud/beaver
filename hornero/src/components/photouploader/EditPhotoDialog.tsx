@@ -6,10 +6,8 @@ import React from "react";
 
 import {Photo} from "./PhotoUploader";
 
-import {Field} from "../../core/form/field";
+import {FormField} from "../../core/form/field";
 import {RequiredRule} from "../../core/form/rules";
-import {FieldValidator, NoopValidator} from "../../core/form/validator";
-
 
 export interface EditPhotoDialogProps {
   photo?: Photo;
@@ -19,15 +17,11 @@ export interface EditPhotoDialogProps {
 }
 
 export interface EditPhotoDialogState {
-  name: Field<string>;
-  description: Field<string>;
+  name: FormField<string>;
+  description: FormField<string>;
 }
 
 export default class EditPhotoDialog extends React.PureComponent<EditPhotoDialogProps, EditPhotoDialogState> {
-  private static readonly nameValidator: FieldValidator = new FieldValidator([
-    new RequiredRule("Tên ảnh không được để trống"),
-  ]);
-
   public constructor(props: EditPhotoDialogProps) {
     super(props);
     this.state = EditPhotoDialog.stateFromProps(props);
@@ -38,8 +32,10 @@ export default class EditPhotoDialog extends React.PureComponent<EditPhotoDialog
     const nameValue = photo ? photo.name : "";
     const descriptionValue = photo ? photo.description : "";
     return {
-      name: new Field<string>(nameValue, this.nameValidator),
-      description: new Field<string>(descriptionValue, NoopValidator),
+      name: new FormField<string>(nameValue, [
+        new RequiredRule("Tên ảnh không được để trống"),
+      ]),
+      description: new FormField<string>(descriptionValue, []),
     };
   }
 

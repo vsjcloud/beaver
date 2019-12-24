@@ -62,7 +62,7 @@ if (goog.DEBUG && !COMPILED) {
 if (jspb.Message.GENERATE_TO_OBJECT) {
 /**
  * Creates an object representation of this proto suitable for use in Soy templates.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * FormField names that are reserved in JavaScript and will be renamed to pb_name.
  * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
  * For the list of reserved names please see:
  *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
@@ -241,7 +241,7 @@ proto.model.PhotoResolution.prototype.setSize = function(value) {
 if (jspb.Message.GENERATE_TO_OBJECT) {
 /**
  * Creates an object representation of this proto suitable for use in Soy templates.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * FormField names that are reserved in JavaScript and will be renamed to pb_name.
  * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
  * For the list of reserved names please see:
  *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.

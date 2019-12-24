@@ -1,35 +1,39 @@
 import {Intent} from "@blueprintjs/core";
 
-import {Validator, ValidateResult} from "./validator";
+import {SUCCESS_VALIDATE_RESULT, ValidationResult, ValidationRule} from "./rules";
 
-export class Field<V> {
+export class FormField<V> {
   private readonly value: V;
   private touched: boolean;
-  private readonly validator: Validator<V>;
-  private readonly validatorResult?: ValidateResult;
+  private readonly rules: ValidationRule<V>[];
+  private readonly result: ValidationResult;
 
-  public constructor(value: V, validator: Validator<V>) {
-    this.value = value;
+  public constructor(defaultValue: V, rules: ValidationRule<V>[]) {
+    this.value = defaultValue;
     this.touched = false;
-    this.validator = validator;
-    this.validatorResult = this.validator.validate(value);
+    this.rules = rules;
+    for (const rule of rules) {
+      const currentResult = rule.validate(defaultValue);
+      if (!currentResult.success) {
+        this.result = currentResult;
+        return;
+      }
+    }
+    this.result = SUCCESS_VALIDATE_RESULT;
   }
 
   public getValue(): V {
     return this.value;
   }
 
-  public updateValue(value: V): Field<V> {
-    const newField = new Field(value, this.validator);
+  public updateValue(value: V): FormField<V> {
+    const newField = new FormField(value, this.rules);
     newField.touched = true;
     return newField;
   }
 
   public isSuccess(): boolean {
-    if (this.validatorResult) {
-      return this.validatorResult.success;
-    }
-    return false;
+    return this.result.success;
   }
 
   public intent(): Intent {
@@ -40,9 +44,8 @@ export class Field<V> {
   }
 
   public failureMessage(): string {
-    if (this.validatorResult) {
-      return this.validatorResult.message;
-    }
-    return "";
+    return this.result.message;
   }
 }
+
+export const EMPTY_STRING_FORM_FIELD = new FormField<string>("", []);

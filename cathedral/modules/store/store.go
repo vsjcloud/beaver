@@ -6,6 +6,7 @@ import (
 	"github.com/vsjcloud/beaver/cathedral/modules/store/rawvalue"
 )
 
+// TODO: add support for permissions
 type Store interface {
 	Put(ctx context.Context, id id.ID, value interface{}) error
 	PutIfNotExists(ctx context.Context, id id.ID, value interface{}) (bool, error)

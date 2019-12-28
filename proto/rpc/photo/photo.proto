@@ -1,0 +1,26 @@
+syntax = "proto3";
+package photo;
+option go_package = "github.com/vsjcloud/beaver/cathedral/generated/proto/rpc/photo";
+
+import "model/photo.proto";
+
+service PhotoService {
+    rpc getPhoto(GetPhotoRequest) returns (GetPhotoResponse);
+    rpc bulkGetPhotos(BulkGetPhotosRequest) returns (BulkGetPhotosResponse);
+}
+
+message GetPhotoRequest {
+    string photoID = 1;
+}
+
+message GetPhotoResponse {
+    model.Photo photo = 1;
+}
+
+message BulkGetPhotosRequest {
+    map<string, bool> photoIDs = 1;
+}
+
+message BulkGetPhotosResponse {
+    map<string, model.Photo> photos = 1;
+}

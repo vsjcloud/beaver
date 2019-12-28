@@ -4,9 +4,8 @@ import (
 	"github.com/google/wire"
 	"github.com/vsjcloud/beaver/cathedral/common/auth"
 	"github.com/vsjcloud/beaver/cathedral/common/config"
-	"github.com/vsjcloud/beaver/cathedral/generated/proto/rpc/project"
 	"github.com/vsjcloud/beaver/cathedral/modules/photo"
-	projectImpl "github.com/vsjcloud/beaver/cathedral/modules/project"
+	"github.com/vsjcloud/beaver/cathedral/modules/project"
 	"github.com/vsjcloud/beaver/cathedral/modules/store"
 	"github.com/vsjcloud/beaver/cathedral/modules/store/modelstore"
 	"go.uber.org/zap"
@@ -21,7 +20,7 @@ type ModuleSet struct {
 	ModelStore store.Store
 
 	// Services
-	ProjectService project.ProjectServiceServer
+	ProjectService *project.Service
 	PhotoService   *photo.Service
 }
 
@@ -36,7 +35,7 @@ var configModules = wire.NewSet(
 )
 
 var serviceModules = wire.NewSet(
-	projectImpl.NewService,
+	project.NewService,
 	photo.NewService,
 )
 

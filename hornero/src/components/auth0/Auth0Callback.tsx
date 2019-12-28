@@ -4,14 +4,14 @@ import React from "react";
 
 import {useAuth0} from "./Auth0Provider";
 
-export const Auth0Callback: React.FC = () => {
+export function Auth0Callback(): React.ReactElement {
   const {authenticated, handleRedirectCallback} = useAuth0()!;
 
-  React.useEffect(() => {
+  React.useEffect(function () {
     if (authenticated === undefined || authenticated) {
       return;
     }
-    (async (): Promise<void> => {
+    (async function(): Promise<void> {
       await handleRedirectCallback();
     })();
   }, [authenticated, handleRedirectCallback]);
@@ -21,4 +21,4 @@ export const Auth0Callback: React.FC = () => {
       <Spinner intent={Intent.PRIMARY}/>
     </div>
   )
-};
+}

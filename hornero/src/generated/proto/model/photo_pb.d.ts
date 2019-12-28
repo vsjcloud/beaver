@@ -54,3 +54,29 @@ export namespace Photo {
   }
 }
 
+export class PhotoAndID extends jspb.Message {
+  getPhotoid(): string;
+  setPhotoid(value: string): void;
+
+  hasPhoto(): boolean;
+  clearPhoto(): void;
+  getPhoto(): Photo | undefined;
+  setPhoto(value?: Photo): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): PhotoAndID.AsObject;
+  static toObject(includeInstance: boolean, msg: PhotoAndID): PhotoAndID.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: PhotoAndID, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): PhotoAndID;
+  static deserializeBinaryFromReader(message: PhotoAndID, reader: jspb.BinaryReader): PhotoAndID;
+}
+
+export namespace PhotoAndID {
+  export type AsObject = {
+    photoid: string,
+    photo?: Photo.AsObject,
+  }
+}
+

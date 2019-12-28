@@ -12,3 +12,8 @@ message Photo {
     string name = 1;
     map<string, PhotoResolution> resolutions = 2;
 }
+
+message PhotoAndID {
+    string photoID = 1;
+    Photo photo = 2;
+}

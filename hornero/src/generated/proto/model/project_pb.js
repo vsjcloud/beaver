@@ -86,7 +86,7 @@ if (goog.DEBUG && !COMPILED) {
 if (jspb.Message.GENERATE_TO_OBJECT) {
 /**
  * Creates an object representation of this proto suitable for use in Soy templates.
- * FormField names that are reserved in JavaScript and will be renamed to pb_name.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
  * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
  * For the list of reserved names please see:
  *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
@@ -238,7 +238,7 @@ proto.model.ProjectInfo.prototype.setValue = function(value) {
 if (jspb.Message.GENERATE_TO_OBJECT) {
 /**
  * Creates an object representation of this proto suitable for use in Soy templates.
- * FormField names that are reserved in JavaScript and will be renamed to pb_name.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
  * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
  * For the list of reserved names please see:
  *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
@@ -397,7 +397,7 @@ proto.model.Project.repeatedFields_ = [3,7];
 if (jspb.Message.GENERATE_TO_OBJECT) {
 /**
  * Creates an object representation of this proto suitable for use in Soy templates.
- * FormField names that are reserved in JavaScript and will be renamed to pb_name.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
  * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
  * For the list of reserved names please see:
  *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
@@ -427,8 +427,8 @@ proto.model.Project.toObject = function(includeInstance, msg) {
     proto.model.ProjectInfo.toObject, includeInstance),
     startdate: (f = msg.getStartdate()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
     finishdate: (f = msg.getFinishdate()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
-    featurephotoid: (f = msg.getFeaturephotoid()) && proto.model.ProjectPhoto.toObject(includeInstance, f),
-    albumphotoidsList: jspb.Message.toObjectList(msg.getAlbumphotoidsList(),
+    featurephoto: (f = msg.getFeaturephoto()) && proto.model.ProjectPhoto.toObject(includeInstance, f),
+    albumphotosList: jspb.Message.toObjectList(msg.getAlbumphotosList(),
     proto.model.ProjectPhoto.toObject, includeInstance)
   };
 
@@ -492,12 +492,12 @@ proto.model.Project.deserializeBinaryFromReader = function(msg, reader) {
     case 6:
       var value = new proto.model.ProjectPhoto;
       reader.readMessage(value,proto.model.ProjectPhoto.deserializeBinaryFromReader);
-      msg.setFeaturephotoid(value);
+      msg.setFeaturephoto(value);
       break;
     case 7:
       var value = new proto.model.ProjectPhoto;
       reader.readMessage(value,proto.model.ProjectPhoto.deserializeBinaryFromReader);
-      msg.addAlbumphotoids(value);
+      msg.addAlbumphotos(value);
       break;
     default:
       reader.skipField();
@@ -566,7 +566,7 @@ proto.model.Project.serializeBinaryToWriter = function(message, writer) {
       google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
     );
   }
-  f = message.getFeaturephotoid();
+  f = message.getFeaturephoto();
   if (f != null) {
     writer.writeMessage(
       6,
@@ -574,7 +574,7 @@ proto.model.Project.serializeBinaryToWriter = function(message, writer) {
       proto.model.ProjectPhoto.serializeBinaryToWriter
     );
   }
-  f = message.getAlbumphotoidsList();
+  f = message.getAlbumphotosList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       7,
@@ -716,17 +716,17 @@ proto.model.Project.prototype.hasFinishdate = function() {
 
 
 /**
- * optional ProjectPhoto featurePhotoID = 6;
+ * optional ProjectPhoto featurePhoto = 6;
  * @return {?proto.model.ProjectPhoto}
  */
-proto.model.Project.prototype.getFeaturephotoid = function() {
+proto.model.Project.prototype.getFeaturephoto = function() {
   return /** @type{?proto.model.ProjectPhoto} */ (
     jspb.Message.getWrapperField(this, proto.model.ProjectPhoto, 6));
 };
 
 
 /** @param {?proto.model.ProjectPhoto|undefined} value */
-proto.model.Project.prototype.setFeaturephotoid = function(value) {
+proto.model.Project.prototype.setFeaturephoto = function(value) {
   jspb.Message.setWrapperField(this, 6, value);
 };
 
@@ -734,8 +734,8 @@ proto.model.Project.prototype.setFeaturephotoid = function(value) {
 /**
  * Clears the message field making it undefined.
  */
-proto.model.Project.prototype.clearFeaturephotoid = function() {
-  this.setFeaturephotoid(undefined);
+proto.model.Project.prototype.clearFeaturephoto = function() {
+  this.setFeaturephoto(undefined);
 };
 
 
@@ -743,23 +743,23 @@ proto.model.Project.prototype.clearFeaturephotoid = function() {
  * Returns whether this field is set.
  * @return {boolean}
  */
-proto.model.Project.prototype.hasFeaturephotoid = function() {
+proto.model.Project.prototype.hasFeaturephoto = function() {
   return jspb.Message.getField(this, 6) != null;
 };
 
 
 /**
- * repeated ProjectPhoto albumPhotoIDs = 7;
+ * repeated ProjectPhoto albumPhotos = 7;
  * @return {!Array<!proto.model.ProjectPhoto>}
  */
-proto.model.Project.prototype.getAlbumphotoidsList = function() {
+proto.model.Project.prototype.getAlbumphotosList = function() {
   return /** @type{!Array<!proto.model.ProjectPhoto>} */ (
     jspb.Message.getRepeatedWrapperField(this, proto.model.ProjectPhoto, 7));
 };
 
 
 /** @param {!Array<!proto.model.ProjectPhoto>} value */
-proto.model.Project.prototype.setAlbumphotoidsList = function(value) {
+proto.model.Project.prototype.setAlbumphotosList = function(value) {
   jspb.Message.setRepeatedWrapperField(this, 7, value);
 };
 
@@ -769,7 +769,7 @@ proto.model.Project.prototype.setAlbumphotoidsList = function(value) {
  * @param {number=} opt_index
  * @return {!proto.model.ProjectPhoto}
  */
-proto.model.Project.prototype.addAlbumphotoids = function(opt_value, opt_index) {
+proto.model.Project.prototype.addAlbumphotos = function(opt_value, opt_index) {
   return jspb.Message.addToRepeatedWrapperField(this, 7, opt_value, proto.model.ProjectPhoto, opt_index);
 };
 
@@ -777,8 +777,8 @@ proto.model.Project.prototype.addAlbumphotoids = function(opt_value, opt_index) 
 /**
  * Clears the list making it empty but non-null.
  */
-proto.model.Project.prototype.clearAlbumphotoidsList = function() {
-  this.setAlbumphotoidsList([]);
+proto.model.Project.prototype.clearAlbumphotosList = function() {
+  this.setAlbumphotosList([]);
 };
 
 

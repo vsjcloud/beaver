@@ -156,7 +156,7 @@ if (goog.DEBUG && !COMPILED) {
 if (jspb.Message.GENERATE_TO_OBJECT) {
 /**
  * Creates an object representation of this proto suitable for use in Soy templates.
- * FormField names that are reserved in JavaScript and will be renamed to pb_name.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
  * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
  * For the list of reserved names please see:
  *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
@@ -281,7 +281,7 @@ proto.project.CreateEmptyProjectWithSwapResponse.prototype.setProjectid = functi
 if (jspb.Message.GENERATE_TO_OBJECT) {
 /**
  * Creates an object representation of this proto suitable for use in Soy templates.
- * FormField names that are reserved in JavaScript and will be renamed to pb_name.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
  * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
  * For the list of reserved names please see:
  *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
@@ -406,7 +406,7 @@ proto.project.GetProjectWithSwapRequest.prototype.setProjectid = function(value)
 if (jspb.Message.GENERATE_TO_OBJECT) {
 /**
  * Creates an object representation of this proto suitable for use in Soy templates.
- * FormField names that are reserved in JavaScript and will be renamed to pb_name.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
  * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
  * For the list of reserved names please see:
  *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
@@ -598,7 +598,7 @@ proto.project.GetProjectWithSwapResponse.prototype.hasSwap = function() {
 if (jspb.Message.GENERATE_TO_OBJECT) {
 /**
  * Creates an object representation of this proto suitable for use in Soy templates.
- * FormField names that are reserved in JavaScript and will be renamed to pb_name.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
  * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
  * For the list of reserved names please see:
  *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
@@ -760,7 +760,7 @@ proto.project.GetProjectsWithSwapResponse.prototype.clearSwapsMap = function() {
 if (jspb.Message.GENERATE_TO_OBJECT) {
 /**
  * Creates an object representation of this proto suitable for use in Soy templates.
- * FormField names that are reserved in JavaScript and will be renamed to pb_name.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
  * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
  * For the list of reserved names please see:
  *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
@@ -932,7 +932,7 @@ proto.project.UpdateProjectRequest.prototype.hasProject = function() {
 if (jspb.Message.GENERATE_TO_OBJECT) {
 /**
  * Creates an object representation of this proto suitable for use in Soy templates.
- * FormField names that are reserved in JavaScript and will be renamed to pb_name.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
  * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
  * For the list of reserved names please see:
  *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.

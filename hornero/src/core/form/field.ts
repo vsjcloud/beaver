@@ -26,6 +26,10 @@ export class FormField<V> {
     return this.value;
   }
 
+  public getRules(): ValidationRule<V>[] {
+    return this.rules;
+  }
+
   public updateValue(value: V): FormField<V> {
     const newField = new FormField(value, this.rules);
     newField.touched = true;
@@ -44,6 +48,9 @@ export class FormField<V> {
   }
 
   public failureMessage(): string {
+    if (!this.touched) {
+      return "";
+    }
     return this.result.message;
   }
 }

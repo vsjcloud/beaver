@@ -4,7 +4,8 @@ import (
 	"context"
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	serviceCommon "github.com/vsjcloud/beaver/cathedral/common/service"
-	protoProject "github.com/vsjcloud/beaver/cathedral/generated/proto/rpc/project"
+	rpcPhoto "github.com/vsjcloud/beaver/cathedral/generated/proto/rpc/photo"
+	rpcProject "github.com/vsjcloud/beaver/cathedral/generated/proto/rpc/project"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -13,7 +14,8 @@ import (
 )
 
 func registerGRPCServers(server *grpc.Server, modules *ModuleSet) {
-	protoProject.RegisterProjectServiceServer(server, modules.ProjectService)
+	rpcProject.RegisterProjectServiceServer(server, modules.ProjectService)
+	rpcPhoto.RegisterPhotoServiceServer(server, modules.PhotoService)
 }
 
 func unaryServerInterceptor(modules *ModuleSet) grpc.UnaryServerInterceptor {
@@ -22,7 +24,8 @@ func unaryServerInterceptor(modules *ModuleSet) grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
 		defer func() {
 			if err := recover(); err != nil {
-				logger.Error("panic recovered", zap.Any("error", err))
+				logger.Error("panic recovered", zap.Any("error", err), zap.Any("context", ctx), zap.String("method",
+					info.FullMethod))
 			}
 		}()
 		if !serviceCommon.GRPCAuthorized(auth, ctx) {

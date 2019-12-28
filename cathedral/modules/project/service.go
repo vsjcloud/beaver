@@ -10,17 +10,17 @@ import (
 	"github.com/vsjcloud/beaver/cathedral/modules/store"
 )
 
-type service struct {
+type Service struct {
 	modelStore store.Store
 }
 
-func NewService(modelStore store.Store) project.ProjectServiceServer {
-	return &service{
+func NewService(modelStore store.Store) *Service {
+	return &Service{
 		modelStore: modelStore,
 	}
 }
 
-func (s *service) CreateEmptyProjectWithSwap(
+func (s *Service) CreateEmptyProjectWithSwap(
 	ctx context.Context,
 	_ *empty.Empty,
 ) (*project.CreateEmptyProjectWithSwapResponse, error) {
@@ -37,7 +37,7 @@ func (s *service) CreateEmptyProjectWithSwap(
 	}, nil
 }
 
-func (s *service) GetProjectWithSwap(
+func (s *Service) GetProjectWithSwap(
 	ctx context.Context,
 	request *project.GetProjectWithSwapRequest,
 ) (*project.GetProjectWithSwapResponse, error) {
@@ -69,7 +69,7 @@ func (s *service) GetProjectWithSwap(
 	}, nil
 }
 
-func (s *service) GetProjectsWithSwap(
+func (s *Service) GetProjectsWithSwap(
 	ctx context.Context,
 	_ *empty.Empty,
 ) (*project.GetProjectsWithSwapResponse, error) {
@@ -105,7 +105,7 @@ func (s *service) GetProjectsWithSwap(
 	}, nil
 }
 
-func (s *service) UpdateProject(
+func (s *Service) UpdateProject(
 	ctx context.Context,
 	request *project.UpdateProjectRequest,
 ) (*common.GeneralServiceResponse, error) {
@@ -118,7 +118,7 @@ func (s *service) UpdateProject(
 	}, nil
 }
 
-func (s *service) UpdateOriginalProjectAndRemoveSwap(
+func (s *Service) UpdateOriginalProjectAndRemoveSwap(
 	ctx context.Context,
 	request *project.UpdateOriginalProjectAndRemoveSwapRequest,
 ) (*common.GeneralServiceResponse, error) {

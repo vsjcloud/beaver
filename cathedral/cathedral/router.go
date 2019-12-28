@@ -6,6 +6,9 @@ import (
 )
 
 func setupRouter(router chi.Router, modules *ModuleSet) {
+	if modules.Config.Mode != "production" {
+		router.Use(middlewares.Logger(modules.Logger))
+	}
 	router.Use(middlewares.Recovery(modules.Logger))
 	router.Route(modules.Config.HTTP.APIPath, func(apiRouter chi.Router) {
 		setupAPIRouter(apiRouter, modules)
@@ -17,6 +20,7 @@ func setupAPIRouter(router chi.Router, modules *ModuleSet) {
 		grpcRouter.Handle("/*", grpcHandler(modules))
 	})
 	router.Route("/photo", func (photoRouter chi.Router) {
+		photoRouter.Use(middlewares.CORS(modules.Config.CORS))
 		photoRouter.Use(middlewares.Auth(modules.Config.Auth))
 		modules.PhotoService.RegisterRoutes(photoRouter)
 	})

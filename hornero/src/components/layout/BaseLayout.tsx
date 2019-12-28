@@ -46,8 +46,8 @@ export function BaseLayout(props: React.PropsWithChildren<{ loading?: boolean }>
           <Spinner intent={Intent.PRIMARY}/>
         </div>
       ) : (
-        <div style={{paddingLeft: "15px", paddingRight: "15px"}}>
-          <div className="mx-auto" style={{width: "1260px"}}>
+        <div className="px-4">
+          <div className="mx-auto py-4" style={{width: "1260px"}}>
             {props.children}
           </div>
         </div>

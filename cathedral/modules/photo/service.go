@@ -3,17 +3,18 @@ package photo
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/go-chi/chi"
+	"github.com/golang/protobuf/proto"
 	"github.com/vsjcloud/beaver/cathedral/common/auth"
 	"github.com/vsjcloud/beaver/cathedral/common/config"
 	"github.com/vsjcloud/beaver/cathedral/common/id"
 	"github.com/vsjcloud/beaver/cathedral/common/service"
 	"github.com/vsjcloud/beaver/cathedral/generated/proto/model"
+	"github.com/vsjcloud/beaver/cathedral/generated/proto/rpc/photo"
 	"github.com/vsjcloud/beaver/cathedral/modules/s3"
 	"github.com/vsjcloud/beaver/cathedral/modules/store"
 	"go.uber.org/zap"
@@ -74,16 +75,16 @@ func (s *Service) createVariationsAndUpload(
 	photoName string,
 	buf []byte,
 	variations []int,
-) (*model.Photo, error) {
+) (id.ID, *model.Photo, error) {
 	if len(variations) == 0 {
 		variations = append(variations, hdSize)
 	}
 	sort.Ints(variations)
 
-	photo := bimg.NewImage(buf)
-	photoSize, err := photo.Size()
+	bimgPhoto := bimg.NewImage(buf)
+	photoSize, err := bimgPhoto.Size()
 	if err != nil {
-		return nil, err
+		return id.EmptyID, nil, err
 	}
 
 	photoID := id.GeneratePhotoID()
@@ -107,9 +108,9 @@ func (s *Service) createVariationsAndUpload(
 			h = (l / w) * h
 			w = l
 		}
-		resized, err := photo.Resize(int(w), int(h))
+		resized, err := bimgPhoto.Resize(int(w), int(h))
 		if err != nil {
-			return nil, err
+			return id.EmptyID, nil, err
 		}
 		resolutionID := id.GeneratePhotoResolutionID(photoID)
 		contentDisposition := fmt.Sprintf("attachment; filename=\"%s\"", photoName)
@@ -121,7 +122,7 @@ func (s *Service) createVariationsAndUpload(
 			contentDisposition,
 		)
 		if err != nil {
-			return nil, err
+			return id.EmptyID, nil, err
 		}
 		photoModel.Resolutions[resolutionID.String()] = &model.PhotoResolution{
 			Height: int32(h),
@@ -131,10 +132,10 @@ func (s *Service) createVariationsAndUpload(
 	}
 
 	if err := s.modelStore.Put(ctx, photoID, photoModel); err != nil {
-		return nil, err
+		return id.EmptyID, nil, err
 	}
 
-	return photoModel, nil
+	return photoID, photoModel, nil
 }
 
 func (s *Service) uploadPhoto(w http.ResponseWriter, r *http.Request) {
@@ -148,19 +149,19 @@ func (s *Service) uploadPhoto(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	photo, handler, err := r.FormFile("photo")
+	formPhoto, handler, err := r.FormFile("photo")
 	if err != nil {
 		http.Error(w, "error while retrieving photo", http.StatusBadRequest)
 		return
 	}
-	defer photo.Close()
+	defer formPhoto.Close()
 
 	if handler.Size > s.photoConfig.MaxUploadSize {
 		http.Error(w, "size limit exceeded", http.StatusBadRequest)
 		return
 	}
 
-	buf, err := ioutil.ReadAll(photo)
+	buf, err := ioutil.ReadAll(formPhoto)
 	if err != nil {
 		http.Error(w, "cannot read photo", http.StatusBadRequest)
 		return
@@ -174,7 +175,7 @@ func (s *Service) uploadPhoto(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), s.serviceConfig.Timeout.Duration)
 	defer cancel()
 
-	photoModel, err := s.createVariationsAndUpload(
+	photoID, photoModel, err := s.createVariationsAndUpload(
 		ctx,
 		handler.Filename,
 		buf,
@@ -185,8 +186,61 @@ func (s *Service) uploadPhoto(w http.ResponseWriter, r *http.Request) {
 		service.HTTPErrServer(w)
 		return
 	}
-
-	if err := json.NewEncoder(w).Encode(photoModel); err != nil {
-		s.logger.Error("cannot send photo to client", zap.Error(err))
+	photoAndID := &model.PhotoAndID{
+		PhotoID: photoID.String(),
+		Photo: photoModel,
 	}
+	b, err := proto.Marshal(photoAndID)
+	if err != nil {
+		s.logger.Error("cannot marshal photoAndID", zap.Error(err))
+		service.HTTPErrServer(w)
+		return
+	}
+	if _, err = w.Write(b); err != nil {
+		s.logger.Error("cannot write to client", zap.Error(err))
+	}
+}
+
+// TODO: DANGER: can hijack to get any data
+func (s *Service) GetPhoto(
+	ctx context.Context,
+	request *photo.GetPhotoRequest,
+) (*photo.GetPhotoResponse, error) {
+	raw, err := s.modelStore.Get(ctx, id.ParseID(request.PhotoID))
+	if err != nil {
+		return nil, err
+	}
+	photoModel := &model.Photo{}
+	if err = raw.Decode(photoModel); err != nil {
+		return nil, err
+	}
+	return &photo.GetPhotoResponse{
+		Photo: photoModel,
+	}, nil
+}
+
+// TODO: DANGER: can hijack to get any data
+func (s *Service) BulkGetPhotos(
+	ctx context.Context,
+	request *photo.BulkGetPhotosRequest,
+) (*photo.BulkGetPhotosResponse, error) {
+	ids := make(map[id.ID]bool)
+	for photoID := range request.PhotoIDs {
+		ids[id.ParseID(photoID)] = true
+	}
+	raws, err := s.modelStore.BulkGet(ctx, ids)
+	if err != nil {
+		return nil, err
+	}
+	photoModels := make(map[string]*model.Photo)
+	for photoID, raw := range raws {
+		photoModel := &model.Photo{}
+		if err = raw.Decode(photoModel); err != nil {
+			return nil, err
+		}
+		photoModels[photoID.String()] = photoModel
+	}
+	return &photo.BulkGetPhotosResponse{
+		Photos: photoModels,
+	}, nil
 }

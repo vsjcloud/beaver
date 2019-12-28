@@ -74,15 +74,15 @@ export class Project extends jspb.Message {
   getFinishdate(): google_protobuf_timestamp_pb.Timestamp | undefined;
   setFinishdate(value?: google_protobuf_timestamp_pb.Timestamp): void;
 
-  hasFeaturephotoid(): boolean;
-  clearFeaturephotoid(): void;
-  getFeaturephotoid(): ProjectPhoto | undefined;
-  setFeaturephotoid(value?: ProjectPhoto): void;
+  hasFeaturephoto(): boolean;
+  clearFeaturephoto(): void;
+  getFeaturephoto(): ProjectPhoto | undefined;
+  setFeaturephoto(value?: ProjectPhoto): void;
 
-  clearAlbumphotoidsList(): void;
-  getAlbumphotoidsList(): Array<ProjectPhoto>;
-  setAlbumphotoidsList(value: Array<ProjectPhoto>): void;
-  addAlbumphotoids(value?: ProjectPhoto, index?: number): ProjectPhoto;
+  clearAlbumphotosList(): void;
+  getAlbumphotosList(): Array<ProjectPhoto>;
+  setAlbumphotosList(value: Array<ProjectPhoto>): void;
+  addAlbumphotos(value?: ProjectPhoto, index?: number): ProjectPhoto;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Project.AsObject;
@@ -101,8 +101,8 @@ export namespace Project {
     detailsList: Array<ProjectInfo.AsObject>,
     startdate?: google_protobuf_timestamp_pb.Timestamp.AsObject,
     finishdate?: google_protobuf_timestamp_pb.Timestamp.AsObject,
-    featurephotoid?: ProjectPhoto.AsObject,
-    albumphotoidsList: Array<ProjectPhoto.AsObject>,
+    featurephoto?: ProjectPhoto.AsObject,
+    albumphotosList: Array<ProjectPhoto.AsObject>,
   }
 }
 

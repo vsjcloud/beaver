@@ -7,15 +7,48 @@ import "model/project.proto";
 import "rpc/common/response.proto";
 
 service ProjectService {
-    rpc createEmptyProjectWithSwap (google.protobuf.Empty) returns (CreateEmptyProjectWithSwapResponse);
+    rpc createProject (google.protobuf.Empty) returns (CreateProjectResponse);
+    rpc getProjectTags (google.protobuf.Empty) returns (GetProjectTagsResponse);
+    rpc createProjectTag (CreateProjectTagRequest) returns (CreateProjectTagResponse);
+    rpc updateProjectTag (UpdateProjectTagRequest) returns (common.GeneralServiceResponse);
+    rpc archiveProjectTag (ArchiveProjectTagRequest) returns (common.GeneralServiceResponse);
+    rpc recoverProjectTag (RecoverProjectTagRequest) returns (common.GeneralServiceResponse);
     rpc getProjectWithSwap (GetProjectWithSwapRequest) returns (GetProjectWithSwapResponse);
     rpc getProjectsWithSwap (google.protobuf.Empty) returns (GetProjectsWithSwapResponse);
-    rpc updateProject (UpdateProjectRequest) returns (common.GeneralServiceResponse);
-    rpc updateOriginalProjectAndRemoveSwap (UpdateOriginalProjectAndRemoveSwapRequest) returns (common.GeneralServiceResponse);
+    rpc updateProjectSwap (UpdateProjectSwapRequest) returns (common.GeneralServiceResponse);
+    rpc deleteProjectSwap (DeleteProjectSwapRequest) returns (common.GeneralServiceResponse);
+    rpc updateProjectAndRemoveSwap (UpdateProjectAndRemoveSwapRequest) returns (common.GeneralServiceResponse);
+    rpc archiveProject (ArchiveProjectRequest) returns (common.GeneralServiceResponse);
+    rpc recoverProject (RecoverProjectRequest) returns (common.GeneralServiceResponse);
 }
 
-message CreateEmptyProjectWithSwapResponse {
+message CreateProjectResponse {
     string projectID = 1;
+}
+
+message GetProjectTagsResponse {
+    map<string, model.ProjectTag> tags = 1;
+}
+
+message CreateProjectTagRequest {
+    model.ProjectTag projectTag = 1;
+}
+
+message UpdateProjectTagRequest {
+    string projectTagID = 1;
+    model.ProjectTag projectTag = 2;
+}
+
+message CreateProjectTagResponse {
+    string projectTagID = 1;
+}
+
+message ArchiveProjectTagRequest {
+    string projectTagID = 1;
+}
+
+message RecoverProjectTagRequest {
+    string projectTagID = 1;
 }
 
 message GetProjectWithSwapRequest {
@@ -32,12 +65,24 @@ message GetProjectsWithSwapResponse {
     map<string, model.Project> swaps = 2;
 }
 
-message UpdateProjectRequest {
+message UpdateProjectSwapRequest {
+    string swapID = 1;
+    model.Project swap = 2;
+}
+
+message DeleteProjectSwapRequest {
+    string swapID = 1;
+}
+
+message UpdateProjectAndRemoveSwapRequest {
     string projectID = 1;
     model.Project project = 2;
 }
 
-message UpdateOriginalProjectAndRemoveSwapRequest {
+message ArchiveProjectRequest {
     string projectID = 1;
-    model.Project project = 2;
+}
+
+message RecoverProjectRequest {
+    string projectID = 1;
 }

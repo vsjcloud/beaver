@@ -51,7 +51,7 @@ export function ProjectsGridContainer(): React.ReactElement {
 
   async function onCreateNewProject(): Promise<void> {
     setLoading(true);
-    const response = await projectClient.createEmptyProjectWithSwap(new Empty());
+    const response = await projectClient.createProject(new Empty());
     history.push(`/project/${response.getProjectid()}/build?new=true`);
     setLoading(false);
   }

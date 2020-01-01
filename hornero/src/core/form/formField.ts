@@ -1,39 +1,48 @@
 import {Intent} from "@blueprintjs/core";
 
-import {SUCCESS_VALIDATE_RESULT, ValidationResult, ValidationRule} from "./rules";
+import {ValidationResult, ValidationRule} from "./rules";
 
 export class FormField<V> {
   private readonly value: V;
-  private touched: boolean;
+  private readonly touched: boolean;
   private readonly rules: ValidationRule<V>[];
   private readonly result: ValidationResult;
 
-  public constructor(defaultValue: V, rules: ValidationRule<V>[]) {
-    this.value = defaultValue;
-    this.touched = false;
+  public constructor(value: V, rules: ValidationRule<V>[], touched = false) {
+    this.value = value;
+    this.touched = touched;
     this.rules = rules;
     for (const rule of rules) {
-      const currentResult = rule.validate(defaultValue);
+      const currentResult = rule.validate(value);
       if (!currentResult.success) {
         this.result = currentResult;
         return;
       }
     }
-    this.result = SUCCESS_VALIDATE_RESULT;
+    this.result = {
+      success: true,
+      message: "",
+    };
   }
 
   public getValue(): V {
     return this.value;
   }
 
+  public getTouched(): boolean {
+    return this.touched;
+  }
+
+  public setTouched(touched: boolean): FormField<V> {
+    return new FormField(this.value, this.rules, touched);
+  }
+
   public getRules(): ValidationRule<V>[] {
     return this.rules;
   }
 
-  public updateValue(value: V): FormField<V> {
-    const newField = new FormField(value, this.rules);
-    newField.touched = true;
-    return newField;
+  public setValue(value: V): FormField<V> {
+    return new FormField(value, this.rules, true);
   }
 
   public isSuccess(): boolean {
@@ -47,12 +56,10 @@ export class FormField<V> {
     return Intent.DANGER;
   }
 
-  public failureMessage(): string {
+  public message(): string {
     if (!this.touched) {
       return "";
     }
     return this.result.message;
   }
 }
-
-export const EMPTY_STRING_FORM_FIELD = new FormField<string>("", []);

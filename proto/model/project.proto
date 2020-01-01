@@ -14,6 +14,10 @@ message ProjectPhoto {
     string description = 2;
 }
 
+message ProjectTag {
+    string name = 1;
+}
+
 message Project {
     string name = 1;
     string description = 2;
@@ -22,4 +26,13 @@ message Project {
     google.protobuf.Timestamp finishDate = 5;
     ProjectPhoto featurePhoto = 6;
     repeated ProjectPhoto albumPhotos = 7;
+    map<string, string> tagIDs = 8;
+}
+
+message ArchivedProjectDirectory {
+    map<string, bool> projectIDs = 1;
+}
+
+message ArchivedProjectTagDirectory {
+    map<string, bool> projectTagIDs = 1;
 }

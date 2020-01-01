@@ -52,6 +52,26 @@ export namespace ProjectPhoto {
   }
 }
 
+export class ProjectTag extends jspb.Message {
+  getName(): string;
+  setName(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ProjectTag.AsObject;
+  static toObject(includeInstance: boolean, msg: ProjectTag): ProjectTag.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ProjectTag, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ProjectTag;
+  static deserializeBinaryFromReader(message: ProjectTag, reader: jspb.BinaryReader): ProjectTag;
+}
+
+export namespace ProjectTag {
+  export type AsObject = {
+    name: string,
+  }
+}
+
 export class Project extends jspb.Message {
   getName(): string;
   setName(value: string): void;
@@ -84,6 +104,8 @@ export class Project extends jspb.Message {
   setAlbumphotosList(value: Array<ProjectPhoto>): void;
   addAlbumphotos(value?: ProjectPhoto, index?: number): ProjectPhoto;
 
+  getTagidsMap(): jspb.Map<string, string>;
+  clearTagidsMap(): void;
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Project.AsObject;
   static toObject(includeInstance: boolean, msg: Project): Project.AsObject;
@@ -103,6 +125,45 @@ export namespace Project {
     finishdate?: google_protobuf_timestamp_pb.Timestamp.AsObject,
     featurephoto?: ProjectPhoto.AsObject,
     albumphotosList: Array<ProjectPhoto.AsObject>,
+    tagidsMap: Array<[string, string]>,
+  }
+}
+
+export class ArchivedProjectDirectory extends jspb.Message {
+  getProjectidsMap(): jspb.Map<string, boolean>;
+  clearProjectidsMap(): void;
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ArchivedProjectDirectory.AsObject;
+  static toObject(includeInstance: boolean, msg: ArchivedProjectDirectory): ArchivedProjectDirectory.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ArchivedProjectDirectory, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ArchivedProjectDirectory;
+  static deserializeBinaryFromReader(message: ArchivedProjectDirectory, reader: jspb.BinaryReader): ArchivedProjectDirectory;
+}
+
+export namespace ArchivedProjectDirectory {
+  export type AsObject = {
+    projectidsMap: Array<[string, boolean]>,
+  }
+}
+
+export class ArchivedProjectTagDirectory extends jspb.Message {
+  getProjecttagidsMap(): jspb.Map<string, boolean>;
+  clearProjecttagidsMap(): void;
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ArchivedProjectTagDirectory.AsObject;
+  static toObject(includeInstance: boolean, msg: ArchivedProjectTagDirectory): ArchivedProjectTagDirectory.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ArchivedProjectTagDirectory, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ArchivedProjectTagDirectory;
+  static deserializeBinaryFromReader(message: ArchivedProjectTagDirectory, reader: jspb.BinaryReader): ArchivedProjectTagDirectory;
+}
+
+export namespace ArchivedProjectTagDirectory {
+  export type AsObject = {
+    projecttagidsMap: Array<[string, boolean]>,
   }
 }
 

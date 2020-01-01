@@ -35,7 +35,6 @@ export function UploadView({id, multiple, photos, onUpdatePhotos, onUploadPhoto,
 
   async function onFilesChange(event: React.ChangeEvent<HTMLInputElement>): Promise<void> {
     if (!event.target.files) return;
-    setUploading(true);
     const filteredPhotos = Array.from(event.target.files).filter(function (photo: File): boolean {
       if (photo.size > Config.PHOTO_MAX_UPLOAD_SIZE) {
         AppToaster.show({
@@ -46,20 +45,37 @@ export function UploadView({id, multiple, photos, onUpdatePhotos, onUploadPhoto,
       }
       return true;
     });
+    if (filteredPhotos.length === 0) {
+      if (inputEl.current) {
+        inputEl.current.value = "";
+      }
+      if (photos.length === 0) {
+        onUpdatePhotos(photos);
+      }
+      return;
+    }
+    setUploading(true);
     const newPhotos: UploaderPhoto[] = [];
     for (let i = 0; i < filteredPhotos.length; i++) {
       const photo = filteredPhotos[i];
       setPercentage((i + 1) / filteredPhotos.length);
       setTitle(`Tải lên ${i + 1}/${filteredPhotos.length} ảnh`);
       setDescription(`Đang tải lên ảnh ${photo.name}...`);
-      const photoAndID = await onUploadPhoto(photo);
-      newPhotos.push({
-        id: photoAndID.getPhotoid(),
-        name: "",
-        description: "",
-        previewSet: PhotoUtils.getPhotoURLSetFromPhotoModel(photoAndID.getPhoto()),
-        preview: PhotoUtils.getPhotoURLFromPhotoModel(photoAndID.getPhoto()),
-      });
+      try {
+        const photoAndID = await onUploadPhoto(photo);
+        newPhotos.push({
+          id: photoAndID.getPhotoid(),
+          name: photo.name,
+          description: "",
+          previewSet: PhotoUtils.getPhotoURLSetFromPhotoModel(photoAndID.getPhoto()),
+          preview: PhotoUtils.getPhotoURLFromPhotoModel(photoAndID.getPhoto()),
+        });
+      } catch {
+        AppToaster.show({
+          intent: Intent.DANGER,
+          message: `Có lỗi xảy ra khi tải lên ảnh ${photo.name}`,
+        });
+      }
     }
     onUpdatePhotos(produce(photos, draft => draft.concat(newPhotos)));
   }
@@ -79,7 +95,7 @@ export function UploadView({id, multiple, photos, onUpdatePhotos, onUploadPhoto,
         <React.Fragment>
           {onClose && (
             <div className="absolute right-0 top-0">
-              <Button icon={IconNames.DELETE} onClick={onClose} minimal={true}>Đóng</Button>
+              <Button icon={IconNames.DELETE} intent={Intent.DANGER} onClick={onClose} minimal={true}>Đóng</Button>
             </div>
           )}
           <NonIdealState

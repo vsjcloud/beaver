@@ -1,8 +1,11 @@
 package id
 
 const (
-	ProjectPartition     = "prj"
-	ProjectSwapPartition = "swp"
+	ProjectPartition                     = "prj"
+	ProjectTagPartition                  = "prt"
+	ProjectSwapPartition                 = "swp"
+	ArchivedProjectDirectoryPartition    = "archivedProjectDirectory"
+	ArchivedProjectTagDirectoryPartition = "archivedProjectTagDirectory"
 
 	PhotoPartition           = "pht"
 	PhotoResolutionPartition = "res"
@@ -26,6 +29,13 @@ func GenerateProjectID() ID {
 	}
 }
 
+func GenerateProjectTagID() ID {
+	return ID{
+		Partition: ProjectTagPartition,
+		Sort:      generateID(),
+	}
+}
+
 func ProjectSwapID(projectID ID) ID {
 	return ID{
 		Partition: ID{
@@ -34,6 +44,16 @@ func ProjectSwapID(projectID ID) ID {
 		}.String(),
 		Sort: StaticSort,
 	}
+}
+
+var ArchivedProjectDirectoryID = ID{
+	Partition: ArchivedProjectDirectoryPartition,
+	Sort:      StaticSort,
+}
+
+var ArchivedProjectTagDirectoryID = ID{
+	Partition: ArchivedProjectTagDirectoryPartition,
+	Sort:      StaticSort,
 }
 
 func GeneratePhotoID() ID {

@@ -24,11 +24,12 @@ export function SinglePhotoView({photo, onDeletePhoto, onOpenViewPhotoDialog, on
       </ButtonGroup>
       <div>
         <img
-          style={{height: "300px"}}
-          className={classNames("block max-w-full max-h-full m-auto mb-3", Classes.ELEVATION_1)}
+          style={{height: "400px"}}
+          className={classNames("block max-w-full max-h-full m-auto mb-3 cursor-pointer", Classes.ELEVATION_1)}
           src={photo.preview}
           srcSet={photo.previewSet}
           alt={photo.description}
+          onClick={onOpenViewPhotoDialog}
         />
         <div>
           <div className="font-bold text-center mb-2">{photo.name}</div>

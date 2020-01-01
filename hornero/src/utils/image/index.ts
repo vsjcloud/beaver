@@ -117,7 +117,6 @@ export function createPreviewURL(image: Blob, maxHeight: number, maxWidth: numbe
     const rotatedImage = rotateImage(image, orientation);
     const dimensions = getProportionalDimensions(rotatedImage, maxHeight, maxWidth);
     const resizedImage = resizeImage(rotatedImage, dimensions.height, dimensions.width);
-    console.log(resizedImage);
     return canvasToBlob(resizedImage, "image/png");
   }).then(URL.createObjectURL);
 }

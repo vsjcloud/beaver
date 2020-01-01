@@ -33,8 +33,18 @@ export function pbMapTransform<K, V, U>(map: jspb.Map<K, V>, cb: (value: V, key:
   return res;
 }
 
-export function onStringChange(cb: (newValue: string) => void): (event: React.ChangeEvent<HTMLInputElement>) => void {
+export function onInputChange(cb: (newValue: string) => void): (event: React.ChangeEvent<HTMLInputElement>) => void {
   return function (event: React.ChangeEvent<HTMLInputElement>): void {
     cb(event.target.value);
   }
+}
+
+export function onTextAreaChange(cb: (newValue: string) => void): (event: React.ChangeEvent<HTMLTextAreaElement>) => void {
+  return function (event: React.ChangeEvent<HTMLTextAreaElement>): void {
+    cb(event.target.value);
+  }
+}
+
+export function identity<T>(i: T): T {
+  return i;
 }

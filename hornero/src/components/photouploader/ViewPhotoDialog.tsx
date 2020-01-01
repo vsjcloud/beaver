@@ -17,7 +17,7 @@ export function ViewPhotoDialog({photo, onClose}: ViewPhotoDialogProps): React.R
       icon={IconNames.ZOOM_IN}
       isOpen={!!photo}
       onClose={onClose}
-      title={photo?.name}
+      title={photo?.name || ""}
       style={{maxHeight: "900px", maxWidth: "1200px", width: "auto", minWidth: "500px"}}
     >
       <div className={Classes.DIALOG_BODY}>

@@ -113,7 +113,7 @@ func (s *Service) createVariationsAndUpload(
 			return id.EmptyID, nil, err
 		}
 		resolutionID := id.GeneratePhotoResolutionID(photoID)
-		contentDisposition := fmt.Sprintf("attachment; filename=\"%s\"", photoName)
+		contentDisposition := fmt.Sprintf("inline; filename=\"%s\"", photoName)
 		err = s.s3Service.PutObject(
 			ctx,
 			resolutionID.String(),

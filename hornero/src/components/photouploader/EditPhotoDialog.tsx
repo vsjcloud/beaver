@@ -1,13 +1,14 @@
 import {Button, Classes, Dialog, FormGroup, InputGroup} from "@blueprintjs/core";
 import {Intent} from "@blueprintjs/core/lib/esm/common/intent";
+import {IconNames} from "@blueprintjs/icons";
 import produce from "immer";
 import React from "react";
 
 import {UploaderPhoto} from "./PhotoUploader";
 
 import * as Utils from "../../utils";
-import {FormField} from "../../core/form/field";
-import {RequiredRule} from "../../core/form/rules";
+import {FormField} from "../../core/form/formField";
+import {StringRequiredRule} from "../../core/form/rules";
 
 
 export type EditPhotoDialogProps = {
@@ -18,7 +19,7 @@ export type EditPhotoDialogProps = {
 
 export function EditPhotoDialog({photo, onClose, onSubmit}: EditPhotoDialogProps): React.ReactElement {
   const [name, setName] = React.useState(new FormField(photo?.name || "", [
-    new RequiredRule("Tên ảnh không được để trống"),
+    new StringRequiredRule("Tên ảnh không được để trống"),
   ]));
   const [description, setDescription] = React.useState(new FormField(photo?.description || "", []));
 
@@ -42,13 +43,13 @@ export function EditPhotoDialog({photo, onClose, onSubmit}: EditPhotoDialogProps
   }
 
   return (
-    <Dialog isOpen={!!photo} onClose={onClose} title="Sửa thông tin ảnh">
+    <Dialog isOpen={!!photo} onClose={onClose} title="Sửa thông tin ảnh" icon={IconNames.EDIT}>
       <div className={Classes.DIALOG_BODY}>
         <FormGroup
           label="Tên ảnh"
           labelFor="photo-name"
           labelInfo="(bắt buộc)"
-          helperText={name.failureMessage()}
+          helperText={name.message()}
           intent={name.intent()}
         >
           <InputGroup
@@ -57,12 +58,12 @@ export function EditPhotoDialog({photo, onClose, onSubmit}: EditPhotoDialogProps
             value={name.getValue()}
             intent={name.intent()}
             disabled={true}
-            onChange={Utils.onStringChange(newName => setName(name.updateValue(newName)))}/>
+            onChange={Utils.onInputChange(newName => setName(name.setValue(newName)))}/>
         </FormGroup>
         <FormGroup
           label="Nội dung ảnh"
           labelFor="photo-description"
-          helperText={description.failureMessage()}
+          helperText={description.message()}
           intent={description.intent()}
         >
           <InputGroup
@@ -70,7 +71,7 @@ export function EditPhotoDialog({photo, onClose, onSubmit}: EditPhotoDialogProps
             placeholder="Nhập nội dung của ảnh..."
             value={description.getValue()}
             intent={description.intent()}
-            onChange={Utils.onStringChange(newDescription => setDescription(description.updateValue(newDescription)))}/>
+            onChange={Utils.onInputChange(newDescription => setDescription(description.setValue(newDescription)))}/>
         </FormGroup>
       </div>
       <div className={Classes.DIALOG_FOOTER}>

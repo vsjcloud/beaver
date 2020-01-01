@@ -6,23 +6,150 @@ import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty
 import * as model_project_pb from "../../model/project_pb";
 import * as rpc_common_response_pb from "../../rpc/common/response_pb";
 
-export class CreateEmptyProjectWithSwapResponse extends jspb.Message {
+export class CreateProjectResponse extends jspb.Message {
   getProjectid(): string;
   setProjectid(value: string): void;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): CreateEmptyProjectWithSwapResponse.AsObject;
-  static toObject(includeInstance: boolean, msg: CreateEmptyProjectWithSwapResponse): CreateEmptyProjectWithSwapResponse.AsObject;
+  toObject(includeInstance?: boolean): CreateProjectResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: CreateProjectResponse): CreateProjectResponse.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: CreateEmptyProjectWithSwapResponse, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): CreateEmptyProjectWithSwapResponse;
-  static deserializeBinaryFromReader(message: CreateEmptyProjectWithSwapResponse, reader: jspb.BinaryReader): CreateEmptyProjectWithSwapResponse;
+  static serializeBinaryToWriter(message: CreateProjectResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CreateProjectResponse;
+  static deserializeBinaryFromReader(message: CreateProjectResponse, reader: jspb.BinaryReader): CreateProjectResponse;
 }
 
-export namespace CreateEmptyProjectWithSwapResponse {
+export namespace CreateProjectResponse {
   export type AsObject = {
     projectid: string,
+  }
+}
+
+export class GetProjectTagsResponse extends jspb.Message {
+  getTagsMap(): jspb.Map<string, model_project_pb.ProjectTag>;
+  clearTagsMap(): void;
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetProjectTagsResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetProjectTagsResponse): GetProjectTagsResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetProjectTagsResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetProjectTagsResponse;
+  static deserializeBinaryFromReader(message: GetProjectTagsResponse, reader: jspb.BinaryReader): GetProjectTagsResponse;
+}
+
+export namespace GetProjectTagsResponse {
+  export type AsObject = {
+    tagsMap: Array<[string, model_project_pb.ProjectTag.AsObject]>,
+  }
+}
+
+export class CreateProjectTagRequest extends jspb.Message {
+  hasProjecttag(): boolean;
+  clearProjecttag(): void;
+  getProjecttag(): model_project_pb.ProjectTag | undefined;
+  setProjecttag(value?: model_project_pb.ProjectTag): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CreateProjectTagRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: CreateProjectTagRequest): CreateProjectTagRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CreateProjectTagRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CreateProjectTagRequest;
+  static deserializeBinaryFromReader(message: CreateProjectTagRequest, reader: jspb.BinaryReader): CreateProjectTagRequest;
+}
+
+export namespace CreateProjectTagRequest {
+  export type AsObject = {
+    projecttag?: model_project_pb.ProjectTag.AsObject,
+  }
+}
+
+export class UpdateProjectTagRequest extends jspb.Message {
+  getProjecttagid(): string;
+  setProjecttagid(value: string): void;
+
+  hasProjecttag(): boolean;
+  clearProjecttag(): void;
+  getProjecttag(): model_project_pb.ProjectTag | undefined;
+  setProjecttag(value?: model_project_pb.ProjectTag): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UpdateProjectTagRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateProjectTagRequest): UpdateProjectTagRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: UpdateProjectTagRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateProjectTagRequest;
+  static deserializeBinaryFromReader(message: UpdateProjectTagRequest, reader: jspb.BinaryReader): UpdateProjectTagRequest;
+}
+
+export namespace UpdateProjectTagRequest {
+  export type AsObject = {
+    projecttagid: string,
+    projecttag?: model_project_pb.ProjectTag.AsObject,
+  }
+}
+
+export class CreateProjectTagResponse extends jspb.Message {
+  getProjecttagid(): string;
+  setProjecttagid(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CreateProjectTagResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: CreateProjectTagResponse): CreateProjectTagResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CreateProjectTagResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CreateProjectTagResponse;
+  static deserializeBinaryFromReader(message: CreateProjectTagResponse, reader: jspb.BinaryReader): CreateProjectTagResponse;
+}
+
+export namespace CreateProjectTagResponse {
+  export type AsObject = {
+    projecttagid: string,
+  }
+}
+
+export class ArchiveProjectTagRequest extends jspb.Message {
+  getProjecttagid(): string;
+  setProjecttagid(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ArchiveProjectTagRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: ArchiveProjectTagRequest): ArchiveProjectTagRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ArchiveProjectTagRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ArchiveProjectTagRequest;
+  static deserializeBinaryFromReader(message: ArchiveProjectTagRequest, reader: jspb.BinaryReader): ArchiveProjectTagRequest;
+}
+
+export namespace ArchiveProjectTagRequest {
+  export type AsObject = {
+    projecttagid: string,
+  }
+}
+
+export class RecoverProjectTagRequest extends jspb.Message {
+  getProjecttagid(): string;
+  setProjecttagid(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RecoverProjectTagRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: RecoverProjectTagRequest): RecoverProjectTagRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: RecoverProjectTagRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RecoverProjectTagRequest;
+  static deserializeBinaryFromReader(message: RecoverProjectTagRequest, reader: jspb.BinaryReader): RecoverProjectTagRequest;
+}
+
+export namespace RecoverProjectTagRequest {
+  export type AsObject = {
+    projecttagid: string,
   }
 }
 
@@ -96,7 +223,53 @@ export namespace GetProjectsWithSwapResponse {
   }
 }
 
-export class UpdateProjectRequest extends jspb.Message {
+export class UpdateProjectSwapRequest extends jspb.Message {
+  getSwapid(): string;
+  setSwapid(value: string): void;
+
+  hasSwap(): boolean;
+  clearSwap(): void;
+  getSwap(): model_project_pb.Project | undefined;
+  setSwap(value?: model_project_pb.Project): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UpdateProjectSwapRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateProjectSwapRequest): UpdateProjectSwapRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: UpdateProjectSwapRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateProjectSwapRequest;
+  static deserializeBinaryFromReader(message: UpdateProjectSwapRequest, reader: jspb.BinaryReader): UpdateProjectSwapRequest;
+}
+
+export namespace UpdateProjectSwapRequest {
+  export type AsObject = {
+    swapid: string,
+    swap?: model_project_pb.Project.AsObject,
+  }
+}
+
+export class DeleteProjectSwapRequest extends jspb.Message {
+  getSwapid(): string;
+  setSwapid(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): DeleteProjectSwapRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: DeleteProjectSwapRequest): DeleteProjectSwapRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: DeleteProjectSwapRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DeleteProjectSwapRequest;
+  static deserializeBinaryFromReader(message: DeleteProjectSwapRequest, reader: jspb.BinaryReader): DeleteProjectSwapRequest;
+}
+
+export namespace DeleteProjectSwapRequest {
+  export type AsObject = {
+    swapid: string,
+  }
+}
+
+export class UpdateProjectAndRemoveSwapRequest extends jspb.Message {
   getProjectid(): string;
   setProjectid(value: string): void;
 
@@ -106,45 +279,59 @@ export class UpdateProjectRequest extends jspb.Message {
   setProject(value?: model_project_pb.Project): void;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): UpdateProjectRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: UpdateProjectRequest): UpdateProjectRequest.AsObject;
+  toObject(includeInstance?: boolean): UpdateProjectAndRemoveSwapRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateProjectAndRemoveSwapRequest): UpdateProjectAndRemoveSwapRequest.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: UpdateProjectRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): UpdateProjectRequest;
-  static deserializeBinaryFromReader(message: UpdateProjectRequest, reader: jspb.BinaryReader): UpdateProjectRequest;
+  static serializeBinaryToWriter(message: UpdateProjectAndRemoveSwapRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateProjectAndRemoveSwapRequest;
+  static deserializeBinaryFromReader(message: UpdateProjectAndRemoveSwapRequest, reader: jspb.BinaryReader): UpdateProjectAndRemoveSwapRequest;
 }
 
-export namespace UpdateProjectRequest {
+export namespace UpdateProjectAndRemoveSwapRequest {
   export type AsObject = {
     projectid: string,
     project?: model_project_pb.Project.AsObject,
   }
 }
 
-export class UpdateOriginalProjectAndRemoveSwapRequest extends jspb.Message {
+export class ArchiveProjectRequest extends jspb.Message {
   getProjectid(): string;
   setProjectid(value: string): void;
 
-  hasProject(): boolean;
-  clearProject(): void;
-  getProject(): model_project_pb.Project | undefined;
-  setProject(value?: model_project_pb.Project): void;
-
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): UpdateOriginalProjectAndRemoveSwapRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: UpdateOriginalProjectAndRemoveSwapRequest): UpdateOriginalProjectAndRemoveSwapRequest.AsObject;
+  toObject(includeInstance?: boolean): ArchiveProjectRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: ArchiveProjectRequest): ArchiveProjectRequest.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: UpdateOriginalProjectAndRemoveSwapRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): UpdateOriginalProjectAndRemoveSwapRequest;
-  static deserializeBinaryFromReader(message: UpdateOriginalProjectAndRemoveSwapRequest, reader: jspb.BinaryReader): UpdateOriginalProjectAndRemoveSwapRequest;
+  static serializeBinaryToWriter(message: ArchiveProjectRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ArchiveProjectRequest;
+  static deserializeBinaryFromReader(message: ArchiveProjectRequest, reader: jspb.BinaryReader): ArchiveProjectRequest;
 }
 
-export namespace UpdateOriginalProjectAndRemoveSwapRequest {
+export namespace ArchiveProjectRequest {
   export type AsObject = {
     projectid: string,
-    project?: model_project_pb.Project.AsObject,
+  }
+}
+
+export class RecoverProjectRequest extends jspb.Message {
+  getProjectid(): string;
+  setProjectid(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RecoverProjectRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: RecoverProjectRequest): RecoverProjectRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: RecoverProjectRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RecoverProjectRequest;
+  static deserializeBinaryFromReader(message: RecoverProjectRequest, reader: jspb.BinaryReader): RecoverProjectRequest;
+}
+
+export namespace RecoverProjectRequest {
+  export type AsObject = {
+    projectid: string,
   }
 }
 

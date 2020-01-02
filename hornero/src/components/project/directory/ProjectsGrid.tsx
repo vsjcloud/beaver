@@ -5,12 +5,12 @@ import * as jspb from "google-protobuf";
 import React from "react";
 import {useHistory} from "react-router";
 
-import {parseID} from "../../core/id";
-import {projectSwapID} from "../../core/id/id";
-import {Photo} from "../../generated/proto/model/photo_pb";
-import {Project} from "../../generated/proto/model/project_pb";
-import * as Utils from "../../utils";
-import * as PhotoUtils from "../../utils/photo";
+import {parseID} from "../../../core/id";
+import {projectSwapID} from "../../../core/id/id";
+import {Photo} from "../../../generated/proto/model/photo_pb";
+import {Project} from "../../../generated/proto/model/project_pb";
+import * as Utils from "../../../utils";
+import * as PhotoUtils from "../../../utils/photo";
 
 import "./_projectCard.scss";
 

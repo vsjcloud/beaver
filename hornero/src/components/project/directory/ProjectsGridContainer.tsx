@@ -5,13 +5,13 @@ import {useHistory} from "react-router";
 
 import {ProjectsGrid} from "./ProjectsGrid";
 
-import * as ProjectUtils from "../../utils/project";
-import {Photo} from "../../generated/proto/model/photo_pb";
-import {Project} from "../../generated/proto/model/project_pb";
-import {BulkGetPhotosRequest} from "../../generated/proto/rpc/photo/photo_pb";
-import {usePhotoClient} from "../../services/photo";
-import {useProjectClient} from "../../services/project";
-import {BaseLayout} from "../layout/BaseLayout";
+import * as ProjectUtils from "../../../utils/project";
+import {Photo} from "../../../generated/proto/model/photo_pb";
+import {Project} from "../../../generated/proto/model/project_pb";
+import {BulkGetPhotosRequest} from "../../../generated/proto/rpc/photo/photo_pb";
+import {usePhotoClient} from "../../../services/photo";
+import {useProjectClient} from "../../../services/project";
+import {BaseLayout} from "../../layout/BaseLayout";
 
 export function ProjectsGridContainer(): React.ReactElement {
   const history = useHistory();

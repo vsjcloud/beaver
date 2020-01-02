@@ -1,20 +1,20 @@
 import {Button, ControlGroup, FormGroup, InputGroup, Intent, Menu, Popover, Position, Tooltip} from "@blueprintjs/core";
 import {IconNames} from "@blueprintjs/icons";
+import produce from "immer";
 import React from "react";
+import uuid from "uuid";
 
-import {FormField} from "../../core/form/formField";
-import {ValidationResult, ValidationRule} from "../../core/form/rules";
-import {ProjectInfo} from "../../generated/proto/model/project_pb";
-import * as Utils from "../../utils";
+import {FormField} from "../../../../core/form/formField";
+import {PropsWithRegisterField} from "../../../../core/form/formValidator";
+import {ValidationResult, ValidationRule} from "../../../../core/form/rules";
+import {ProjectInfo} from "../../../../generated/proto/model/project_pb";
+import * as Utils from "../../../../utils";
 
-export type ProjectInfoInputProps = {
+export type ProjectInfoInputProps = PropsWithRegisterField<{
   projectInfo: ProjectInfo;
-  onUpdateProjectInfo(projectInfo: ProjectInfo): void;
-  onAddProjectInfoToAbove(): void;
-  onAddProjectInfoToBelow(): void;
-  onDeleteProjectInfo(): void;
-  registerField?<S extends FormField<{}>>(stateAndDispatcher: [S, React.Dispatch<React.SetStateAction<S>>]): [S, React.Dispatch<React.SetStateAction<S>>];
-};
+  index: number;
+  onUpdateProjectInfos(cb: (projectInfos: [string, ProjectInfo][]) => [string, ProjectInfo][]): void;
+}>;
 
 type NameAndValue = {
   name: string;
@@ -44,10 +44,8 @@ class NameAndValueRequiredRule implements ValidationRule<NameAndValue> {
 
 export function ProjectInfoInput({
   projectInfo,
-  onUpdateProjectInfo,
-  onAddProjectInfoToAbove,
-  onAddProjectInfoToBelow,
-  onDeleteProjectInfo,
+  index,
+  onUpdateProjectInfos,
   registerField = Utils.identity,
 }: ProjectInfoInputProps): React.ReactElement {
   const [nameAndValue, setNameAndValue] = registerField(React.useState(new FormField<NameAndValue>(
@@ -58,26 +56,57 @@ export function ProjectInfoInput({
       new NameAndValueRequiredRule(),
     ])));
 
-  function syncSetNameAndValue(nv: NameAndValue): void {
+  const buildProjectInfo = React.useCallback(function (): ProjectInfo {
     const projectInfo = new ProjectInfo();
-    projectInfo.setName(nv.name.trim());
-    projectInfo.setValue(nv.value.trim());
-    setNameAndValue(nameAndValue.setValue(nv));
-    onUpdateProjectInfo(projectInfo);
+    projectInfo.setName(nameAndValue.getValue().name.trim());
+    projectInfo.setValue(nameAndValue.getValue().value.trim());
+    return projectInfo;
+  }, [nameAndValue]);
+
+  const onUpdateProjectInfo = React.useCallback(function () {
+    onUpdateProjectInfos(projectInfos => produce(projectInfos, draft => {
+      draft.splice(index, 1, [draft[index][0], buildProjectInfo()]);
+    }));
+  }, [onUpdateProjectInfos, index, buildProjectInfo]);
+
+  React.useEffect(function () {
+    const tick = setTimeout(function () {
+      onUpdateProjectInfo();
+    }, Utils.INPUT_DEBOUNCE_TIME);
+
+    return (): void => clearTimeout(tick);
+  }, [onUpdateProjectInfo, nameAndValue]);
+
+  function onAddProjectInfoToAbove(): void {
+    onUpdateProjectInfos(projectInfos => produce(projectInfos, draft => {
+      draft.splice(index, 0, [uuid.v4(), new ProjectInfo()]);
+    }));
+  }
+
+  function onAddProjectInfoToBelow(): void {
+    onUpdateProjectInfos(projectInfos => produce(projectInfos, draft => {
+      draft.splice(index + 1, 0, [uuid.v4(), new ProjectInfo()]);
+    }));
+  }
+
+  function onDeleteProjectInfo(): void {
+    onUpdateProjectInfos(projectInfos => produce(projectInfos, draft => {
+      draft.splice(index, 1);
+    }));
   }
 
   function onUpdateName(newName: string): void {
-    syncSetNameAndValue({
+    setNameAndValue(nameAndValue => nameAndValue.setValue({
       name: newName,
       value: nameAndValue.getValue().value,
-    });
+    }));
   }
 
   function onUpdateValue(newValue: string): void {
-    syncSetNameAndValue({
+    setNameAndValue(nameAndValue => nameAndValue.setValue({
       name: nameAndValue.getValue().name,
       value: newValue,
-    });
+    }));
   }
 
   return (

@@ -6,24 +6,23 @@ import {useHistory, useParams} from "react-router";
 
 import {ProjectBuilder} from "./ProjectBuilder";
 
-import {parseID} from "../../core/id";
-import {projectSwapID} from "../../core/id/id";
-import {Photo} from "../../generated/proto/model/photo_pb";
-import {Project, ProjectInfo, ProjectPhoto} from "../../generated/proto/model/project_pb";
-import {BulkGetPhotosRequest} from "../../generated/proto/rpc/photo/photo_pb";
+import {parseID} from "../../../core/id";
+import {projectSwapID} from "../../../core/id/id";
+import {Photo} from "../../../generated/proto/model/photo_pb";
+import {Project, ProjectInfo, ProjectPhoto} from "../../../generated/proto/model/project_pb";
+import {BulkGetPhotosRequest} from "../../../generated/proto/rpc/photo/photo_pb";
 import {
   DeleteProjectSwapRequest,
   GetProjectWithSwapRequest,
   UpdateProjectAndRemoveSwapRequest,
   UpdateProjectSwapRequest,
-} from "../../generated/proto/rpc/project/project_pb";
-import {usePhotoClient} from "../../services/photo";
-import {useProjectClient} from "../../services/project";
-import * as Utils from "../../utils";
-import * as ProjectUtils from "../../utils/project";
-import {BaseLayout} from "../layout/BaseLayout";
-import {AppToaster} from "../toaster/AppToaster";
-
+} from "../../../generated/proto/rpc/project/project_pb";
+import {usePhotoClient} from "../../../services/photo";
+import {useProjectClient} from "../../../services/project";
+import * as Utils from "../../../utils";
+import * as ProjectUtils from "../../../utils/project";
+import {BaseLayout} from "../../layout/BaseLayout";
+import {AppToaster} from "../../toaster/AppToaster";
 
 export function ProjectBuilderContainer(): React.ReactElement {
   const history = useHistory();
@@ -123,14 +122,15 @@ export function ProjectBuilderContainer(): React.ReactElement {
     history.replace("/projects");
   }
 
-  async function onSaveSwap(editingSwap: Project): Promise<void> {
-    if (submitting.current) return;
-    if (!swap && !doesProjectChange(project!, editingSwap)) return;
-    if (swap && !doesProjectChange(swap, editingSwap)) return;
+  async function onSaveSwap(editingSwap: Project): Promise<boolean> {
+    if (submitting.current) return false;
+    if (!swap && !doesProjectChange(project!, editingSwap)) return false;
+    if (swap && !doesProjectChange(swap, editingSwap)) return false;
     const request = new UpdateProjectSwapRequest();
     request.setSwapid(projectSwapID(parseID(projectID!)).toString());
     request.setSwap(editingSwap);
     await projectClient.updateProjectSwap(request);
+    return true;
   }
 
   async function onDeleteSwap(): Promise<void> {
@@ -163,8 +163,8 @@ export function ProjectBuilderContainer(): React.ReactElement {
         <H3>{newProject ? "Tạo dự án mới" : "Thay đổi dự án"}</H3>
         <Divider className="mb-6"/>
         <ProjectBuilder
-          project={editingProject!}
-          photos={photos}
+          initialProject={editingProject!}
+          initialPhotos={photos}
           onUploadPhoto={photoClient.uploadPhoto}
           onSaveProject={onSaveProject}
           onSaveSwap={onSaveSwap}

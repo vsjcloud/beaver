@@ -6,8 +6,8 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {Auth0Callback} from "./components/auth0/Auth0Callback";
 import {Auth0Provider, useAuth0} from "./components/auth0/Auth0Provider";
 import {Dashboard} from "./components/dashboard/Dashboard";
-import {ProjectBuilderContainer} from "./components/project/ProjectBuilderContainer";
-import {ProjectsGridContainer} from "./components/project/ProjectsGridContainer";
+import {ProjectBuilderContainer} from "./components/project/builder/ProjectBuilderContainer";
+import {ProjectsGridContainer} from "./components/project/directory/ProjectsGridContainer";
 import * as Config from "./config";
 
 export function AppRouter(): React.ReactElement {

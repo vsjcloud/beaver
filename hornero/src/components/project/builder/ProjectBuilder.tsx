@@ -2,7 +2,6 @@ import {Divider} from "@blueprintjs/core";
 import {Intent} from "@blueprintjs/core/lib/esm/common/intent";
 import * as jspb from "google-protobuf";
 import {Timestamp} from "google-protobuf/google/protobuf/timestamp_pb";
-import {DateTime} from "luxon";
 import React from "react";
 
 import {ProjectAlbumPhotosField} from "./fields/ProjectAlbumPhotosField";
@@ -25,6 +24,7 @@ export type ProjectBuilderProps = {
   onSaveProject(editedProject: Project): Promise<void>;
   onSaveSwap(editedSwap: Project): Promise<boolean>;
   onDeleteSwap?(): Promise<void>;
+  onProjectNameChange(newName: string): void;
 };
 
 export function ProjectBuilder({
@@ -34,6 +34,7 @@ export function ProjectBuilder({
   onSaveProject,
   onSaveSwap,
   onDeleteSwap,
+  onProjectNameChange,
 }: ProjectBuilderProps): React.ReactElement {
   const {registerField, wrapSubmit, allowSubmit} = useFormValidator();
 
@@ -45,8 +46,6 @@ export function ProjectBuilder({
   const [featurePhoto, setFeaturePhoto] = React.useState(initialProject.getFeaturephoto());
   const [albumPhotos, setAlbumPhotos] = React.useState(initialProject.getAlbumphotosList());
 
-  const [saveSwapTime, setSaveSwapTime] = React.useState<DateTime>();
-
   const buildProject = React.useCallback(function (): Project {
     const project = new Project();
     project.setName(name.trim());
@@ -55,11 +54,15 @@ export function ProjectBuilder({
     project.setAlbumphotosList(albumPhotos);
     project.setStartdate(startDate);
     project.setFinishdate(finishDate);
-    project.setDetailsList(projectInfos);
+    project.setDetailsList(projectInfos.filter((projectInfo) => projectInfo.getName() !== "" && projectInfo.getValue() !== ""));
     return project;
   }, [albumPhotos, description, featurePhoto, name, startDate, finishDate, projectInfos]);
 
   const swapProject = React.useRef(initialProject);
+
+  React.useEffect(function () {
+    onProjectNameChange(name);
+  }, [name, onProjectNameChange]);
 
   React.useEffect(function () {
     const tick = setTimeout(function () {
@@ -81,11 +84,8 @@ export function ProjectBuilder({
 
   React.useEffect(function () {
     const tick = setTimeout(async function () {
-      const swapIsChanged = await onSaveSwap(buildProject());
-      if (swapIsChanged) {
-        setSaveSwapTime(DateTime.local());
-      }
-    }, 10000);
+      await onSaveSwap(buildProject());
+    }, 5000);
     return (): void => clearTimeout(tick);
   }, [buildProject, onSaveSwap]);
 
@@ -144,7 +144,6 @@ export function ProjectBuilder({
       <ProjectControlButtons
         allowSubmit={allowSubmit()}
         onSubmit={onSubmit}
-        saveSwapTime={saveSwapTime}
         onDeleteSwap={onDeleteSwap}
       />
     </React.Fragment>

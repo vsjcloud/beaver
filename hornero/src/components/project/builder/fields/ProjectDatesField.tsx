@@ -102,7 +102,7 @@ export function ProjectDatesField({
           }
         />
       </FormGroup>
-      <Icon iconSize={Icon.SIZE_LARGE} intent={Intent.PRIMARY} icon={IconNames.ARROW_RIGHT}/>
+      <Icon iconSize={Icon.SIZE_LARGE} intent={Intent.PRIMARY} icon={IconNames.DOUBLE_CHEVRON_RIGHT}/>
       <FormGroup
         label="Ngày hoàn thành dự án"
       >

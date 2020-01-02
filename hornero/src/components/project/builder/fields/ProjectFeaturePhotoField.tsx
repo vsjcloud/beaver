@@ -9,7 +9,7 @@ import {Photo, PhotoAndID} from "../../../../generated/proto/model/photo_pb";
 import {ProjectPhoto} from "../../../../generated/proto/model/project_pb";
 import * as Utils from "../../../../utils";
 import * as PhotoUtils from "../../../../utils/photo";
-import {PhotoUploader, UploaderPhoto} from "../../../photouploader/PhotoUploader";
+import {PhotoUploader} from "../../../photouploader/PhotoUploader";
 
 export type ProjectFeaturePhotoProps = PropsWithRegisterField<{
   initialValue?: ProjectPhoto;

@@ -1,19 +1,21 @@
+import {Tab, Tabs} from "@blueprintjs/core";
 import * as jspb from "google-protobuf";
 import {Empty} from "google-protobuf/google/protobuf/empty_pb";
 import React from "react";
 import {useHistory} from "react-router";
 
-import {ProjectsGrid} from "./ProjectsGrid";
+import {ProjectListPanel} from "./ProjectListPanel";
 
-import * as ProjectUtils from "../../../utils/project";
 import {Photo} from "../../../generated/proto/model/photo_pb";
 import {Project} from "../../../generated/proto/model/project_pb";
 import {BulkGetPhotosRequest} from "../../../generated/proto/rpc/photo/photo_pb";
 import {usePhotoClient} from "../../../services/photo";
 import {useProjectClient} from "../../../services/project";
+import * as ProjectUtils from "../../../utils/project";
 import {BaseLayout} from "../../layout/BaseLayout";
 
-export function ProjectsGridContainer(): React.ReactElement {
+
+export function ProjectDirectoryContainer(): React.ReactElement {
   const history = useHistory();
 
   const projectClient = useProjectClient();
@@ -52,18 +54,30 @@ export function ProjectsGridContainer(): React.ReactElement {
   async function onCreateNewProject(): Promise<void> {
     setLoading(true);
     const response = await projectClient.createProject(new Empty());
-    history.push(`/project/${response.getProjectid()}/build?new=true`);
-    setLoading(false);
+    history.push(`/project/${response.getProjectid()}`);
   }
 
   return (
     <BaseLayout loading={loading}>
-      <ProjectsGrid
-        projects={projects!}
-        swaps={swaps!}
-        photos={photos!}
-        onCreateNewProject={onCreateNewProject}
-      />
+      <Tabs id="ProjectDirectory" vertical={true}>
+        <Tab
+          id="ProjectList"
+          title="Dự án"
+          panel={
+            <ProjectListPanel
+              projects={projects!}
+              swaps={swaps!}
+              photos={photos!}
+              onCreateNewProject={onCreateNewProject}
+            />
+          }
+        />
+        <Tab
+          id="TagList"
+          title="Thẻ"
+        />
+        <div style={{width: "200px"}}/>
+      </Tabs>
     </BaseLayout>
   );
 }

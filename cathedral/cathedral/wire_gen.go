@@ -24,10 +24,13 @@ func initializeModuleSet(cathedralConfig *config.Cathedral, logger *zap.Logger) 
 	if err != nil {
 		return nil, err
 	}
-	service := project.NewService(store)
-	configService := cathedralConfig.Service
+	service := cathedralConfig.Service
+	projectService, err := project.NewService(service, store)
+	if err != nil {
+		return nil, err
+	}
 	configPhoto := cathedralConfig.Photo
-	photoService, err := photo.NewService(configService, configPhoto, logger, authAuth, store)
+	photoService, err := photo.NewService(service, configPhoto, logger, authAuth, store)
 	if err != nil {
 		return nil, err
 	}
@@ -36,7 +39,7 @@ func initializeModuleSet(cathedralConfig *config.Cathedral, logger *zap.Logger) 
 		Logger:         logger,
 		Auth:           authAuth,
 		ModelStore:     store,
-		ProjectService: service,
+		ProjectService: projectService,
 		PhotoService:   photoService,
 	}
 	return moduleSet, nil

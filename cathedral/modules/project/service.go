@@ -3,6 +3,7 @@ package project
 import (
 	"context"
 	"github.com/golang/protobuf/ptypes/empty"
+	"github.com/vsjcloud/beaver/cathedral/common/config"
 	"github.com/vsjcloud/beaver/cathedral/common/id"
 	"github.com/vsjcloud/beaver/cathedral/generated/proto/model"
 	"github.com/vsjcloud/beaver/cathedral/generated/proto/rpc/common"
@@ -11,13 +12,37 @@ import (
 )
 
 type Service struct {
+	config *config.Service
 	modelStore store.Store
 }
 
-func NewService(modelStore store.Store) *Service {
-	return &Service{
+func NewService(config *config.Service, modelStore store.Store) (*Service, error) {
+	service := &Service{
+		config: config,
 		modelStore: modelStore,
 	}
+	if err := service.initialService(); err != nil {
+		return nil, err
+	}
+	return service, nil
+}
+
+func (s *Service) initialService() error {
+	ctx, cancel := context.WithTimeout(context.Background(), s.config.Timeout.Duration)
+	defer cancel()
+	archivedProjects := &model.ArchivedProjectDirectory{
+		ProjectIDs: make(map[string]bool),
+	}
+	if _, err := s.modelStore.PutIfNotExists(ctx, id.ArchivedProjectDirectoryID, archivedProjects); err != nil {
+		return err
+	}
+	archivedTags := &model.ArchivedProjectTagDirectory{
+		ProjectTagIDs: make(map[string]bool),
+	}
+	if _, err := s.modelStore.PutIfNotExists(ctx, id.ArchivedProjectTagDirectoryID, archivedTags); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *Service) CreateProject(

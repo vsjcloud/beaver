@@ -6,6 +6,8 @@ import {useHistory, useLocation} from "react-router";
 import {useAuth0} from "../components/auth0/Auth0Provider";
 import {AppToaster} from "../components/toaster/AppToaster";
 
+export const INPUT_DEBOUNCE_TIME = 500;
+
 export function useAuthToken(): string {
   return useAuth0()?.token || "";
 }

@@ -41,8 +41,16 @@ export class FormField<V> {
     return this.rules;
   }
 
+  public setRules(rules: ValidationRule<V>[]): FormField<V> {
+    return new FormField(this.value, rules, this.touched);
+  }
+
   public setValue(value: V): FormField<V> {
     return new FormField(value, this.rules, true);
+  }
+
+  public setValueNoTouch(value: V): FormField<V> {
+    return new FormField(value, this.rules, this.touched);
   }
 
   public isSuccess(): boolean {

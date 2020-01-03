@@ -104,27 +104,33 @@ func (s *Service) UpdateProjectTag(
 	}, nil
 }
 
-func (s *Service) getArchivedProjectTagDirectory(ctx context.Context) (*model.ArchivedProjectDirectory, error) {
+func (s *Service) GetArchivedProjectTagDirectory(
+	ctx context.Context,
+	_ *empty.Empty,
+) (*project.GetArchivedProjectTagDirectoryResponse, error) {
 	raw, err := s.modelStore.Get(ctx, id.ArchivedProjectTagDirectoryID)
 	if err != nil {
 		return nil, err
 	}
-	archivedTags := &model.ArchivedProjectDirectory{}
+	archivedTags := &model.ArchivedProjectTagDirectory{}
 	if err := raw.Decode(archivedTags); err != nil {
 		return nil, err
 	}
-	return archivedTags, nil
+	return &project.GetArchivedProjectTagDirectoryResponse{
+		ArchivedProjectTagDirectory: archivedTags,
+	}, nil
 }
 
 func (s *Service) ArchiveProjectTag(
 	ctx context.Context,
 	request *project.ArchiveProjectTagRequest,
 ) (*common.GeneralServiceResponse, error) {
-	archivedTags, err := s.getArchivedProjectTagDirectory(ctx)
+	response, err := s.GetArchivedProjectTagDirectory(ctx, &empty.Empty{})
 	if err != nil {
 		return nil, err
 	}
-	archivedTags.ProjectIDs[request.ProjectTagID] = true
+	archivedTags := response.ArchivedProjectTagDirectory
+	archivedTags.ProjectTagIDs[request.ProjectTagID] = true
 	if err := s.modelStore.Put(ctx, id.ArchivedProjectTagDirectoryID, archivedTags); err != nil {
 		return nil, err
 	}
@@ -137,11 +143,12 @@ func (s *Service) RecoverProjectTag(
 	ctx context.Context,
 	request *project.RecoverProjectTagRequest,
 ) (*common.GeneralServiceResponse, error) {
-	archivedTags, err := s.getArchivedProjectTagDirectory(ctx)
+	response, err := s.GetArchivedProjectTagDirectory(ctx, &empty.Empty{})
 	if err != nil {
 		return nil, err
 	}
-	delete(archivedTags.ProjectIDs, request.ProjectTagID)
+	archivedTags := response.ArchivedProjectTagDirectory
+	delete(archivedTags.ProjectTagIDs, request.ProjectTagID)
 	if err := s.modelStore.Put(ctx, id.ArchivedProjectTagDirectoryID, archivedTags); err != nil {
 		return nil, err
 	}
@@ -259,7 +266,10 @@ func (s *Service) UpdateProjectAndRemoveSwap(
 	}, nil
 }
 
-func (s *Service) getArchivedProjectDirectory(ctx context.Context) (*model.ArchivedProjectDirectory, error) {
+func (s *Service) GetArchivedProjectDirectory(
+	ctx context.Context,
+	_ *empty.Empty,
+) (*project.GetArchivedProjectDirectoryResponse, error) {
 	raw, err := s.modelStore.Get(ctx, id.ArchivedProjectDirectoryID)
 	if err != nil {
 		return nil, err
@@ -268,17 +278,20 @@ func (s *Service) getArchivedProjectDirectory(ctx context.Context) (*model.Archi
 	if err := raw.Decode(archivedProjects); err != nil {
 		return nil, err
 	}
-	return archivedProjects, nil
+	return &project.GetArchivedProjectDirectoryResponse{
+		ArchivedProjectDirectory: archivedProjects,
+	}, nil
 }
 
 func (s *Service) ArchiveProject(
 	ctx context.Context,
 	request *project.ArchiveProjectRequest,
 ) (*common.GeneralServiceResponse, error) {
-	archivedProjects, err := s.getArchivedProjectDirectory(ctx)
+	response, err := s.GetArchivedProjectDirectory(ctx, &empty.Empty{})
 	if err != nil {
 		return nil, err
 	}
+	archivedProjects := response.ArchivedProjectDirectory
 	archivedProjects.ProjectIDs[request.ProjectID] = true
 	if err := s.modelStore.Put(ctx, id.ArchivedProjectDirectoryID, archivedProjects); err != nil {
 		return nil, err
@@ -292,10 +305,11 @@ func (s *Service) RecoverProject(
 	ctx context.Context,
 	request *project.RecoverProjectRequest,
 ) (*common.GeneralServiceResponse, error) {
-	archivedProjects, err := s.getArchivedProjectDirectory(ctx)
+	response, err := s.GetArchivedProjectDirectory(ctx, &empty.Empty{})
 	if err != nil {
 		return nil, err
 	}
+	archivedProjects := response.ArchivedProjectDirectory
 	delete(archivedProjects.ProjectIDs, request.ProjectID)
 	if err := s.modelStore.Put(ctx, id.ArchivedProjectDirectoryID, archivedProjects); err != nil {
 		return nil, err

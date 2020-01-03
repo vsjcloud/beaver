@@ -113,6 +113,28 @@ export namespace CreateProjectTagResponse {
   }
 }
 
+export class GetArchivedProjectTagDirectoryResponse extends jspb.Message {
+  hasArchivedprojecttagdirectory(): boolean;
+  clearArchivedprojecttagdirectory(): void;
+  getArchivedprojecttagdirectory(): model_project_pb.ArchivedProjectTagDirectory | undefined;
+  setArchivedprojecttagdirectory(value?: model_project_pb.ArchivedProjectTagDirectory): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetArchivedProjectTagDirectoryResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetArchivedProjectTagDirectoryResponse): GetArchivedProjectTagDirectoryResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetArchivedProjectTagDirectoryResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetArchivedProjectTagDirectoryResponse;
+  static deserializeBinaryFromReader(message: GetArchivedProjectTagDirectoryResponse, reader: jspb.BinaryReader): GetArchivedProjectTagDirectoryResponse;
+}
+
+export namespace GetArchivedProjectTagDirectoryResponse {
+  export type AsObject = {
+    archivedprojecttagdirectory?: model_project_pb.ArchivedProjectTagDirectory.AsObject,
+  }
+}
+
 export class ArchiveProjectTagRequest extends jspb.Message {
   getProjecttagid(): string;
   setProjecttagid(value: string): void;
@@ -292,6 +314,28 @@ export namespace UpdateProjectAndRemoveSwapRequest {
   export type AsObject = {
     projectid: string,
     project?: model_project_pb.Project.AsObject,
+  }
+}
+
+export class GetArchivedProjectDirectoryResponse extends jspb.Message {
+  hasArchivedprojectdirectory(): boolean;
+  clearArchivedprojectdirectory(): void;
+  getArchivedprojectdirectory(): model_project_pb.ArchivedProjectDirectory | undefined;
+  setArchivedprojectdirectory(value?: model_project_pb.ArchivedProjectDirectory): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetArchivedProjectDirectoryResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetArchivedProjectDirectoryResponse): GetArchivedProjectDirectoryResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetArchivedProjectDirectoryResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetArchivedProjectDirectoryResponse;
+  static deserializeBinaryFromReader(message: GetArchivedProjectDirectoryResponse, reader: jspb.BinaryReader): GetArchivedProjectDirectoryResponse;
+}
+
+export namespace GetArchivedProjectDirectoryResponse {
+  export type AsObject = {
+    archivedprojectdirectory?: model_project_pb.ArchivedProjectDirectory.AsObject,
   }
 }
 

@@ -11,6 +11,7 @@ service ProjectService {
     rpc getProjectTags (google.protobuf.Empty) returns (GetProjectTagsResponse);
     rpc createProjectTag (CreateProjectTagRequest) returns (CreateProjectTagResponse);
     rpc updateProjectTag (UpdateProjectTagRequest) returns (common.GeneralServiceResponse);
+    rpc getArchivedProjectTagDirectory (google.protobuf.Empty) returns (GetArchivedProjectTagDirectoryResponse);
     rpc archiveProjectTag (ArchiveProjectTagRequest) returns (common.GeneralServiceResponse);
     rpc recoverProjectTag (RecoverProjectTagRequest) returns (common.GeneralServiceResponse);
     rpc getProjectWithSwap (GetProjectWithSwapRequest) returns (GetProjectWithSwapResponse);
@@ -18,6 +19,7 @@ service ProjectService {
     rpc updateProjectSwap (UpdateProjectSwapRequest) returns (common.GeneralServiceResponse);
     rpc deleteProjectSwap (DeleteProjectSwapRequest) returns (common.GeneralServiceResponse);
     rpc updateProjectAndRemoveSwap (UpdateProjectAndRemoveSwapRequest) returns (common.GeneralServiceResponse);
+    rpc getArchivedProjectDirectory (google.protobuf.Empty) returns (GetArchivedProjectDirectoryResponse);
     rpc archiveProject (ArchiveProjectRequest) returns (common.GeneralServiceResponse);
     rpc recoverProject (RecoverProjectRequest) returns (common.GeneralServiceResponse);
 }
@@ -41,6 +43,10 @@ message UpdateProjectTagRequest {
 
 message CreateProjectTagResponse {
     string projectTagID = 1;
+}
+
+message GetArchivedProjectTagDirectoryResponse {
+    model.ArchivedProjectTagDirectory archivedProjectTagDirectory = 1;
 }
 
 message ArchiveProjectTagRequest {
@@ -77,6 +83,10 @@ message DeleteProjectSwapRequest {
 message UpdateProjectAndRemoveSwapRequest {
     string projectID = 1;
     model.Project project = 2;
+}
+
+message GetArchivedProjectDirectoryResponse {
+    model.ArchivedProjectDirectory archivedProjectDirectory = 1;
 }
 
 message ArchiveProjectRequest {

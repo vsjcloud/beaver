@@ -1,4 +1,4 @@
-import {Alignment, Button, Navbar, Spinner} from "@blueprintjs/core";
+import {Alignment, Button, Navbar, Spinner, Tag} from "@blueprintjs/core";
 import {Intent} from "@blueprintjs/core/lib/esm/common/intent";
 import {IconNames} from "@blueprintjs/icons";
 import {DateTime} from "luxon";
@@ -9,9 +9,11 @@ export type ProjectManagerLayoutProps = React.PropsWithChildren<{
   projectName: string;
   loading?: boolean;
   saveSwapTime?: DateTime;
+  hasSwap?: boolean;
+  archived?: boolean;
 }>;
 
-export function ProjectManagerLayout({projectName, loading, children, saveSwapTime}: ProjectManagerLayoutProps): React.ReactElement {
+export function ProjectManagerLayout({projectName, loading, children, saveSwapTime, hasSwap, archived}: ProjectManagerLayoutProps): React.ReactElement {
   const history = useHistory();
 
   return (
@@ -22,7 +24,15 @@ export function ProjectManagerLayout({projectName, loading, children, saveSwapTi
             <Button icon={IconNames.ARROW_LEFT} intent={Intent.PRIMARY} onClick={(): void => history.goBack()}>Quay
               lại</Button>
             <Navbar.Divider/>
-            <Navbar.Heading className="font-semibold">Quản lý dự án: {projectName}</Navbar.Heading>
+            <Navbar.Heading className="font-semibold">
+              Quản lý dự án: {projectName}
+              {hasSwap &&
+                <Tag className="ml-2" intent={Intent.WARNING}>Đang thay đổi</Tag>
+              }
+              {archived &&
+                <Tag className="ml-2" intent={Intent.DANGER}>Đã lưu trữ</Tag>
+              }
+            </Navbar.Heading>
           </Navbar.Group>
           <Navbar.Group align={Alignment.RIGHT}>
             {saveSwapTime &&

@@ -42,6 +42,15 @@ type ProjectServiceupdateProjectTag = {
   readonly responseType: typeof rpc_common_response_pb.GeneralServiceResponse;
 };
 
+type ProjectServicegetArchivedProjectTagDirectory = {
+  readonly methodName: string;
+  readonly service: typeof ProjectService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof google_protobuf_empty_pb.Empty;
+  readonly responseType: typeof rpc_project_project_pb.GetArchivedProjectTagDirectoryResponse;
+};
+
 type ProjectServicearchiveProjectTag = {
   readonly methodName: string;
   readonly service: typeof ProjectService;
@@ -105,6 +114,15 @@ type ProjectServiceupdateProjectAndRemoveSwap = {
   readonly responseType: typeof rpc_common_response_pb.GeneralServiceResponse;
 };
 
+type ProjectServicegetArchivedProjectDirectory = {
+  readonly methodName: string;
+  readonly service: typeof ProjectService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof google_protobuf_empty_pb.Empty;
+  readonly responseType: typeof rpc_project_project_pb.GetArchivedProjectDirectoryResponse;
+};
+
 type ProjectServicearchiveProject = {
   readonly methodName: string;
   readonly service: typeof ProjectService;
@@ -129,6 +147,7 @@ export class ProjectService {
   static readonly getProjectTags: ProjectServicegetProjectTags;
   static readonly createProjectTag: ProjectServicecreateProjectTag;
   static readonly updateProjectTag: ProjectServiceupdateProjectTag;
+  static readonly getArchivedProjectTagDirectory: ProjectServicegetArchivedProjectTagDirectory;
   static readonly archiveProjectTag: ProjectServicearchiveProjectTag;
   static readonly recoverProjectTag: ProjectServicerecoverProjectTag;
   static readonly getProjectWithSwap: ProjectServicegetProjectWithSwap;
@@ -136,6 +155,7 @@ export class ProjectService {
   static readonly updateProjectSwap: ProjectServiceupdateProjectSwap;
   static readonly deleteProjectSwap: ProjectServicedeleteProjectSwap;
   static readonly updateProjectAndRemoveSwap: ProjectServiceupdateProjectAndRemoveSwap;
+  static readonly getArchivedProjectDirectory: ProjectServicegetArchivedProjectDirectory;
   static readonly archiveProject: ProjectServicearchiveProject;
   static readonly recoverProject: ProjectServicerecoverProject;
 }
@@ -208,6 +228,15 @@ export class ProjectServiceClient {
     requestMessage: rpc_project_project_pb.UpdateProjectTagRequest,
     callback: (error: ServiceError|null, responseMessage: rpc_common_response_pb.GeneralServiceResponse|null) => void
   ): UnaryResponse;
+  getArchivedProjectTagDirectory(
+    requestMessage: google_protobuf_empty_pb.Empty,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: rpc_project_project_pb.GetArchivedProjectTagDirectoryResponse|null) => void
+  ): UnaryResponse;
+  getArchivedProjectTagDirectory(
+    requestMessage: google_protobuf_empty_pb.Empty,
+    callback: (error: ServiceError|null, responseMessage: rpc_project_project_pb.GetArchivedProjectTagDirectoryResponse|null) => void
+  ): UnaryResponse;
   archiveProjectTag(
     requestMessage: rpc_project_project_pb.ArchiveProjectTagRequest,
     metadata: grpc.Metadata,
@@ -270,6 +299,15 @@ export class ProjectServiceClient {
   updateProjectAndRemoveSwap(
     requestMessage: rpc_project_project_pb.UpdateProjectAndRemoveSwapRequest,
     callback: (error: ServiceError|null, responseMessage: rpc_common_response_pb.GeneralServiceResponse|null) => void
+  ): UnaryResponse;
+  getArchivedProjectDirectory(
+    requestMessage: google_protobuf_empty_pb.Empty,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: rpc_project_project_pb.GetArchivedProjectDirectoryResponse|null) => void
+  ): UnaryResponse;
+  getArchivedProjectDirectory(
+    requestMessage: google_protobuf_empty_pb.Empty,
+    callback: (error: ServiceError|null, responseMessage: rpc_project_project_pb.GetArchivedProjectDirectoryResponse|null) => void
   ): UnaryResponse;
   archiveProject(
     requestMessage: rpc_project_project_pb.ArchiveProjectRequest,

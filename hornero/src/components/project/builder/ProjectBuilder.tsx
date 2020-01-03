@@ -22,7 +22,7 @@ export type ProjectBuilderProps = {
   initialPhotos: jspb.Map<string, Photo>;
   onUploadPhoto(photo: File): Promise<PhotoAndID>;
   onSaveProject(editedProject: Project): Promise<void>;
-  onSaveSwap(editedSwap: Project): Promise<boolean>;
+  onSaveSwap(editedSwap: Project, unmount: boolean): Promise<boolean>;
   onDeleteSwap?(): Promise<void>;
   onProjectNameChange(newName: string): void;
 };
@@ -76,7 +76,7 @@ export function ProjectBuilder({
   React.useEffect(function () {
     return function (): void {
       (async function (): Promise<void> {
-        await onSaveSwap(swapProject.current);
+        await onSaveSwap(swapProject.current, true);
       })();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -84,7 +84,7 @@ export function ProjectBuilder({
 
   React.useEffect(function () {
     const tick = setTimeout(async function () {
-      await onSaveSwap(buildProject());
+      await onSaveSwap(buildProject(), false);
     }, 5000);
     return (): void => clearTimeout(tick);
   }, [buildProject, onSaveSwap]);

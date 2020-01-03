@@ -10,6 +10,8 @@ import {
   CreateProjectTagRequest,
   CreateProjectTagResponse,
   DeleteProjectSwapRequest,
+  GetArchivedProjectDirectoryResponse,
+  GetArchivedProjectTagDirectoryResponse,
   GetProjectsWithSwapResponse,
   GetProjectTagsResponse,
   GetProjectWithSwapRequest,
@@ -27,6 +29,7 @@ export type ProjectClient = {
   getProjectTags(request: Empty): Promise<GetProjectTagsResponse>;
   createProjectTag(request: CreateProjectTagRequest): Promise<CreateProjectTagResponse>;
   updateProjectTag(request: UpdateProjectTagRequest): Promise<GeneralServiceResponse>;
+  getArchivedProjectTagDirectory(request: Empty): Promise<GetArchivedProjectTagDirectoryResponse>;
   archiveProjectTag(request: ArchiveProjectTagRequest): Promise<GeneralServiceResponse>;
   recoverProjectTag(request: RecoverProjectTagRequest): Promise<GeneralServiceResponse>;
   getProjectWithSwap(request: GetProjectWithSwapRequest): Promise<GetProjectWithSwapResponse>;
@@ -34,6 +37,7 @@ export type ProjectClient = {
   updateProjectSwap(request: UpdateProjectSwapRequest): Promise<GeneralServiceResponse>;
   deleteProjectSwap(request: DeleteProjectSwapRequest): Promise<GeneralServiceResponse>;
   updateProjectAndRemoveSwap(request: UpdateProjectAndRemoveSwapRequest): Promise<GeneralServiceResponse>;
+  getArchivedProjectDirectory(request: Empty): Promise<GetArchivedProjectDirectoryResponse>;
   archiveProject(request: ArchiveProjectRequest): Promise<GeneralServiceResponse>;
   recoverProject(request: RecoverProjectRequest): Promise<GeneralServiceResponse>;
 };
@@ -65,6 +69,13 @@ export function useProjectClient(): ProjectClient {
   function updateProjectTag(request: UpdateProjectTagRequest): Promise<GeneralServiceResponse> {
     return grpcClient.invokeWithAuthToken({
       methodDescriptor: ProjectService.updateProjectTag,
+      request: request,
+    });
+  }
+
+  function getArchivedProjectTagDirectory(request: Empty): Promise<GetArchivedProjectTagDirectoryResponse> {
+    return grpcClient.invokeWithAuthToken({
+      methodDescriptor: ProjectService.getArchivedProjectTagDirectory,
       request: request,
     });
   }
@@ -118,6 +129,13 @@ export function useProjectClient(): ProjectClient {
     });
   }
 
+  function getArchivedProjectDirectory(request: Empty): Promise<GetArchivedProjectDirectoryResponse> {
+    return grpcClient.invokeWithAuthToken({
+      methodDescriptor: ProjectService.getArchivedProjectDirectory,
+      request: request,
+    });
+  }
+
   function archiveProject(request: ArchiveProjectRequest): Promise<GeneralServiceResponse> {
     return grpcClient.invokeWithAuthToken({
       methodDescriptor: ProjectService.archiveProject,
@@ -137,6 +155,7 @@ export function useProjectClient(): ProjectClient {
     getProjectTags,
     createProjectTag,
     updateProjectTag,
+    getArchivedProjectTagDirectory,
     archiveProjectTag,
     recoverProjectTag,
     getProjectWithSwap,
@@ -144,6 +163,7 @@ export function useProjectClient(): ProjectClient {
     updateProjectSwap,
     deleteProjectSwap,
     updateProjectAndRemoveSwap,
+    getArchivedProjectDirectory,
     archiveProject,
     recoverProject,
   };

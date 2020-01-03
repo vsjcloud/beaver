@@ -23,6 +23,7 @@ export function ProjectDirectoryContainer(): React.ReactElement {
 
   const [projects, setProjects] = React.useState<jspb.Map<string, Project>>();
   const [swaps, setSwaps] = React.useState<jspb.Map<string, Project>>();
+  const [archivedProjectIDs, setArchivedProjectIDs] = React.useState<jspb.Map<string, boolean>>();
   const [photos, setPhotos] = React.useState<jspb.Map<string, Photo>>();
 
   const [loading, setLoading] = React.useState(true);
@@ -35,6 +36,11 @@ export function ProjectDirectoryContainer(): React.ReactElement {
       }();
       setProjects(projects);
       setSwaps(swaps);
+      const archivedProjectIDs = await async function(): Promise<jspb.Map<string, boolean>> {
+        const response = await projectClient.getArchivedProjectDirectory(new Empty());
+        return response.getArchivedprojectdirectory()?.getProjectidsMap() || new jspb.Map([]);
+      }();
+      setArchivedProjectIDs(archivedProjectIDs);
       const photos = await async function (): Promise<jspb.Map<string, Photo>> {
         const request = new BulkGetPhotosRequest();
         projects.forEach((project) => {
@@ -63,10 +69,12 @@ export function ProjectDirectoryContainer(): React.ReactElement {
         <Tab
           id="ProjectList"
           title="Dự án"
+          className="w-full"
           panel={
             <ProjectListPanel
               projects={projects!}
               swaps={swaps!}
+              archivedProjectIDs={archivedProjectIDs!}
               photos={photos!}
               onCreateNewProject={onCreateNewProject}
             />

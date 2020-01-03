@@ -41,9 +41,10 @@ export function buildProjectInfo(
 
 export type ProjectCardProps = {
   projectInfo: ProjectInfo;
+  archived?: boolean;
 };
 
-export function ProjectCard({projectInfo}: ProjectCardProps): React.ReactElement {
+export function ProjectCard({projectInfo, archived}: ProjectCardProps): React.ReactElement {
   const history = useHistory();
 
   function onOpenProjectManager(): void {
@@ -52,7 +53,7 @@ export function ProjectCard({projectInfo}: ProjectCardProps): React.ReactElement
 
   return (
     <div key={projectInfo.projectID} className="w-1/3 p-2">
-      <Card onClick={onOpenProjectManager} interactive={true} style={{height: "320px"}}>
+      <Card onClick={onOpenProjectManager} interactive={true}>
         <div className="flex justify-center items-center border border-light-gray-3 mb-3"
           style={{height: "200px", width: "100%"}}>
           {projectInfo.photo ? (
@@ -65,15 +66,21 @@ export function ProjectCard({projectInfo}: ProjectCardProps): React.ReactElement
             <Icon icon={IconNames.OFFICE} color={Colors.GRAY3} iconSize={64}/>
           )}
         </div>
-        <H4 className={classNames("flex flex-row items-center", projectInfo.name ? "text-blue-3" : "text-gray-3")}>
-          <span className={Classes.TEXT_OVERFLOW_ELLIPSIS}
-            title={projectInfo.name || "Tên dự án"}>{projectInfo.name || "Tên dự án"}</span>
+        <div className="mb-3" style={{height: "21px"}}>
           {projectInfo.hasSwap &&
-          <Tag className="ml-2 not-italic" style={{minWidth: "85px"}} intent={Intent.WARNING}>Đang thay đổi</Tag>}
+          <Tag className="mr-2" style={{minWidth: "85px"}} intent={Intent.WARNING}>Đang thay đổi</Tag>
+          }
+          {archived &&
+          <Tag intent={Intent.DANGER}>Đã Lưu trữ</Tag>
+          }
+        </div>
+        <H4 className={classNames("flex flex-row items-center", projectInfo.name ? "text-blue-3" : "text-gray-3")}>
+          <span className={Classes.TEXT_OVERFLOW_ELLIPSIS} title={projectInfo.name || "Tên dự án"}>{projectInfo.name || "Tên dự án"}</span>
         </H4>
         <div
           className={classNames("hr-project-card-description", projectInfo.description ? "text-dark-gray-3" : "italic text-gray-3")}
           title={projectInfo.description || "Giới thiệu về dự án"}
+          style={{height: "40px"}}
         >
           {projectInfo.description || "Giới thiệu về dự án"}
         </div>

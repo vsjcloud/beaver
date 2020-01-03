@@ -10,7 +10,7 @@ export type ProjectBuilderPanelProps = {
   initialPhotos: jspb.Map<string, Photo>;
   onUploadPhoto(photo: File): Promise<PhotoAndID>;
   onSaveProject(editedProject: Project): Promise<void>;
-  onSaveSwap(editedSwap: Project): Promise<boolean>;
+  onSaveSwap(editedSwap: Project, unmount: boolean): Promise<boolean>;
   onDeleteSwap?(): Promise<void>;
   onProjectNameChange(newName: string): void;
 };

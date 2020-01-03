@@ -1,10 +1,13 @@
+import {Tab, Tabs} from "@blueprintjs/core";
 import {Intent} from "@blueprintjs/core/lib/esm/common/intent";
 import * as jspb from "google-protobuf";
+import {Empty} from "google-protobuf/google/protobuf/empty_pb";
 import {DateTime} from "luxon";
 import React from "react";
 import {useHistory, useParams} from "react-router";
 
-import {ProjectManager} from "./ProjectManager";
+import {ProjectBuilderPanel} from "./panels/ProjectBuilderPanel";
+import {ProjectSettingPanel} from "./panels/ProjectSettingPanel";
 import {ProjectManagerLayout} from "./ProjectManagerLayout";
 
 import {parseID} from "../../../core/id";
@@ -16,6 +19,7 @@ import {
   ArchiveProjectRequest,
   DeleteProjectSwapRequest,
   GetProjectWithSwapRequest,
+  RecoverProjectRequest,
   UpdateProjectAndRemoveSwapRequest,
   UpdateProjectSwapRequest,
 } from "../../../generated/proto/rpc/project/project_pb";
@@ -35,12 +39,12 @@ export function ProjectManagerContainer(): React.ReactElement {
   const [project, setProject] = React.useState<Project>();
   const [swap, setSwap] = React.useState<Project>();
   const [editingProject, setEditingProject] = React.useState<Project>();
+  const [archived, setArchived] = React.useState(false);
   const [photos, setPhotos] = React.useState(new jspb.Map<string, Photo>([]));
 
   const [projectName, setProjectName] = React.useState("");
   const [saveSwapTime, setSaveSwapTime] = React.useState<DateTime>();
   const [loading, setLoading] = React.useState(true);
-
 
   React.useEffect(function () {
     if (!projectID) return;
@@ -56,6 +60,12 @@ export function ProjectManagerContainer(): React.ReactElement {
       const editingProject = swap || project || new Project();
       setProjectName(editingProject.getName());
       setEditingProject(editingProject);
+      const archived = await async function (): Promise<boolean> {
+        const response = await projectClient.getArchivedProjectDirectory(new Empty());
+        const archivedProjectIDs = response.getArchivedprojectdirectory()?.getProjectidsMap() || new jspb.Map([]);
+        return archivedProjectIDs.has(projectID!);
+      }();
+      setArchived(archived);
       const photos = await async function (): Promise<jspb.Map<string, Photo>> {
         const request = new BulkGetPhotosRequest();
         ProjectUtils.updatePhotoSetWithProjectPhotos(request.getPhotoidsMap(), editingProject);
@@ -122,7 +132,7 @@ export function ProjectManagerContainer(): React.ReactElement {
     history.replace("/projects");
   }
 
-  async function onSaveSwap(editingSwap: Project): Promise<boolean> {
+  async function onSaveSwap(editingSwap: Project, unmount: boolean): Promise<boolean> {
     if (submitting.current) return false;
     if (!swap && !doesProjectChange(project!, editingSwap)) return false;
     if (swap && !doesProjectChange(swap, editingSwap)) return false;
@@ -130,8 +140,10 @@ export function ProjectManagerContainer(): React.ReactElement {
     request.setSwapid(projectSwapID(parseID(projectID!)).toString());
     request.setSwap(editingSwap);
     await projectClient.updateProjectSwap(request);
-    setSwap(editingSwap);
-    setSaveSwapTime(DateTime.local());
+    if (!unmount) {
+      setSwap(editingSwap);
+      setSaveSwapTime(DateTime.local());
+    }
     return true;
   }
 
@@ -180,18 +192,66 @@ export function ProjectManagerContainer(): React.ReactElement {
     history.replace("/projects");
   }
 
+  async function onRecoverProject(): Promise<void> {
+    setLoading(true);
+    const request = new RecoverProjectRequest();
+    request.setProjectid(projectID!);
+    try {
+      await projectClient.recoverProject(request);
+    } catch {
+      setLoading(false);
+      AppToaster.show({
+        intent: Intent.DANGER,
+        message: "Có lỗi xảy ra khi khôi phục dự án. Xin hãy thử lại",
+      });
+      return;
+    }
+    AppToaster.show({
+      intent: Intent.SUCCESS,
+      message: "Khôi phục dự án thành công",
+    });
+    history.replace("/projects");
+  }
+
   return (
-    <ProjectManagerLayout projectName={projectName} saveSwapTime={saveSwapTime} loading={loading}>
-      <ProjectManager
-        initialProject={editingProject!}
-        initialPhotos={photos}
-        onUploadPhoto={photoClient.uploadPhoto}
-        onSaveProject={onSaveProject}
-        onSaveSwap={onSaveSwap}
-        onDeleteSwap={swap ? onDeleteSwap : undefined}
-        onArchiveProject={onArchiveProject}
-        onProjectNameChange={setProjectName}
-      />
+    <ProjectManagerLayout
+      projectName={projectName}
+      saveSwapTime={saveSwapTime}
+      loading={loading}
+      archived={archived}
+      hasSwap={!!swap}
+    >
+      <div className="mx-auto" style={{width: "600px"}}>
+        <Tabs id="ProjectManager" large={true}>
+          <Tab
+            id="ProjectBuilder"
+            title="Thay đổi dự án"
+            panelClassName="w-full"
+            panel={
+              <ProjectBuilderPanel
+                initialProject={editingProject!}
+                initialPhotos={photos}
+                onUploadPhoto={photoClient.uploadPhoto}
+                onSaveProject={onSaveProject}
+                onSaveSwap={onSaveSwap}
+                onDeleteSwap={swap ? onDeleteSwap : undefined}
+                onProjectNameChange={setProjectName}
+              />
+            }
+          />
+          <Tab
+            id="ProjectSetting"
+            title="Quản lý chung"
+            panelClassName="w-full"
+            panel={
+              <ProjectSettingPanel
+                onArchiveProject={!archived ? onArchiveProject : undefined}
+                onRecoverProject={archived ? onRecoverProject : undefined}
+              />
+            }
+          />
+        </Tabs>
+      </div>
     </ProjectManagerLayout>
   );
 }

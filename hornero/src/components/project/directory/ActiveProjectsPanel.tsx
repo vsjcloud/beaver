@@ -9,7 +9,7 @@ import {Photo} from "../../../generated/proto/model/photo_pb";
 import {Project} from "../../../generated/proto/model/project_pb";
 import * as Utils from "../../../utils";
 
-export type ActiveProjectsPanel = {
+export type ActiveProjectsPanelProps = {
   projects: jspb.Map<string, Project>;
   swaps: jspb.Map<string, Project>;
   photos: jspb.Map<string, Photo>;
@@ -21,7 +21,7 @@ export function ActiveProjectsPanel({
   swaps,
   photos,
   onCreateNewProject,
-}: ActiveProjectsPanel): React.ReactElement {
+}: ActiveProjectsPanelProps): React.ReactElement {
   const addNewProjectButton = (
     <Button icon={IconNames.ADD} intent={Intent.PRIMARY} onClick={onCreateNewProject}>Tạo dự án mới</Button>
   );

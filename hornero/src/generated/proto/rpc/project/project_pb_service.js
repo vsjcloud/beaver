@@ -49,6 +49,15 @@ ProjectService.updateProjectTag = {
   responseType: rpc_common_response_pb.GeneralServiceResponse
 };
 
+ProjectService.getArchivedProjectTagDirectory = {
+  methodName: "getArchivedProjectTagDirectory",
+  service: ProjectService,
+  requestStream: false,
+  responseStream: false,
+  requestType: google_protobuf_empty_pb.Empty,
+  responseType: rpc_project_project_pb.GetArchivedProjectTagDirectoryResponse
+};
+
 ProjectService.archiveProjectTag = {
   methodName: "archiveProjectTag",
   service: ProjectService,
@@ -110,6 +119,15 @@ ProjectService.updateProjectAndRemoveSwap = {
   responseStream: false,
   requestType: rpc_project_project_pb.UpdateProjectAndRemoveSwapRequest,
   responseType: rpc_common_response_pb.GeneralServiceResponse
+};
+
+ProjectService.getArchivedProjectDirectory = {
+  methodName: "getArchivedProjectDirectory",
+  service: ProjectService,
+  requestStream: false,
+  responseStream: false,
+  requestType: google_protobuf_empty_pb.Empty,
+  responseType: rpc_project_project_pb.GetArchivedProjectDirectoryResponse
 };
 
 ProjectService.archiveProject = {
@@ -235,6 +253,37 @@ ProjectServiceClient.prototype.updateProjectTag = function updateProjectTag(requ
     callback = arguments[1];
   }
   var client = grpc.unary(ProjectService.updateProjectTag, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+ProjectServiceClient.prototype.getArchivedProjectTagDirectory = function getArchivedProjectTagDirectory(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(ProjectService.getArchivedProjectTagDirectory, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,
@@ -452,6 +501,37 @@ ProjectServiceClient.prototype.updateProjectAndRemoveSwap = function updateProje
     callback = arguments[1];
   }
   var client = grpc.unary(ProjectService.updateProjectAndRemoveSwap, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+ProjectServiceClient.prototype.getArchivedProjectDirectory = function getArchivedProjectDirectory(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(ProjectService.getArchivedProjectDirectory, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

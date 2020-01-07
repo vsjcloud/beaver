@@ -52,6 +52,7 @@ jobs:
           key: cathedral-v1-{{ .Branch }}-{{ checksum "go.sum" }}
           paths:
             - /go/pkg/mod
+      - run: sudo apt-get install libvips libvips-dev
       - run: go build -o target/cathedral
       - run: |
           set -exu
@@ -119,9 +120,9 @@ workflows:
       - build_cathedral:
           requires:
             - checkout_code
-      - build_hornero:
-          requires:
-            - checkout_code
-      - build_sagrada:
-          requires:
-            - checkout_code
+#      - build_hornero:
+#          requires:
+#            - checkout_code
+#      - build_sagrada:
+#          requires:
+#            - checkout_code

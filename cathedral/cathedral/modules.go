@@ -6,6 +6,7 @@ import (
 	"github.com/vsjcloud/beaver/cathedral/common/config"
 	"github.com/vsjcloud/beaver/cathedral/modules/photo"
 	"github.com/vsjcloud/beaver/cathedral/modules/project"
+	"github.com/vsjcloud/beaver/cathedral/modules/sagrada"
 	"github.com/vsjcloud/beaver/cathedral/modules/store"
 	"github.com/vsjcloud/beaver/cathedral/modules/store/modelstore"
 	"go.uber.org/zap"
@@ -22,6 +23,7 @@ type ModuleSet struct {
 	// Services
 	ProjectService *project.Service
 	PhotoService   *photo.Service
+	SagradaService *sagrada.Service
 }
 
 var configModules = wire.NewSet(
@@ -37,6 +39,7 @@ var configModules = wire.NewSet(
 var serviceModules = wire.NewSet(
 	project.NewService,
 	photo.NewService,
+	sagrada.NewService,
 )
 
 var cathedralModules = wire.NewSet(

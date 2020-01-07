@@ -41,6 +41,7 @@ func (c *Cathedral) Serve() {
 	} else {
 		c.Modules.Logger.Info("serve Cathedral in development mode")
 	}
+	c.Modules.Logger.Info(fmt.Sprintf("HTTP base path %s", c.Modules.Config.HTTP.APIPath))
 	c.Modules.Logger.Info(fmt.Sprintf("serving at address %s", c.Modules.Config.HTTP.Address))
 	c.Modules.Logger.Panic("serving error", zap.Error(http.ListenAndServe(c.Modules.Config.HTTP.Address, router)))
 }

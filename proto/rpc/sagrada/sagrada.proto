@@ -1,0 +1,26 @@
+syntax = "proto3";
+package sagrada;
+option go_package = "github.com/vsjcloud/beaver/cathedral/generated/proto/rpc/sagrada";
+
+import "google/protobuf/empty.proto";
+import "model/photo.proto";
+import "model/project.proto";
+
+service SagradaService {
+    rpc getProjectDirectoryPageProps(google.protobuf.Empty) returns (GetProjectDirectoryPagePropsResponse);
+    rpc getProjectPageProps(GetProjectPagePropsRequest) returns (GetProjectPagePropsResponse);
+}
+
+message GetProjectDirectoryPagePropsResponse {
+    map<string, model.Project> projects = 1;
+    map<string, model.Photo> photos = 2;
+}
+
+message GetProjectPagePropsRequest {
+    string projectID = 1;
+}
+
+message GetProjectPagePropsResponse {
+    model.Project project = 1;
+    map<string, model.Photo> photos = 2;
+}

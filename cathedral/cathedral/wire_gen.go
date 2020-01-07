@@ -10,6 +10,7 @@ import (
 	"github.com/vsjcloud/beaver/cathedral/common/config"
 	"github.com/vsjcloud/beaver/cathedral/modules/photo"
 	"github.com/vsjcloud/beaver/cathedral/modules/project"
+	"github.com/vsjcloud/beaver/cathedral/modules/sagrada"
 	"github.com/vsjcloud/beaver/cathedral/modules/store/modelstore"
 	"go.uber.org/zap"
 )
@@ -34,6 +35,7 @@ func initializeModuleSet(cathedralConfig *config.Cathedral, logger *zap.Logger) 
 	if err != nil {
 		return nil, err
 	}
+	sagradaService := sagrada.NewService(store)
 	moduleSet := &ModuleSet{
 		Config:         cathedralConfig,
 		Logger:         logger,
@@ -41,6 +43,7 @@ func initializeModuleSet(cathedralConfig *config.Cathedral, logger *zap.Logger) 
 		ModelStore:     store,
 		ProjectService: projectService,
 		PhotoService:   photoService,
+		SagradaService: sagradaService,
 	}
 	return moduleSet, nil
 }

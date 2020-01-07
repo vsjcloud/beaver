@@ -17,7 +17,7 @@ func newDevelopmentLogger() *zap.Logger {
 
 func newProductionLogger() *zap.Logger {
 	core := zapcore.NewCore(
-		zapcore.NewConsoleEncoder(zap.NewProductionEncoderConfig()),
+		zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig()),
 		os.Stderr,
 		zap.InfoLevel,
 	)

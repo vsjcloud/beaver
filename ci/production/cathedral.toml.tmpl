@@ -1,0 +1,34 @@
+mode = "production"
+
+[http]
+address = "${CATHEDRAL_HTTP_ADDRESS}"
+api_path = "${CATHEDRAL_HTTP_API_PATH}"
+
+[cors]
+allowed_origins = ${CATHEDRAL_CORS_ALLOWED_ORIGINS}
+allowed_methods = ["HEAD", "GET", "POST", "PUT", "PATCH", "DELETE"]
+allowed_headers = ${CATHEDRAL_CORS_ALLOWED_HEADERS}
+allowed_credentials = ${CATHEDRAL_CORS_ALLOWED_CREDENTIALS}
+max_age = 300
+
+[auth]
+signing_secret = "${CATHEDRAL_AUTH_SIGNING_SECRET}"
+
+[photo]
+aws_region = "${CATHEDRAL_PHOTO_AWS_REGION}"
+aws_access_key_id = "${CATHEDRAL_PHOTO_AWS_ACCESS_KEY_ID}"
+aws_secret_access_key = "${CATHEDRAL_PHOTO_AWS_SECRET_ACCESS_KEY}"
+aws_session_token = ""
+s3_bucket = "${CATHEDRAL_PHOTO_S3_BUCKET}"
+max_upload_size = 5242880
+
+[model_store]
+aws_region = "${CATHEDRAL_MODEL_STORE_AWS_REGION}"
+aws_access_key_id = "${CATHEDRAL_MODEL_STORE_AWS_ACCESS_KEY_ID}"
+aws_secret_access_key = "${CATHEDRAL_MODEL_STORE_AWS_SECRET_ACCESS_KEY}"
+aws_session_token = ""
+dynamodb_table = "${CATHEDRAL_MODEL_STORE_DYNAMODB_TABLE}"
+max_cache_size = 16384
+
+[service]
+timeout = "60s"

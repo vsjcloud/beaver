@@ -1,0 +1,218 @@
+version: 2.1
+
+orbs:
+  aws-cli: circleci/aws-cli@0.1.19
+  aws-ecr: circleci/aws-ecr@6.7.0
+
+references:
+  beaver_working_directory: &beaver_working_directory
+    /home/circleci/beaver
+  cathedral_working_directory: &cathedral_working_directory
+    /home/circleci/beaver/cathedral
+  hornero_working_directory: &hornero_working_directory
+    /home/circleci/beaver/hornero
+  sagrada_working_directory: &sagrada_working_directory
+    /home/circleci/beaver/sagrada
+
+  repo_cache_key: &repo_cache_key
+    beaver-v1-{{ .Branch }}-{{ .Revision }}
+
+  restore_repo: &restore_repo
+    restore_cache:
+      keys:
+        - *repo_cache_key
+
+  workspace_root: &workspace_root
+    /tmp/workspace
+
+  attach_workspace: &attach_workspace
+    attach_workspace:
+      at: *workspace_root
+
+jobs:
+  checkout_code:
+    docker:
+      - image: circleci/python
+    working_directory: *beaver_working_directory
+    steps:
+      - *restore_repo
+      - checkout
+      - save_cache:
+          key: *repo_cache_key
+          paths:
+            - *beaver_working_directory
+
+  build_cathedral:
+    docker:
+      - image: vsjcloud/cathedral-build:0.1
+    working_directory: *cathedral_working_directory
+    steps:
+      - *restore_repo
+      - restore_cache:
+          keys:
+            - cathedral-v1-{{ .Branch }}-{{ checksum "go.sum" }}
+      - run: go mod download
+      - save_cache:
+          key: cathedral-v1-{{ .Branch }}-{{ checksum "go.sum" }}
+          paths:
+            - /go/pkg/mod
+      - run: go build -o target/cathedral
+      - run: |
+          set -exu
+          mkdir -p /tmp/workspace/compiled-cathedral
+          mv target/cathedral /tmp/workspace/compiled-cathedral
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - compiled-cathedral/cathedral
+
+  build_hornero:
+    docker:
+      - image: circleci/node:12.14
+    working_directory: *hornero_working_directory
+    steps:
+      - *restore_repo
+      - restore_cache:
+          keys:
+            - hornero-v1-{{ .Branch }}-{{ checksum "package.json" }}
+      - run: npm install
+      - save_cache:
+          key: hornero-v1-{{ .Branch }}-{{ checksum "package.json" }}
+          paths:
+            - /home/circleci/beaver/hornero/node_modules
+      - run: sudo apt-get install -y --no-install-recommends gettext-base
+      - run: envsubst <.env.tmpl >.env.production
+      - run: npm run build
+      - run: |
+          set -exu
+          mkdir -p /tmp/workspace/compiled-hornero/hornero
+          mv build/* /tmp/workspace/compiled-hornero/hornero
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - compiled-hornero/hornero
+
+  build_sagrada:
+    docker:
+      - image: circleci/node:12.14
+    working_directory: *sagrada_working_directory
+    steps:
+      - *restore_repo
+      - restore_cache:
+          keys:
+            - sagrada-v1-{{ .Branch }}-{{ checksum "package.json" }}
+      - run: npm install
+      - save_cache:
+          key: sagrada-v1-{{ .Branch }}-{{ checksum "package.json" }}
+          paths:
+            - /home/circleci/beaver/sagrada/node_modules
+      - run: sudo apt-get install -y --no-install-recommends gettext-base
+      - run: envsubst <.env.tmpl >.env.production
+      - run: npm run build
+      - run: |
+          set -exu
+          mkdir -p /tmp/workspace/compiled-sagrada/sagrada
+          mv .next /tmp/workspace/compiled-sagrada/sagrada
+          mv public /tmp/workspace/compiled-sagrada/sagrada
+          mv node_modules /tmp/workspace/compiled-sagrada/sagrada
+          mv package.json /tmp/workspace/compiled-sagrada/sagrada
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - compiled-sagrada/sagrada
+
+  build_and_push_image:
+    docker:
+      - image: circleci/python
+    working_directory: *beaver_working_directory
+    steps:
+      - *restore_repo
+      - *attach_workspace
+      - run: |
+          set -exu
+          mv /tmp/workspace/compiled-cathedral/cathedral ci/production
+          mv /tmp/workspace/compiled-hornero/hornero ci/production
+          mv /tmp/workspace/compiled-sagrada/sagrada ci/production
+      - run: sudo apt-get install -y --no-install-recommends gettext-base
+      - run: envsubst <ci/production/cathedral.toml.tmpl >ci/production/cathedral.toml
+      - aws-ecr/build-and-push-image:
+          account-url: BEAVER_DEPLOY_AWS_ECR_ACCOUNT_URL
+          aws-access-key-id: BEAVER_DEPLOY_AWS_ACCESS_KEY_ID
+          aws-secret-access-key: BEAVER_DEPLOY_AWS_SECRET_ACCESS_KEY
+          region: BEAVER_DEPLOY_AWS_REGION
+          path: ci/production
+          dockerfile: Dockerfile
+          tag: latest
+          repo: vsjcloud/beaver-production
+          setup-remote-docker: true
+
+  deploy:
+    executor: aws-cli/default
+    steps:
+      - aws-cli/setup:
+          aws-region: BEAVER_DEPLOY_AWS_REGION
+          aws-access-key-id: BEAVER_DEPLOY_AWS_ACCESS_KEY_ID
+          aws-secret-access-key: BEAVER_DEPLOY_AWS_SECRET_ACCESS_KEY
+      - run:
+          name: Stop all tasks
+          command: |
+            set -exu
+            index=0
+            taskArn=$(aws ecs list-tasks --cluster beaver --query "taskArns[${index}]" --output text)
+
+            until [ "$taskArn" = "None" ]
+            do
+              aws ecs stop-task --cluster beaver --task $taskArn > /dev/null 2>&1
+              index=$((index + 1))
+              taskArn=$(aws ecs list-tasks --cluster beaver --query "taskArns[${index}]" --output text)
+            done
+      - run:
+          name: Force new deployment
+          command: |
+            set -exu
+            aws ecs update-service \
+            --force-new-deployment \
+            --cluster beaver \
+            --service beaver > /dev/null 2>&1
+
+workflows:
+  version: 2.1
+
+  build_and_deploy:
+    jobs:
+      - checkout_code:
+          filters:
+            branches:
+              only: release
+      - build_cathedral:
+          requires:
+            - checkout_code
+          filters:
+            branches:
+              only: release
+      - build_hornero:
+          requires:
+            - checkout_code
+          filters:
+            branches:
+              only: release
+      - build_sagrada:
+          requires:
+            - checkout_code
+          filters:
+            branches:
+              only: release
+      - build_and_push_image:
+          requires:
+            - build_cathedral
+            - build_hornero
+            - build_sagrada
+          filters:
+            branches:
+              only: release
+      - deploy:
+          requires:
+            - build_and_push_image
+          filters:
+            branches:
+              only: release

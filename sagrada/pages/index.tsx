@@ -1,11 +1,9 @@
 import React from "react";
 
-import {BaseLayout} from "../components/layout/BaseLayout";
+import {Home} from "../components/sagrada/home/Home";
 
-export default function Home(): React.ReactElement {
+export default function HomePage(): React.ReactElement {
   return (
-    <BaseLayout>
-      <div>Hello</div>
-    </BaseLayout>
+    <Home/>
   );
 }

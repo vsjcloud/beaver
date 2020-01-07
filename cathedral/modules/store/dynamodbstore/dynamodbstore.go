@@ -252,3 +252,39 @@ func (d *DynamoDBStore) BulkGetPartition(ctx context.Context, partition string) 
 	}
 	return items, nil
 }
+
+func (d *DynamoDBStore) BulkGetPartitionIDs(ctx context.Context, partition string) (map[idCommon.ID]bool, error) {
+	ids := make(map[idCommon.ID]bool)
+
+	var exclusiveStartKey map[string]*dynamodb.AttributeValue
+	avPartitionKey, err := globalEncoder.Encode(partition)
+	if err != nil {
+		return nil, err
+	}
+
+	for {
+		expressionAttributeValues := make(map[string]*dynamodb.AttributeValue)
+		expressionAttributeValues[":partitionKey"] = avPartitionKey
+		input := dynamodb.QueryInput{
+			ExclusiveStartKey:         exclusiveStartKey,
+			KeyConditionExpression:    aws.String(partitionIDField + "= :partitionKey"),
+			ExpressionAttributeValues: expressionAttributeValues,
+			ProjectionExpression:      aws.String(partitionIDField + "," + sortIDField),
+			TableName:                 &d.table,
+		}
+		output, err := d.client.QueryWithContext(ctx, &input)
+		if err != nil {
+			return nil, err
+		}
+		for _, av := range output.Items {
+			ids[decodeID(av)] = true
+		}
+		if _, ok := output.LastEvaluatedKey[partitionIDField]; !ok {
+			break
+		} else {
+			exclusiveStartKey = output.LastEvaluatedKey
+		}
+	}
+
+	return ids, nil
+}

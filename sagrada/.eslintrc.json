@@ -40,6 +40,7 @@
     "comma-dangle": ["error", "always-multiline"],
     "react-hooks/rules-of-hooks": "error"
   },
+  "ignorePatterns": ["common/generated/proto"],
   "env": {
     "browser": true,
     "jasmine": true,

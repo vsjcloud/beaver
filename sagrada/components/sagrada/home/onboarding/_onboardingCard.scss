@@ -1,0 +1,9 @@
+.onboarding-card {
+  transition: all 0.15s;
+  box-shadow: 0 4px 10px rgba(53,89,135,0.1);
+}
+
+.onboarding-card:hover {
+  transform: scale(1.06, 1.06);
+  box-shadow: 0 4px 32px rgba(53,89,135,0.15);
+}

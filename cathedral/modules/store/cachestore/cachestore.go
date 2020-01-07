@@ -3,6 +3,7 @@ package cachestore
 import (
 	"context"
 	"github.com/hashicorp/golang-lru"
+	"github.com/mohae/deepcopy"
 	idCommon "github.com/vsjcloud/beaver/cathedral/common/id"
 	"github.com/vsjcloud/beaver/cathedral/modules/store"
 	"github.com/vsjcloud/beaver/cathedral/modules/store/rawvalue"
@@ -200,4 +201,20 @@ func (c *CacheStore) BulkGetPartition(ctx context.Context, partition string) (ma
 		c.cacheAdd(id, raw)
 	}
 	return result, nil
+}
+
+func (c *CacheStore) BulkGetPartitionIDs(ctx context.Context, partition string) (map[idCommon.ID]bool, error) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
+	if partitionIDs, ok := c.partitions[partition]; ok {
+		return deepcopy.Copy(partitionIDs).(map[idCommon.ID]bool), nil
+	}
+
+	ids, err := c.store.BulkGetPartitionIDs(ctx, partition)
+	if err != nil {
+		return nil, err
+	}
+	c.partitions[partition] = ids
+	return deepcopy.Copy(ids).(map[idCommon.ID]bool), nil
 }

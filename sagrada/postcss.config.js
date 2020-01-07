@@ -1,21 +1,14 @@
 const purgeCSS = require("@fullhuman/postcss-purgecss")({
   content: [
     "./common/**/*.tsx",
+    "./common/**/*.ts",
     "./components/**/*.tsx",
+    "./components/**/*.ts",
     "./pages/**/*.tsx",
-    "bulma/**/*.css",
+    "./pages/**/*.ts",
   ],
-  extractors: [
-    {
-      extractor: class {
-        static extract(content) {
-          return content.match(/[\w-/:]+(?<!:)/g) || []
-        }
-      },
-      extensions: ["tsx"],
-    },
-  ],
-  whitelistPatternsChildren: [/.bulma$/],
+  whitelist: ["html", "body"],
+  defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || [],
 });
 
 module.exports = {

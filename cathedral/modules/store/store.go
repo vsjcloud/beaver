@@ -17,4 +17,5 @@ type Store interface {
 	BulkDelete(ctx context.Context, ids map[id.ID]bool) error
 	BulkGet(ctx context.Context, ids map[id.ID]bool) (map[id.ID]rawvalue.RawValue, error)
 	BulkGetPartition(ctx context.Context, partition string) (map[id.ID]rawvalue.RawValue, error)
+	BulkGetPartitionIDs(ctx context.Context, partition string) (map[id.ID]bool, error)
 }

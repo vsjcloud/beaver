@@ -37,7 +37,7 @@ export function BaseLayout(props: React.PropsWithChildren<{ loading?: boolean }>
             <NavLink to="/projects" text="Dự án" icon={IconNames.PROJECTS}/>
           </Navbar.Group>
           <Navbar.Group align={Alignment.RIGHT}>
-            <Button icon={IconNames.LOG_OUT} minimal={true} intent={Intent.DANGER} onClick={logout}/>
+            <Button icon={IconNames.LOG_OUT} minimal={true} intent={Intent.DANGER} onClick={logout}>Đăng xuất</Button>
           </Navbar.Group>
         </div>
       </Navbar>

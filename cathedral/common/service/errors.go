@@ -8,6 +8,8 @@ import (
 
 var GRPCErrUnauthorized = status.Error(codes.PermissionDenied, "unauthorized")
 
+var GRPCErrInvalidID = status.Error(codes.PermissionDenied, "invalid id")
+
 func HTTPErrUnauthorized(w http.ResponseWriter) {
 	http.Error(w, "unauthorized", http.StatusUnauthorized)
 }

@@ -4,6 +4,7 @@ import {Intent} from "@blueprintjs/core/lib/esm/common/intent";
 import React from "react";
 import {useHistory} from "react-router";
 
+import {useNProgress} from "../../core/nprogress";
 import {AppToaster} from "../toaster/AppToaster";
 
 export type Auth0Context = {
@@ -19,6 +20,7 @@ export const Auth0Context = React.createContext<Auth0Context | undefined>(undefi
 export const useAuth0 = (): Auth0Context | undefined => React.useContext(Auth0Context);
 
 export const Auth0Provider: React.FC<Auth0ClientOptions> = (props: React.PropsWithChildren<Auth0ClientOptions>) => {
+  const finish = useNProgress();
   const [authenticated, setAuthenticated] = React.useState<boolean | undefined>(undefined);
   const [token, setToken] = React.useState("");
   const [client, setClient] = React.useState<Auth0Client>();
@@ -31,6 +33,7 @@ export const Auth0Provider: React.FC<Auth0ClientOptions> = (props: React.PropsWi
       const authenticated = await client.isAuthenticated();
       if (authenticated) {
         setToken(await client.getTokenSilently());
+        finish();
       }
       setAuthenticated(authenticated);
     })();
@@ -42,6 +45,7 @@ export const Auth0Provider: React.FC<Auth0ClientOptions> = (props: React.PropsWi
       await client?.handleRedirectCallback();
       setAuthenticated(true);
       setToken(await client?.getTokenSilently());
+      finish();
       history.replace("/");
     } catch {
       AppToaster.show({intent: Intent.DANGER, message: "Có lỗi xảy ra khi đăng nhập vào hệ thống"});

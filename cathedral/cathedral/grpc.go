@@ -6,16 +6,33 @@ import (
 	serviceCommon "github.com/vsjcloud/beaver/cathedral/common/service"
 	rpcPhoto "github.com/vsjcloud/beaver/cathedral/generated/proto/rpc/photo"
 	rpcProject "github.com/vsjcloud/beaver/cathedral/generated/proto/rpc/project"
+	rpcSagrada "github.com/vsjcloud/beaver/cathedral/generated/proto/rpc/sagrada"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"net/http"
+	"strings"
+)
+
+// TODO: HACK HACK should be done in another way
+var (
+	publicEndpointPrefixes = []string{"/sagrada.SagradaService"}
 )
 
 func registerGRPCServers(server *grpc.Server, modules *ModuleSet) {
 	rpcProject.RegisterProjectServiceServer(server, modules.ProjectService)
 	rpcPhoto.RegisterPhotoServiceServer(server, modules.PhotoService)
+	rpcSagrada.RegisterSagradaServiceServer(server, modules.SagradaService)
+}
+
+func isPublicEndpoint(info *grpc.UnaryServerInfo) bool {
+	for _, prefix := range publicEndpointPrefixes {
+		if strings.HasPrefix(info.FullMethod, prefix) {
+			return true
+		}
+	}
+	return false
 }
 
 func unaryServerInterceptor(modules *ModuleSet) grpc.UnaryServerInterceptor {
@@ -28,13 +45,16 @@ func unaryServerInterceptor(modules *ModuleSet) grpc.UnaryServerInterceptor {
 					info.FullMethod))
 			}
 		}()
-		if !serviceCommon.GRPCAuthorized(auth, ctx) {
+		if !isPublicEndpoint(info) && !serviceCommon.GRPCAuthorized(auth, ctx) {
 			return nil, serviceCommon.GRPCErrUnauthorized
 		}
 		resp, err = handler(ctx, req)
 		if err != nil {
+			if grpcErr, ok := status.FromError(err); ok {
+				return nil, grpcErr.Err()
+			}
 			logger.Error("error while serving method", zap.String("method", info.FullMethod), zap.Error(err))
-			return resp, status.Error(codes.Internal, "internal error")
+			return nil, status.Error(codes.Internal, "internal error")
 		}
 		return
 	}

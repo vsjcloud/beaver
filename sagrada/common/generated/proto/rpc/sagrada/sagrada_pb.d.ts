@@ -11,6 +11,8 @@ export class GetProjectDirectoryPagePropsResponse extends jspb.Message {
   clearProjectsMap(): void;
   getPhotosMap(): jspb.Map<string, model_photo_pb.Photo>;
   clearPhotosMap(): void;
+  getProjecttagsMap(): jspb.Map<string, model_project_pb.ProjectTag>;
+  clearProjecttagsMap(): void;
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetProjectDirectoryPagePropsResponse.AsObject;
   static toObject(includeInstance: boolean, msg: GetProjectDirectoryPagePropsResponse): GetProjectDirectoryPagePropsResponse.AsObject;
@@ -25,6 +27,7 @@ export namespace GetProjectDirectoryPagePropsResponse {
   export type AsObject = {
     projectsMap: Array<[string, model_project_pb.Project.AsObject]>,
     photosMap: Array<[string, model_photo_pb.Photo.AsObject]>,
+    projecttagsMap: Array<[string, model_project_pb.ProjectTag.AsObject]>,
   }
 }
 
@@ -56,6 +59,8 @@ export class GetProjectPagePropsResponse extends jspb.Message {
 
   getPhotosMap(): jspb.Map<string, model_photo_pb.Photo>;
   clearPhotosMap(): void;
+  getProjecttagsMap(): jspb.Map<string, model_project_pb.ProjectTag>;
+  clearProjecttagsMap(): void;
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetProjectPagePropsResponse.AsObject;
   static toObject(includeInstance: boolean, msg: GetProjectPagePropsResponse): GetProjectPagePropsResponse.AsObject;
@@ -70,6 +75,7 @@ export namespace GetProjectPagePropsResponse {
   export type AsObject = {
     project?: model_project_pb.Project.AsObject,
     photosMap: Array<[string, model_photo_pb.Photo.AsObject]>,
+    projecttagsMap: Array<[string, model_project_pb.ProjectTag.AsObject]>,
   }
 }
 

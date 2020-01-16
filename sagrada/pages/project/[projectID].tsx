@@ -17,6 +17,7 @@ const ProjectPage: NextPage<ProjectPageProps> = ({props}: ProjectPageProps) => {
     <Project
       project={props.project!}
       photos={new Map(props.photosMap)}
+      tags={new Map(props.projecttagsMap)}
     />
   );
 };

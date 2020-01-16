@@ -17,7 +17,7 @@ export function ProjectManagerLayout({projectName, loading, children, saveSwapTi
   const history = useHistory();
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-light-gray-5">
       <Navbar fixedToTop={true}>
         <div className="mx-auto" style={{width: "1260px"}}>
           <Navbar.Group>
@@ -43,7 +43,7 @@ export function ProjectManagerLayout({projectName, loading, children, saveSwapTi
           </Navbar.Group>
         </div>
       </Navbar>
-      <div style={{marginTop: "50px"}}>
+      <div style={{paddingTop: "50px"}}>
         {loading ? (
           <div className="flex justify-center items-center w-full" style={{height: "calc(100vh - 50px)"}}>
             <Spinner intent={Intent.PRIMARY}/>

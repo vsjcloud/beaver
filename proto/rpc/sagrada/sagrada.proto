@@ -14,6 +14,7 @@ service SagradaService {
 message GetProjectDirectoryPagePropsResponse {
     map<string, model.Project> projects = 1;
     map<string, model.Photo> photos = 2;
+    map<string, model.ProjectTag> projectTags = 3;
 }
 
 message GetProjectPagePropsRequest {
@@ -23,4 +24,5 @@ message GetProjectPagePropsRequest {
 message GetProjectPagePropsResponse {
     model.Project project = 1;
     map<string, model.Photo> photos = 2;
+    map<string, model.ProjectTag> projectTags = 3;
 }

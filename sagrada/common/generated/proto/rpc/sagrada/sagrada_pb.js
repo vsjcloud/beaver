@@ -115,7 +115,8 @@ proto.sagrada.GetProjectDirectoryPagePropsResponse.prototype.toObject = function
 proto.sagrada.GetProjectDirectoryPagePropsResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     projectsMap: (f = msg.getProjectsMap()) ? f.toObject(includeInstance, proto.model.Project.toObject) : [],
-    photosMap: (f = msg.getPhotosMap()) ? f.toObject(includeInstance, proto.model.Photo.toObject) : []
+    photosMap: (f = msg.getPhotosMap()) ? f.toObject(includeInstance, proto.model.Photo.toObject) : [],
+    projecttagsMap: (f = msg.getProjecttagsMap()) ? f.toObject(includeInstance, proto.model.ProjectTag.toObject) : []
   };
 
   if (includeInstance) {
@@ -164,6 +165,12 @@ proto.sagrada.GetProjectDirectoryPagePropsResponse.deserializeBinaryFromReader =
         jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readMessage, proto.model.Photo.deserializeBinaryFromReader, "");
          });
       break;
+    case 3:
+      var value = msg.getProjecttagsMap();
+      reader.readMessage(value, function(message, reader) {
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readMessage, proto.model.ProjectTag.deserializeBinaryFromReader, "");
+         });
+      break;
     default:
       reader.skipField();
       break;
@@ -200,6 +207,10 @@ proto.sagrada.GetProjectDirectoryPagePropsResponse.serializeBinaryToWriter = fun
   f = message.getPhotosMap(true);
   if (f && f.getLength() > 0) {
     f.serializeBinary(2, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.model.Photo.serializeBinaryToWriter);
+  }
+  f = message.getProjecttagsMap(true);
+  if (f && f.getLength() > 0) {
+    f.serializeBinary(3, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.model.ProjectTag.serializeBinaryToWriter);
   }
 };
 
@@ -243,6 +254,27 @@ proto.sagrada.GetProjectDirectoryPagePropsResponse.prototype.getPhotosMap = func
  */
 proto.sagrada.GetProjectDirectoryPagePropsResponse.prototype.clearPhotosMap = function() {
   this.getPhotosMap().clear();
+};
+
+
+/**
+ * map<string, model.ProjectTag> projectTags = 3;
+ * @param {boolean=} opt_noLazyCreate Do not create the map if
+ * empty, instead returning `undefined`
+ * @return {!jspb.Map<string,!proto.model.ProjectTag>}
+ */
+proto.sagrada.GetProjectDirectoryPagePropsResponse.prototype.getProjecttagsMap = function(opt_noLazyCreate) {
+  return /** @type {!jspb.Map<string,!proto.model.ProjectTag>} */ (
+      jspb.Message.getMapField(this, 3, opt_noLazyCreate,
+      proto.model.ProjectTag));
+};
+
+
+/**
+ * Clears values from the map. The map will be non-null.
+ */
+proto.sagrada.GetProjectDirectoryPagePropsResponse.prototype.clearProjecttagsMap = function() {
+  this.getProjecttagsMap().clear();
 };
 
 
@@ -402,7 +434,8 @@ proto.sagrada.GetProjectPagePropsResponse.prototype.toObject = function(opt_incl
 proto.sagrada.GetProjectPagePropsResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     project: (f = msg.getProject()) && model_project_pb.Project.toObject(includeInstance, f),
-    photosMap: (f = msg.getPhotosMap()) ? f.toObject(includeInstance, proto.model.Photo.toObject) : []
+    photosMap: (f = msg.getPhotosMap()) ? f.toObject(includeInstance, proto.model.Photo.toObject) : [],
+    projecttagsMap: (f = msg.getProjecttagsMap()) ? f.toObject(includeInstance, proto.model.ProjectTag.toObject) : []
   };
 
   if (includeInstance) {
@@ -450,6 +483,12 @@ proto.sagrada.GetProjectPagePropsResponse.deserializeBinaryFromReader = function
         jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readMessage, proto.model.Photo.deserializeBinaryFromReader, "");
          });
       break;
+    case 3:
+      var value = msg.getProjecttagsMap();
+      reader.readMessage(value, function(message, reader) {
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readMessage, proto.model.ProjectTag.deserializeBinaryFromReader, "");
+         });
+      break;
     default:
       reader.skipField();
       break;
@@ -490,6 +529,10 @@ proto.sagrada.GetProjectPagePropsResponse.serializeBinaryToWriter = function(mes
   f = message.getPhotosMap(true);
   if (f && f.getLength() > 0) {
     f.serializeBinary(2, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.model.Photo.serializeBinaryToWriter);
+  }
+  f = message.getProjecttagsMap(true);
+  if (f && f.getLength() > 0) {
+    f.serializeBinary(3, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.model.ProjectTag.serializeBinaryToWriter);
   }
 };
 
@@ -545,6 +588,27 @@ proto.sagrada.GetProjectPagePropsResponse.prototype.getPhotosMap = function(opt_
  */
 proto.sagrada.GetProjectPagePropsResponse.prototype.clearPhotosMap = function() {
   this.getPhotosMap().clear();
+};
+
+
+/**
+ * map<string, model.ProjectTag> projectTags = 3;
+ * @param {boolean=} opt_noLazyCreate Do not create the map if
+ * empty, instead returning `undefined`
+ * @return {!jspb.Map<string,!proto.model.ProjectTag>}
+ */
+proto.sagrada.GetProjectPagePropsResponse.prototype.getProjecttagsMap = function(opt_noLazyCreate) {
+  return /** @type {!jspb.Map<string,!proto.model.ProjectTag>} */ (
+      jspb.Message.getMapField(this, 3, opt_noLazyCreate,
+      proto.model.ProjectTag));
+};
+
+
+/**
+ * Clears values from the map. The map will be non-null.
+ */
+proto.sagrada.GetProjectPagePropsResponse.prototype.clearProjecttagsMap = function() {
+  this.getProjecttagsMap().clear();
 };
 
 

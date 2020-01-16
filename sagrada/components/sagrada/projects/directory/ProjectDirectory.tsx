@@ -3,7 +3,7 @@ import React from "react";
 import {ProjectCard, ProjectCardInfo} from "./ProjectCard";
 
 import {Photo} from "../../../../common/generated/proto/model/photo_pb";
-import {Project} from "../../../../common/generated/proto/model/project_pb";
+import {Project, ProjectTag} from "../../../../common/generated/proto/model/project_pb";
 import * as PhotoUtils from "../../../../common/utils/photo";
 import {ButtonColor} from "../../../core/button/AbstractButton";
 import {Button} from "../../../core/button/Button";
@@ -12,12 +12,14 @@ import {IconName} from "../../../core/icon/iconName";
 import {NonIdeaState} from "../../../core/non-idea-state/NonIdeaState";
 import {BaseLayout} from "../../layout/BaseLayout";
 
+
 export type ProjectDirectoryProps = {
   projects: Map<string, Project.AsObject>;
   photos: Map<string, Photo.AsObject>;
+  tags: Map<string, ProjectTag.AsObject>;
 };
 
-export function ProjectDirectory({projects, photos}: ProjectDirectoryProps): React.ReactElement {
+export function ProjectDirectory({projects, photos, tags}: ProjectDirectoryProps): React.ReactElement {
   const cards = Array.from(projects)
     .sort(([firstID], [secondID]) => {
       if (firstID > secondID) return -1;
@@ -30,6 +32,7 @@ export function ProjectDirectory({projects, photos}: ProjectDirectoryProps): Rea
         projectID: projectID,
         name: project.name,
         description: project.description,
+        tags: new Map(project.tagidsMap.map(([tagID]) => [tagID, tags.get(tagID)!])),
         preview: PhotoUtils.getPhotoURLFromPhotoModel(featurePhoto),
         previewSet: PhotoUtils.getPhotoURLSetFromPhotoModel(featurePhoto),
       };

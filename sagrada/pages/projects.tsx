@@ -15,6 +15,7 @@ const ProjectDirectoryPage: NextPage<ProjectsPageProps> = ({props}: ProjectsPage
     <ProjectDirectory
       projects={new Map(props.projectsMap)}
       photos={new Map(props.photosMap)}
+      tags={new Map(props.projecttagsMap)}
     />
   );
 };

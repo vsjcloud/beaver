@@ -33,6 +33,12 @@ export function EditProjectTagDialog({
     setIsSubmitting(false);
   }, [projectTag, setName]);
 
+  function onCloseAndReset(): void {
+    setName(nameField => new FormField("", name.getRules()));
+    setIsSubmitting(false);
+    onClose();
+  }
+
   async function onSubmit(): Promise<void> {
     setIsSubmitting(true);
     const projectTag = new ProjectTag();
@@ -51,13 +57,13 @@ export function EditProjectTagDialog({
       intent: Intent.SUCCESS,
       message: "Lưu hạng mục thành công!",
     });
-    onClose();
+    onCloseAndReset();
   }
 
   return (
     <Dialog
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={onCloseAndReset}
       title={projectTag ? "Thay đổi hạng mục" : "Tạo hạng mục mới"}
       icon={IconNames.EDIT}
     >

@@ -4,20 +4,22 @@ import {AlbumPhotoCarousel} from "./AlbumPhotosCarousel";
 import {ProjectInfoList} from "./ProjectInfoList";
 
 import {Photo} from "../../../../common/generated/proto/model/photo_pb";
-import {Project as PBProject} from "../../../../common/generated/proto/model/project_pb";
+import {Project as PBProject, ProjectTag} from "../../../../common/generated/proto/model/project_pb";
 import * as DateTimeUtils from "../../../../common/utils/datetime";
 import {BaseLayout} from "../../layout/BaseLayout";
+import {ProjectTagList} from "../ProjectTagList";
+
 
 
 export type ProjectProps = {
   project: PBProject.AsObject;
   photos: Map<string, Photo.AsObject>;
+  tags: Map<string, ProjectTag.AsObject>;
 };
 
-export function Project({project, photos}: ProjectProps): React.ReactElement {
+export function Project({project, photos, tags}: ProjectProps): React.ReactElement {
   const startDate = DateTimeUtils.pbTimestampObjectToLuxonDateTime(project.startdate);
   const finishDate = DateTimeUtils.pbTimestampObjectToLuxonDateTime(project.finishdate);
-
   return (
     <BaseLayout>
       <h1
@@ -37,11 +39,19 @@ export function Project({project, photos}: ProjectProps): React.ReactElement {
             <h3 className="text-2xl text-dark-gray-5 font-semibold mb-2">Giới thiệu về dự án</h3>
             <div>{project.description}</div>
           </div>
+          {project.tagidsMap.length > 0 &&
+          <div className="mb-3">
+            <h3 className="text-2xl text-dark-gray-5 font-semibold mb-2">Hạng mục</h3>
+            <ProjectTagList
+              tags={new Map(project.tagidsMap.map(([tagID]) => [tagID, tags.get(tagID)!]))}
+            />
+          </div>
+          }
           {project.detailsList.length > 0 &&
-            <div className="mb-3">
-              <h3 className="text-2xl text-dark-gray-5 font-semibold mb-2">Thông tin chi tiết</h3>
-              <ProjectInfoList infos={project.detailsList}/>
-            </div>
+          <div className="mb-3">
+            <h3 className="text-2xl text-dark-gray-5 font-semibold mb-2">Thông tin chi tiết</h3>
+            <ProjectInfoList infos={project.detailsList}/>
+          </div>
           }
           {startDate &&
           <div className="mb-3">

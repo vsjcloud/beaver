@@ -47,6 +47,43 @@ func (s *Service) getPhotos(ctx context.Context, photoIDs map[id.ID]bool) (map[s
 	return photos, nil
 }
 
+func (s *Service) getActiveTags(ctx context.Context) (map[string]*model.ProjectTag, error) {
+	allTagIDs, err := s.modelStore.BulkGetPartitionIDs(ctx, id.ProjectTagPartition)
+	if err != nil {
+		return nil, err
+	}
+	archivedDirectoryRaw, err := s.modelStore.Get(ctx, id.ArchivedProjectTagDirectoryID)
+	if err != nil {
+		return nil, err
+	}
+	archivedDirectory := &model.ArchivedProjectTagDirectory{}
+	if err = archivedDirectoryRaw.Decode(archivedDirectory); err != nil {
+		return nil, err
+	}
+	if archivedDirectory.ProjectTagIDs == nil {
+		archivedDirectory.ProjectTagIDs = make(map[string]bool)
+	}
+	activeTagIDs := make(map[id.ID]bool)
+	for tagID := range allTagIDs {
+		if !archivedDirectory.ProjectTagIDs[tagID.String()] {
+			activeTagIDs[tagID] = true
+		}
+	}
+	activeTagRaws, err := s.modelStore.BulkGet(ctx, activeTagIDs)
+	if err != nil {
+		return nil, err
+	}
+	activeTags := make(map[string]*model.ProjectTag)
+	for tagID, raw := range activeTagRaws {
+		tag := &model.ProjectTag{}
+		if err = raw.Decode(tag); err != nil {
+			return nil, err
+		}
+		activeTags[tagID.String()] = tag
+	}
+	return activeTags, nil
+}
+
 func (s *Service) GetProjectDirectoryPageProps(
 	ctx context.Context,
 	_ *empty.Empty,
@@ -87,9 +124,14 @@ func (s *Service) GetProjectDirectoryPageProps(
 	if err != nil {
 		return nil, err
 	}
+	tags, err := s.getActiveTags(ctx)
+	if err != nil {
+		return nil, err
+	}
 	return &sagrada.GetProjectDirectoryPagePropsResponse{
-		Projects: projects,
-		Photos:   photos,
+		Projects:    projects,
+		Photos:      photos,
+		ProjectTags: tags,
 	}, nil
 }
 
@@ -115,8 +157,13 @@ func (s *Service) GetProjectPageProps(
 	if err != nil {
 		return nil, err
 	}
+	tags, err := s.getActiveTags(ctx)
+	if err != nil {
+		return nil, err
+	}
 	return &sagrada.GetProjectPagePropsResponse{
-		Project: project,
-		Photos:  photos,
+		Project:     project,
+		Photos:      photos,
+		ProjectTags: tags,
 	}, nil
 }

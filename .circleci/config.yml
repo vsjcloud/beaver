@@ -182,37 +182,49 @@ workflows:
     jobs:
       - checkout_code:
           filters:
+            tags:
+              only: /^v.*/
             branches:
-              only: release
+              ignore: /.*/
       - build_cathedral:
           requires:
             - checkout_code
           filters:
+            tags:
+              only: /^v.*/
             branches:
-              only: release
+              ignore: /.*/
       - build_hornero:
           requires:
             - checkout_code
           filters:
+            tags:
+              only: /^v.*/
             branches:
-              only: release
+              ignore: /.*/
       - build_sagrada:
           requires:
             - checkout_code
           filters:
+            tags:
+              only: /^v.*/
             branches:
-              only: release
+              ignore: /.*/
       - build_and_push_image:
           requires:
             - build_cathedral
             - build_hornero
             - build_sagrada
           filters:
+            tags:
+              only: /^v.*/
             branches:
-              only: release
+              ignore: /.*/
       - deploy:
           requires:
             - build_and_push_image
           filters:
+            tags:
+              only: /^v.*/
             branches:
-              only: release
+              ignore: /.*/

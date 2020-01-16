@@ -695,7 +695,7 @@ proto.model.Project.deserializeBinaryFromReader = function(msg, reader) {
     case 8:
       var value = msg.getTagidsMap();
       reader.readMessage(value, function(message, reader) {
-        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readString, null, "");
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readBool, null, "");
          });
       break;
     default:
@@ -783,7 +783,7 @@ proto.model.Project.serializeBinaryToWriter = function(message, writer) {
   }
   f = message.getTagidsMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(8, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeString);
+    f.serializeBinary(8, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeBool);
   }
 };
 
@@ -986,13 +986,13 @@ proto.model.Project.prototype.clearAlbumphotosList = function() {
 
 
 /**
- * map<string, string> tagIDs = 8;
+ * map<string, bool> tagIDs = 8;
  * @param {boolean=} opt_noLazyCreate Do not create the map if
  * empty, instead returning `undefined`
- * @return {!jspb.Map<string,string>}
+ * @return {!jspb.Map<string,boolean>}
  */
 proto.model.Project.prototype.getTagidsMap = function(opt_noLazyCreate) {
-  return /** @type {!jspb.Map<string,string>} */ (
+  return /** @type {!jspb.Map<string,boolean>} */ (
       jspb.Message.getMapField(this, 8, opt_noLazyCreate,
       null));
 };

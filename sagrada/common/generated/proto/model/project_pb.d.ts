@@ -104,7 +104,7 @@ export class Project extends jspb.Message {
   setAlbumphotosList(value: Array<ProjectPhoto>): void;
   addAlbumphotos(value?: ProjectPhoto, index?: number): ProjectPhoto;
 
-  getTagidsMap(): jspb.Map<string, string>;
+  getTagidsMap(): jspb.Map<string, boolean>;
   clearTagidsMap(): void;
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Project.AsObject;
@@ -125,7 +125,7 @@ export namespace Project {
     finishdate?: google_protobuf_timestamp_pb.Timestamp.AsObject,
     featurephoto?: ProjectPhoto.AsObject,
     albumphotosList: Array<ProjectPhoto.AsObject>,
-    tagidsMap: Array<[string, string]>,
+    tagidsMap: Array<[string, boolean]>,
   }
 }
 

@@ -18,7 +18,7 @@ export function ProjectManagerLayout({projectName, loading, children, saveSwapTi
 
   return (
     <div className="min-h-screen">
-      <Navbar>
+      <Navbar fixedToTop={true}>
         <div className="mx-auto" style={{width: "1260px"}}>
           <Navbar.Group>
             <Button icon={IconNames.ARROW_LEFT} intent={Intent.PRIMARY} onClick={(): void => history.goBack()}>Quay
@@ -43,17 +43,19 @@ export function ProjectManagerLayout({projectName, loading, children, saveSwapTi
           </Navbar.Group>
         </div>
       </Navbar>
-      {loading ? (
-        <div className="flex justify-center items-center w-full" style={{height: "calc(100vh - 50px)"}}>
-          <Spinner intent={Intent.PRIMARY}/>
-        </div>
-      ) : (
-        <div className="px-4">
-          <div className="mx-auto py-4" style={{width: "1260px"}}>
-            {children}
+      <div style={{marginTop: "50px"}}>
+        {loading ? (
+          <div className="flex justify-center items-center w-full" style={{height: "calc(100vh - 50px)"}}>
+            <Spinner intent={Intent.PRIMARY}/>
           </div>
-        </div>
-      )}
+        ) : (
+          <div className="px-4">
+            <div className="mx-auto py-4" style={{width: "1260px"}}>
+              {children}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

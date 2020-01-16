@@ -26,7 +26,7 @@ message Project {
     google.protobuf.Timestamp finishDate = 5;
     ProjectPhoto featurePhoto = 6;
     repeated ProjectPhoto albumPhotos = 7;
-    map<string, string> tagIDs = 8;
+    map<string, bool> tagIDs = 8;
 }
 
 message ArchivedProjectDirectory {

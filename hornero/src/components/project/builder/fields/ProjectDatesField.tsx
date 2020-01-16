@@ -79,8 +79,12 @@ export function ProjectDatesField({
     <div className="flex flex-row justify-between items-center">
       <FormGroup
         label="Ngày bắt đầu dự án"
+        labelFor="project-start-date"
       >
         <DateInput
+          inputProps={{
+            id: "project-start-date",
+          }}
           onChange={onStartDateChange}
           value={dates.getValue().startDate}
           formatDate={formatDate}
@@ -105,8 +109,12 @@ export function ProjectDatesField({
       <Icon iconSize={Icon.SIZE_LARGE} intent={Intent.PRIMARY} icon={IconNames.DOUBLE_CHEVRON_RIGHT}/>
       <FormGroup
         label="Ngày hoàn thành dự án"
+        labelFor="project-finish-date"
       >
         <DateInput
+          inputProps={{
+            id: "project-finish-date",
+          }}
           onChange={onFinishDateChange}
           value={dates.getValue().finishDate}
           formatDate={formatDate}

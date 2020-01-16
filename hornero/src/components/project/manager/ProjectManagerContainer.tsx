@@ -13,7 +13,7 @@ import {ProjectManagerLayout} from "./ProjectManagerLayout";
 import {parseID} from "../../../core/id";
 import {projectSwapID} from "../../../core/id/id";
 import {Photo} from "../../../generated/proto/model/photo_pb";
-import {Project, ProjectInfo, ProjectPhoto} from "../../../generated/proto/model/project_pb";
+import {Project, ProjectInfo, ProjectPhoto, ProjectTag} from "../../../generated/proto/model/project_pb";
 import {BulkGetPhotosRequest} from "../../../generated/proto/rpc/photo/photo_pb";
 import {
   ArchiveProjectRequest,
@@ -28,6 +28,7 @@ import {useProjectClient} from "../../../services/project";
 import * as ProjectUtils from "../../../utils/project";
 import {AppToaster} from "../../toaster/AppToaster";
 
+
 export function ProjectManagerContainer(): React.ReactElement {
   const history = useHistory();
 
@@ -41,6 +42,7 @@ export function ProjectManagerContainer(): React.ReactElement {
   const [editingProject, setEditingProject] = React.useState<Project>();
   const [archived, setArchived] = React.useState(false);
   const [photos, setPhotos] = React.useState(new jspb.Map<string, Photo>([]));
+  const [tags, setTags] = React.useState<jspb.Map<string, ProjectTag>>();
 
   const [projectName, setProjectName] = React.useState("");
   const [saveSwapTime, setSaveSwapTime] = React.useState<DateTime>();
@@ -73,6 +75,19 @@ export function ProjectManagerContainer(): React.ReactElement {
         return response.getPhotosMap();
       }();
       setPhotos(photos);
+      const tags = await async function (): Promise<jspb.Map<string, ProjectTag>> {
+        const response = await projectClient.getProjectTags(new Empty());
+        return response.getTagsMap();
+      }();
+      const archivedTagIDs = await async function (): Promise<jspb.Map<string, boolean>> {
+        const response = await projectClient.getArchivedProjectTagDirectory(new Empty());
+        return response.getArchivedprojecttagdirectory()?.getProjecttagidsMap() || new jspb.Map<string, boolean>([]);
+      }();
+      const activeTags = new jspb.Map<string, ProjectTag>([]);
+      tags.forEach((tag, tagID) => {
+        if (!archivedTagIDs.has(tagID)) activeTags.set(tagID, tag);
+      });
+      setTags(activeTags);
       setLoading(false);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -231,6 +246,7 @@ export function ProjectManagerContainer(): React.ReactElement {
               <ProjectBuilderPanel
                 initialProject={editingProject!}
                 initialPhotos={photos}
+                projectTags={tags!}
                 onUploadPhoto={photoClient.uploadPhoto}
                 onSaveProject={onSaveProject}
                 onSaveSwap={onSaveSwap}

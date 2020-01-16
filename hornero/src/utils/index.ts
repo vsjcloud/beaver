@@ -35,6 +35,12 @@ export function pbMapTransform<K, V, U>(map: jspb.Map<K, V>, cb: (value: V, key:
   return res;
 }
 
+export function pbMapClone<K, V>(map: jspb.Map<K, V>): jspb.Map<K, V> {
+  const res = new jspb.Map<K, V>([]);
+  map.forEach((value, key) => res.set(key, value));
+  return res;
+}
+
 export function onInputChange(cb: (newValue: string) => void): (event: React.ChangeEvent<HTMLInputElement>) => void {
   return function (event: React.ChangeEvent<HTMLInputElement>): void {
     cb(event.target.value);

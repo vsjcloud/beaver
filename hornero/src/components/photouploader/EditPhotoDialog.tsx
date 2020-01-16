@@ -77,7 +77,7 @@ export function EditPhotoDialog({photo, onClose, onSubmit}: EditPhotoDialogProps
       <div className={Classes.DIALOG_FOOTER}>
         <div className={Classes.DIALOG_FOOTER_ACTIONS}>
           <Button onClick={onClose}>Đóng</Button>
-          <Button onClick={onSave} intent={Intent.PRIMARY} disabled={!validate()}>Lưu thông tin</Button>
+          <Button type="submit" onClick={onSave} intent={Intent.PRIMARY} disabled={!validate()}>Lưu thông tin</Button>
         </div>
       </div>
     </Dialog>

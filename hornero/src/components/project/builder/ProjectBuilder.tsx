@@ -10,16 +10,19 @@ import {ProjectDescriptionField} from "./fields/ProjectDescriptionField";
 import {ProjectFeaturePhotoField} from "./fields/ProjectFeaturePhotoField";
 import {ProjectInfosField} from "./fields/ProjectInfosField";
 import {ProjectNameField} from "./fields/ProjectNameField";
+import {ProjectTagsField} from "./fields/ProjectTagsField";
 import {ProjectControlButtons} from "./ProjectControlButtons";
 
 import {AppToaster} from "../../toaster/AppToaster";
-import {Project} from "../../../generated/proto/model/project_pb";
+import {Project, ProjectTag} from "../../../generated/proto/model/project_pb";
 import {Photo, PhotoAndID} from "../../../generated/proto/model/photo_pb";
 import {useFormValidator} from "../../../core/form/formValidator";
+import * as Utils from "../../../utils";
 
 export type ProjectBuilderProps = {
   initialProject: Project;
   initialPhotos: jspb.Map<string, Photo>;
+  projectTags: jspb.Map<string, ProjectTag>;
   onUploadPhoto(photo: File): Promise<PhotoAndID>;
   onSaveProject(editedProject: Project): Promise<void>;
   onSaveSwap(editedSwap: Project, unmount: boolean): Promise<boolean>;
@@ -30,6 +33,7 @@ export type ProjectBuilderProps = {
 export function ProjectBuilder({
   initialProject,
   initialPhotos,
+  projectTags,
   onUploadPhoto,
   onSaveProject,
   onSaveSwap,
@@ -40,6 +44,7 @@ export function ProjectBuilder({
 
   const [name, setName] = React.useState(initialProject.getName());
   const [description, setDescription] = React.useState(initialProject.getDescription());
+  const [tags, setTags] = React.useState(Utils.pbMapTransform(initialProject.getTagidsMap(), (_existed, projectID) => projectID));
   const [startDate, setStartDate] = React.useState(initialProject.getStartdate());
   const [finishDate, setFinishDate] = React.useState(initialProject.getFinishdate());
   const [projectInfos, setProjectInfos] = React.useState(initialProject.getDetailsList());
@@ -50,13 +55,14 @@ export function ProjectBuilder({
     const project = new Project();
     project.setName(name.trim());
     project.setDescription(description.trim());
+    tags.forEach((tagID) => project.getTagidsMap().set(tagID, true));
     project.setFeaturephoto(featurePhoto);
     project.setAlbumphotosList(albumPhotos);
     project.setStartdate(startDate);
     project.setFinishdate(finishDate);
     project.setDetailsList(projectInfos.filter((projectInfo) => projectInfo.getName() !== "" && projectInfo.getValue() !== ""));
     return project;
-  }, [albumPhotos, description, featurePhoto, name, startDate, finishDate, projectInfos]);
+  }, [albumPhotos, description, tags, featurePhoto, name, startDate, finishDate, projectInfos]);
 
   const swapProject = React.useRef(initialProject);
 
@@ -114,6 +120,11 @@ export function ProjectBuilder({
         initialValue={initialProject.getDescription()}
         onChange={setDescription}
         registerField={registerField}
+      />
+      <ProjectTagsField
+        tagIDs={tags}
+        tags={projectTags}
+        onChange={setTags}
       />
       <ProjectDatesField
         initialStartDate={initialProject.getStartdate()}

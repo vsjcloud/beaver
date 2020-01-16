@@ -62,7 +62,7 @@ func (s *Service) GetProjectTags(
 	ctx context.Context,
 	_ *empty.Empty,
 ) (*project.GetProjectTagsResponse, error) {
-	raws, err := s.modelStore.BulkGetPartition(ctx, id.ArchivedProjectDirectoryPartition)
+	raws, err := s.modelStore.BulkGetPartition(ctx, id.ProjectTagPartition)
 	if err != nil {
 		return nil, err
 	}

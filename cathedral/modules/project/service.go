@@ -292,6 +292,9 @@ func (s *Service) ArchiveProject(
 		return nil, err
 	}
 	archivedProjects := response.ArchivedProjectDirectory
+	if archivedProjects.ProjectIDs == nil {
+		archivedProjects.ProjectIDs = make(map[string]bool)
+	}
 	archivedProjects.ProjectIDs[request.ProjectID] = true
 	if err := s.modelStore.Put(ctx, id.ArchivedProjectDirectoryID, archivedProjects); err != nil {
 		return nil, err
@@ -310,6 +313,9 @@ func (s *Service) RecoverProject(
 		return nil, err
 	}
 	archivedProjects := response.ArchivedProjectDirectory
+	if archivedProjects.ProjectIDs == nil {
+		archivedProjects.ProjectIDs = make(map[string]bool)
+	}
 	delete(archivedProjects.ProjectIDs, request.ProjectID)
 	if err := s.modelStore.Put(ctx, id.ArchivedProjectDirectoryID, archivedProjects); err != nil {
 		return nil, err

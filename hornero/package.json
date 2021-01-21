@@ -31,7 +31,7 @@
     "eslint-plugin-react-hooks": "^2.3.0",
     "exif-js": "^2.3.0",
     "google-protobuf": "^3.11.0",
-    "immer": "^5.0.0",
+    "immer": "^8.0.1",
     "luxon": "^1.21.3",
     "nprogress": "^0.2.0",
     "react": "^16.12.0",
